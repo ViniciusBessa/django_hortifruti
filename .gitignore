@@ -1,3 +1,10 @@
+# Vscode
+.vscode
+.idea
+
+# Txt files
+*.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -60,6 +67,8 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+manage.py
+settings.py
 
 # Flask stuff:
 instance/
