@@ -1,0 +1,1 @@
+# django_loja_online
