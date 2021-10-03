@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'menu_slider.css' %}"/>
+{% endblock %}
+
+{% block main %}
+<main class="cor-secundaria mt-5 p-4">
+    <section class="d-flex justify-content-center">
+        <p>{{ produto.titulo }}</p>
+    </section>
+</main>
+{% endblock %}

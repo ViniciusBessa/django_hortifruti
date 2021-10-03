@@ -6,9 +6,16 @@
 {% endblock %}
 
 {% block main %}
-<main class="mt-5 d-flex justify-content-center">
-    <div class="mt-5 rounded">
-        <form class="p-2" action="." method="POST"> {% csrf_token %}
+<main class="mt-5">
+    {% if messages %}
+    <div class="m-0 alert alert-primary messages" role="alert">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="p-5 rounded d-flex justify-content-center">
+        <form class="cor-secundaria p-3 borda-azul" action="." method="POST"> {% csrf_token %}
             {{ form.as_p }}
             <button class="btn btn-outline-secondary" type="submit" value="Login">Login</button>
         </form>

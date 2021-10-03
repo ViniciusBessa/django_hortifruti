@@ -1,4 +1,49 @@
 {% extends 'base.html' %}
-{% block main %}
+{% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'menu_slider.css' %}"/>
+{% endblock %}
+
+{% block main %}
+<main class="cor-secundaria mt-5 pt-4">
+    <section>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{% static produto1.imagem.path %}"/>
+                    <p>{{ produto1.titulo }}</p>
+                </div>
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row">
+                            {% for produto in produtos%}
+                            <div class="col d-flex justify-content-center">
+                                <div>
+                                    <a href="produto/{{ produto.id }}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+                                    <p>{{ produto.titulo }}</p>
+                                </div>  
+                            </div>
+                            <div class="col d-flex justify-content-center">
+                                <div>
+                                    <img src="{% static produto.imagem.path %}" width="250px" height="166"/>
+                                    <p>{{ produto.titulo }}</p>
+                                </div>  
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button style="width: 50px;" class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span style="background-color: gray; border-radius: 50%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button style="width: 50px;" class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span style="background-color: gray; border-radius: 50%;" class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+</main>
 {% endblock %}
