@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load produtos_filters %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'menu_slider.css' %}"/>
+<link rel="stylesheet" href="{% static 'home.css' %}"/>
 {% endblock %}
 
 {% block main %}
 <main class="cor-secundaria mt-5 pt-4">
-    <section>
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <section class="px-3">
+        {% for categoria in categorias %}
+        <h1>{{ categoria.titulo }}</h1>
+        <div id="carousel-{{ categoria.titulo }}" class="carousel slide my-3" data-bs-ride="carousel">
             <div class="carousel-inner">
+                {% for produtos in produtos_categorias|getvalues:categoria %}
+
+                {% if produtos == produtos_categorias|firstvalues:categoria %}
                 <div class="carousel-item active">
-                    <img src="{% static produto1.imagem.path %}"/>
-                    <p>{{ produto1.titulo }}</p>
-                </div>
+
+                {% else %}
                 <div class="carousel-item">
+                {% endif %}
                     <div class="container">
                         <div class="row">
                             {% for produto in produtos%}
@@ -24,26 +30,22 @@
                                     <p>{{ produto.titulo }}</p>
                                 </div>  
                             </div>
-                            <div class="col d-flex justify-content-center">
-                                <div>
-                                    <img src="{% static produto.imagem.path %}" width="250px" height="166"/>
-                                    <p>{{ produto.titulo }}</p>
-                                </div>  
-                            </div>
                             {% endfor %}
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            <button style="width: 50px;" class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <button style="width: 50px;" class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ categoria.titulo }}" data-bs-slide="prev">
               <span style="background-color: gray; border-radius: 50%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </button>
-            <button style="width: 50px;" class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <button style="width: 50px;" class="carousel-control-next" type="button" data-bs-target="#carousel-{{ categoria.titulo }}" data-bs-slide="next">
               <span style="background-color: gray; border-radius: 50%;" class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
         </div>
+        {% endfor %}
     </section>
 </main>
 {% endblock %}

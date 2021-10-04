@@ -1,4 +1,5 @@
 from django.db import models
+from more_itertools import divide
 
 
 class Produto(models.Model):
@@ -8,11 +9,13 @@ class Produto(models.Model):
     imagem = models.ImageField()
     id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
 
-    def receber_produtos(categorias, numero_produtos):
-        lista_produtos = []
+    def receber_produtos(categorias, numero_produtos, partes):
+        dicio = {}
         for categoria in categorias:
-            lista_produtos.append(Produto.objects.filter(id_categoria=categoria)[:numero_produtos])
-        return lista_produtos
+            produtos_divididos = divide(partes, Produto.objects.filter(id_categoria=categoria)[:numero_produtos])
+            produtos_divididos = [list(x) for x in produtos_divididos]
+            dicio.update({categoria: produtos_divididos.copy()})
+        return dicio
 
 
 class CategoriasProduto(models.Model):

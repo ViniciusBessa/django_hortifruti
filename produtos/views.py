@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Produto, CategoriasProduto
+from .models import Produto
 
 
 def pagina_produto_view(request, id_produto):
