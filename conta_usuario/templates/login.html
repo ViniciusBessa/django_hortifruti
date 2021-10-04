@@ -15,7 +15,7 @@
     </div>
     {% endif %}
     <div class="p-5 rounded d-flex justify-content-center">
-        <form class="cor-secundaria p-3 borda-azul" action="." method="POST"> {% csrf_token %}
+        <form class="cor-secundaria borda p-3" action="." method="POST"> {% csrf_token %}
             {{ form.as_p }}
             <button class="btn btn-outline-secondary" type="submit" value="Login">Login</button>
         </form>

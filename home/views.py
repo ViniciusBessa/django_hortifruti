@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from produtos.models import Produto
+from produtos.models import Produto, CategoriasProduto
 
 
 def home_view(request):
-    produtos = Produto.objects.all()
+    categorias = CategoriasProduto.objects.all()
+    produtos = Produto.receber_produtos(categorias, 4)
+
     context = {
-        'produto1': produtos[0],
-        'produtos': produtos[1::]
+        'categorias': categorias,
+        'produtos': produtos,
     }
     return render(request, 'home.html', context)
