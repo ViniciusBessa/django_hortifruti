@@ -1,0 +1,18 @@
+{% include 'base.html' %}
+
+{% block main %}
+<main class="cor-secundaria mt-5 pt-4">
+    <section class="d-flex justify-content-center">
+        {% if produtos %}
+        {% for produto in produtos %}
+        <p>{{ produto.titulo }}</p>
+        {% endfor %}
+    
+        {% else %}
+        <h1>Nenhum produto encontrado</h1>
+    
+        {% endif %}
+    </section>
+    
+</main>
+{% endblock %}

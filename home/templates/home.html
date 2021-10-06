@@ -10,7 +10,7 @@
 <main class="cor-secundaria mt-5 pt-4">
     <section class="px-3">
         {% for categoria in categorias %}
-        <h1>{{ categoria.titulo }}</h1>
+        <h2>{{ categoria.titulo }}</h2>
         <div id="carousel-{{ categoria.titulo }}" class="carousel slide my-3" data-bs-ride="carousel">
             <div class="carousel-inner">
                 {% for produtos in produtos_categorias|getvalues:categoria %}

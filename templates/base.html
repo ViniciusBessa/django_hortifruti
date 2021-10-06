@@ -9,6 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"/>
 
         <link href="{% static 'base.css' %}" rel="stylesheet"/>
+        <script src="{% static 'base.js' %}"></script>
         {% block head %}
         {% endblock %}
     </head>
@@ -27,9 +28,9 @@
                         </ul>
                         <ul class="navbar-nav mx-auto">
                             <li>
-                                <form action="." method="POST"> {% csrf_token %}
-                                    <input class="input-sm" type="search" placeholder="Procurar"/>
-                                    <input type="submit"/>
+                                <form id="formBusca" action="/busca" method="POST"> {% csrf_token %}
+                                    <input id="inputBusca" class="input-sm" type="search" placeholder="Procurar"/>
+                                    <input onclick="buscar()" type="submit"/>
                                 </form>
                             </li>
                         </ul>
