@@ -26,7 +26,7 @@
                             {% for produto in produtos%}
                             <div class="col d-flex justify-content-center">
                                 <div>
-                                    <a href="produto/{{ produto.id }}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+                                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
                                     <p>{{ produto.titulo }}</p>
                                 </div>  
                             </div>
