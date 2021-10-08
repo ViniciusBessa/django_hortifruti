@@ -14,9 +14,11 @@ class Produto(models.Model):
     def receber_produtos(categorias: QuerySet, numero_produtos: int, partes: int) -> dict:
         dicionario_produtos: dict = {}
         for categoria in categorias:
-            produtos_divididos = divide(partes, Produto.objects.filter(id_categoria=categoria)[:numero_produtos])
-            produtos_divididos = [list(x) for x in produtos_divididos]
-            dicionario_produtos.update({categoria: produtos_divididos.copy()})
+            produtos_da_categoria = Produto.objects.filter(id_categoria=categoria)[:numero_produtos]
+            if produtos_da_categoria:
+               produtos_divididos = divide(partes, produtos_da_categoria)
+               produtos_divididos = [list(x) for x in produtos_divididos]
+               dicionario_produtos.update({categoria: produtos_divididos.copy()})
         return dicionario_produtos
 
 

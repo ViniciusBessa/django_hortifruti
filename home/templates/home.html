@@ -7,45 +7,46 @@
 {% endblock %}
 
 {% block main %}
-<main class="cor-secundaria mt-5 pt-4">
-    <section class="px-3">
-        {% for categoria in categorias %}
-        <h2>{{ categoria.titulo }}</h2>
-        <div id="carousel-{{ categoria.titulo }}" class="carousel slide my-3" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                {% for produtos in produtos_categorias|getvalues:categoria %}
+<section class="cor-secundaria p-3">
+    {% for categoria in categorias %}
+    {% if produtos_categorias|getvalues:categoria %}
+    <h2>{{ categoria.titulo }}</h2>
+    <div id="carousel-{{ categoria.titulo|lower }}" class="carousel slide my-3" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for produtos in produtos_categorias|getvalues:categoria %}
+            {% if produtos == produtos_categorias|firstvalues:categoria %}
+            <div class="carousel-item active">
 
-                {% if produtos == produtos_categorias|firstvalues:categoria %}
-                <div class="carousel-item active">
+            {% else %}
+            <div class="carousel-item">
 
-                {% else %}
-                <div class="carousel-item">
-                {% endif %}
-                    <div class="container">
-                        <div class="row">
-                            {% for produto in produtos%}
-                            <div class="col d-flex justify-content-center">
-                                <div>
-                                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
-                                    <p>{{ produto.titulo }}</p>
-                                </div>  
+            {% endif %}
+                <div class="container">
+                    <div class="row">
+                        {% for produto in produtos%}
+                        <div class="col d-flex justify-content-center">
+                            <div>
+                                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+                                <h5 style="color: green; margin-bottom: 0%;">R$ {{produto.preco }}</h5>
+                                <p>{{ produto.titulo }}</p>
                             </div>
-                            {% endfor %}
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
-            <button style="width: 50px;" class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ categoria.titulo }}" data-bs-slide="prev">
-              <span style="background-color: gray; border-radius: 50%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button style="width: 50px;" class="carousel-control-next" type="button" data-bs-target="#carousel-{{ categoria.titulo }}" data-bs-slide="next">
-              <span style="background-color: gray; border-radius: 50%;" class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </section>
-</main>
+        <button style="width: 30px;" class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="prev">
+          <span style="background-color: gray; border-radius: 50%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button style="width: 30px;" class="carousel-control-next" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="next">
+          <span style="background-color: gray; border-radius: 50%;" class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    {% endif %}
+    {% endfor %}
+</section>
 {% endblock %}

@@ -1,18 +1,23 @@
 {% include 'base.html' %}
+{% load static %}
 
 {% block main %}
-<main class="cor-secundaria mt-5 pt-4">
-    <section class="d-flex justify-content-center">
-        {% if produtos %}
-        {% for produto in produtos %}
-        <p>{{ produto.titulo }}</p>
-        {% endfor %}
-    
-        {% else %}
-        <h1>Nenhum produto encontrado</h1>
-    
-        {% endif %}
-    </section>
-    
-</main>
+<section class="cor-secundaria p-3">
+    {% if produtos %}
+    {% for produto in produtos%}
+    <div class="d-flex justify-content-center py-3">
+        <div>
+            <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+            <p style="color: gray; margin-bottom: 0%;">{{ produto.id_categoria.titulo }}</p>
+            <h5 style="color: green; margin-bottom: 0%;">R$ {{produto.preco }}</h5>
+            <p>{{ produto.titulo }}</p>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <h1 class="">Nenhum produto encontrado</h1>
+
+    {% endif %}
+</section>
 {% endblock %}

@@ -10,4 +10,5 @@ def home_view(request):
         'categorias': categorias,
         'produtos_categorias': produtos_categorias,
     }
+
     return render(request, 'home.html', context)

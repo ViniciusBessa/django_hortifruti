@@ -15,9 +15,11 @@ def pagina_produto_view(request, id_produto):
 
 
 def filtro_busca_view(request):
-    if request.method == 'POST':
-        busca = request.POST['busca']
+    busca = request.POST.get('busca')
+
+    if request.method == 'POST' and busca:
         return redirect(reverse('busca', args=(busca,)))
+
     return redirect(reverse('home'))
 
 
