@@ -1,6 +1,6 @@
 from django.db import models
-from django.db.models.query import QuerySet
 from more_itertools import divide
+from django.contrib.auth.models import User
 
 
 class Produto(models.Model):
@@ -11,7 +11,7 @@ class Produto(models.Model):
     id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
 
 
-    def receber_produtos(categorias: QuerySet, numero_produtos: int, partes: int) -> dict:
+    def receber_produtos(categorias, numero_produtos, partes):
         dicionario_produtos: dict = {}
         for categoria in categorias:
             produtos_da_categoria = Produto.objects.filter(id_categoria=categoria)[:numero_produtos]
@@ -24,3 +24,8 @@ class Produto(models.Model):
 
 class CategoriasProduto(models.Model):
     titulo = models.CharField(max_length=20)
+
+
+class CarrinhoCompra(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)

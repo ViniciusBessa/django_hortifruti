@@ -1,22 +1,30 @@
-{% include 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block main %}
 <section class="cor-secundaria p-3">
     {% if produtos %}
+    <h2 class="text-center">Resultados para <p style="color: red;">{{ busca }}</p></h2>
     {% for produto in produtos%}
-    <div class="d-flex justify-content-center py-3">
-        <div>
-            <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
-            <p style="color: gray; margin-bottom: 0%;">{{ produto.id_categoria.titulo }}</p>
-            <h5 style="color: green; margin-bottom: 0%;">R$ {{produto.preco }}</h5>
-            <p>{{ produto.titulo }}</p>
+    <div class="container">
+        <div class="row justify-content-center py-4">
+            <div class="col-md-auto d-flex justify-content-center">
+                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+            </div>
+            <div class="col-md-auto d-flex justify-content-center px-2">
+                <div>
+                    <p style="color: gray; margin-bottom: 0%;">{{ produto.id_categoria.titulo }}</p>
+                    <h5 style="color: green; margin-bottom: 0%;">R$ {{produto.preco }}</h5>
+                    <p>{{ produto.titulo }}</p>
+                </div>
+            </div>
         </div>
     </div>
+    
     {% endfor %}
 
     {% else %}
-    <h1 class="">Nenhum produto encontrado</h1>
+    <h1 class="text-center">Nenhum produto encontrado</h1>
 
     {% endif %}
 </section>
