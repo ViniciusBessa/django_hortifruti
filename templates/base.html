@@ -30,7 +30,7 @@
                         <ul class="navbar-nav mx-auto">
                             <li>
                                 <form action="{% url 'filtro_busca' %}" method="POST"> {% csrf_token %}
-                                    <input class="input-sm" type="search" placeholder="Procurar" name="busca"/>
+                                    <input class="input-sm" type="search" placeholder="Procurar" maxlength="20" name="busca"/>
                                     <input type="submit"/>
                                 </form>
                             </li>
@@ -60,7 +60,7 @@
 
         <main class="mt-5 pt-4">
             {% if messages %}
-            <section class="m-0 alert alert-primary messages" role="alert">
+            <section class="m-0 alert alert-primary alert-dismissible messages" role="alert">
                 {% for message in messages %}
                 <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
