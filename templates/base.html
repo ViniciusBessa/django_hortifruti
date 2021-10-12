@@ -26,25 +26,33 @@
                             <li>
                                 <a class="nav-link" href="{% url 'home' %}" role="button">Home</a>
                             </li>
+                            {% if request.user.is_authenticated %}
+                            <li>
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" type="button" id="dropdown-conta" data-bs-toggle="dropdown" aria-expanded="false">
+                                      Minha conta
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-conta">
+                                      <li><a class="dropdown-item" href="#">Pedidos</a></li>
+                                      <li><a class="dropdown-item" href="#">Lista de desejos</a></li>
+                                      <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar a senha</a></li>
+                                      <li><a class="dropdown-item" href="{% url 'logout' %}" role="button">Sair</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            {% endif %}
                         </ul>
                         <ul class="navbar-nav mx-auto">
                             <li>
-                                <form action="{% url 'filtro_busca' %}" method="POST"> {% csrf_token %}
-                                    <input class="input-sm" type="search" placeholder="Procurar" maxlength="20" name="busca"/>
+                                <form class="d-flex" action="{% url 'filtro_busca' %}" method="POST"> {% csrf_token %}
+                                    <input style="width: 13em;" class="input" type="search" placeholder="Procurar por um produto" maxlength="20" name="busca"/>
                                     <input type="submit"/>
                                 </form>
                             </li>
                         </ul>
 
-                        {% if request.user.is_authenticated %}
-                        <ul class="navbar-nav ml-auto">
-                            <li>
-                                <a class="nav-link" href="{% url 'logout' %}" role="button">Sair</a>
-                            </li>
-                        </ul>
-
-                        {% else %}
-                        <ul class="navbar-nav ml-auto">
+                        {% if not request.user.is_authenticated %}
+                        <ul class="navbar-nav">
                             <li>
                                 <a class="nav-link" href="{% url 'registrar' %}" role="button">Registrar</a>
                             </li>
@@ -59,13 +67,12 @@
         </header>
 
         <main class="mt-5 pt-4">
-            {% if messages %}
-            <section class="m-0 alert alert-primary alert-dismissible messages" role="alert">
-                {% for message in messages %}
-                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </section>
-            {% endif %}
+            {% for message in messages %}
+            <div class="m-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                <li>{{ message|cut:'['|cut:']'|cut:"'" }} </li>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
 
             {% block main %}
             {% endblock %}

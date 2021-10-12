@@ -29,3 +29,8 @@ class CategoriasProduto(models.Model):
 class CarrinhoCompra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
+
+
+class ListaDesejo(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
