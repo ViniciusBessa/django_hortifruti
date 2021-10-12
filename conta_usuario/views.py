@@ -1,6 +1,4 @@
-from django import contrib
 from django.core.exceptions import ValidationError
-from django.forms.models import ALL_FIELDS
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
@@ -64,7 +62,6 @@ def login_view(request):
     return render(request, 'login.html', context)
 
 
-@login_required(login_url=login_view)
 def alterar_senha_view(request):
     form = AlterarSenhaForm()
     if request.method == 'POST':
@@ -72,10 +69,16 @@ def alterar_senha_view(request):
 
         if form.is_valid():
             try:
-                form.verificar_senhas()
+                user = form.verificar_senhas(request)
+                login(request, user)
+                messages.success(request, 'Senha alterada com sucesso')
+                return redirect(reverse('home'))
 
             except ValidationError as erro:
                 messages.error(request, erro)
+        
+        else:
+            form = AlterarSenhaForm()
 
     context = {
         'form': form

@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
+from django.contrib.auth import update_session_auth_hash
 
 
 class RegistrarForm(forms.Form):
@@ -37,21 +37,29 @@ class LoginForm(forms.Form):
 
         if user is not None:
             return user
-        
+
         else:
             raise ValidationError('Usuário ou senha incorretos.')
 
 
 class AlterarSenhaForm(forms.Form):
-    antiga_senha = forms.CharField(max_length=30, label='Antiga senha')
-    nova_senha = forms.CharField(max_length=30, label='Nova senha')
-    confirmar_senha = forms.CharField(max_length=30, label='Confirmar nova senha')
+    senha_atual = forms.CharField(max_length=30, widget=forms.PasswordInput())
+    nova_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
+    confirmar_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
-    def verificar_senhas(self):
-        antiga_senha, senha, senha_confirmacao = self.cleaned_data
-        validate_password(senha)
+    def verificar_senhas(self, request):
+        senha_atual, nova_senha, senha_confirmacao = self.cleaned_data.values()
+        user = authenticate(request, username=request.user, password=senha_atual)
 
-        if senha == senha_confirmacao:
-            pass
-        else:
+        if user is None:
+            raise ValidationError('Senha atual incorreta.')
+
+        elif len(nova_senha) < 6:
+            raise ValidationError('A nova senha deve ter pelo menos 6 caracteres.')
+
+        elif nova_senha != senha_confirmacao:
             raise ValidationError('Senha diferente.')
+        
+        user.set_password(nova_senha)
+        user.save()
+        return user
