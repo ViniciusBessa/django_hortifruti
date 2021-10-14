@@ -1,29 +1,49 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block head %}
-{% endblock %}
-
 {% block main %}
 <section class="cor-secundaria">
     <div class="container-fluid">
-        <div class="row p-2">
+        <div class="row justify-content-center p-2">
             <div class="col-md-4">
                 <img class="img-fluid w-100" src="{% static produto.imagem.path %}"/>
             </div>
-            <div class="col">
+            <div class="col mx-5">
                 <h1>{{ produto.titulo }}</h1>
                 <h3 style="color: green;">R$ {{produto.preco }}</h3>
-                <p class="mt-4">{{ produto.descricao }}</p>
-            </div>
-            <div class="col">
-                <h1>{{ produto.titulo }}</h1>
-                <p>{{ produto.id_categoria.titulo }}</p>
+                <p class="my-4">{{ produto.descricao }}</p>
+
+                <a class="btn btn-outline-secondary my-3" href="/">Adicionar ao carrinho</a>
+                <br/>
+
+                <form action="{% url 'atualizar_lista' produto.id %}" method="POST"> {% csrf_token %}
+                    {% if produto in lista_desejos %}
+                    <button class="btn btn-outline-secondary" type="submit">Retirar da lista de desejos</button>
+
+                    {% else %}
+                    <button class="btn btn-outline-secondary" type="submit">Adicionar à lista de desejos</button>
+                    {% endif %}
+                </form>
             </div>
         </div>
     </div>
 </section>
 
-<section class="cor-secundaria">
+<section class="cor-secundaria p-4">
+    
+    <div class="container-fluid">
+        <h1>Produtos semelhantes</h1>
+        <div class="row">
+            {% for produtos in produtos_mesma_categoria %}
+            <div class="col d-flex justify-content-center">
+                <div>
+                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" width="250px" height="166px"/></a>
+                    <h5 style="color: green; margin-bottom: 0%;">R$ {{produtos.preco }}</h5>
+                    <p>{{ produtos.titulo }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </section>
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<section class="cor-secundaria p-3">
+    {% if lista_desejos %}
+
+    {% for produto in lista_desejos %}
+    <div class="container">
+        <div class="row justify-content-center py-4">
+            <div class="col-auto d-flex justify-content-center px-0">
+                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+            </div>
+            <div class="col-sm-2 d-flex justify-content-start">
+                <div>
+                    <p style="color: gray; margin-bottom: 0%;">{{ produto.id_categoria.titulo }}</p>
+                    <h5 style="color: green;">R$ {{produto.preco }}</h5>
+                    <p>{{ produto.titulo }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <h1 class="text-center">Não há nenhum produto em sua lista de desejos</h1>
+
+    {% endif %}
+</section>
+{% endblock %}
