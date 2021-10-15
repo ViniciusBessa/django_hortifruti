@@ -11,12 +11,14 @@ def pagina_produto_view(request, id_produto):
     produto = Produto.objects.get(id=id_produto)
     produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
     lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
+    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
     context = {
         'produto': produto,
         'produtos_mesma_categoria': produtos_mesma_categoria,
         'categoria': produto.id_categoria,
         'lista_desejos': lista_desejos,
+        'carrinho_compra': carrinho_compra,
     }
 
     return render(request, 'pagina_produto.html', context)
@@ -68,3 +70,31 @@ def buscar_lista_desejos_view(request):
     }
 
     return render(request, 'lista_desejos.html', context)
+
+
+@login_required(login_url=login_view)
+def atualizar_carrinho_view(request, id_produto):
+    if request.method == 'POST':
+        carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+        produto = Produto.objects.get(id=id_produto)
+
+        if produto in carrinho_compra:
+            CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
+
+        else:
+            CarrinhoCompra.objects.create(usuario=request.user, id_produto=produto)
+
+        return redirect(reverse('pagina_produto', args=(produto.id,)))
+
+    return redirect(reverse('home'))
+
+
+@login_required(login_url=login_view)
+def buscar_carrinho_view(request):
+    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+
+    context = {
+        'carrinho_compra': carrinho_compra,
+    }
+
+    return render(request, 'carrinho_compra.html', context)

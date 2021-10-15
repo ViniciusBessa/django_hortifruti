@@ -13,10 +13,16 @@
                 <h3 style="color: green;">R$ {{produto.preco }}</h3>
                 <p class="my-4">{{ produto.descricao }}</p>
 
-                <a class="btn btn-outline-secondary my-3" href="/">Adicionar ao carrinho</a>
-                <br/>
+                <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
+                    {% if produto in carrinho_compra %}
+                    <button class="btn btn-outline-secondary" type="submit">Retirar do carrinho</button>
 
-                <form action="{% url 'atualizar_lista' produto.id %}" method="POST"> {% csrf_token %}
+                    {% else %}
+                    <button class="btn btn-outline-secondary" type="submit">Adicionar ao carrinho</button>
+                    {% endif %}
+                </form>
+
+                <form class="my-3" action="{% url 'atualizar_lista' produto.id %}" method="POST"> {% csrf_token %}
                     {% if produto in lista_desejos %}
                     <button class="btn btn-outline-secondary" type="submit">Retirar da lista de desejos</button>
 

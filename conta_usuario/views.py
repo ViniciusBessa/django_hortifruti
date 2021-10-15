@@ -24,9 +24,6 @@ def registrar_view(request):
             except ValidationError as erro:
                 messages.error(request, erro)
 
-        else:
-            form = RegistrarForm()
-
     context = {
         'form': form
     }
@@ -50,9 +47,6 @@ def login_view(request):
             except ValidationError as erro:
                 messages.error(request, erro)
 
-        else:
-            form = LoginForm()
-
     context = {
         'form': form
     }
@@ -62,6 +56,7 @@ def login_view(request):
     return render(request, 'login.html', context)
 
 
+@login_required(login_url=login_view)
 def alterar_senha_view(request):
     form = AlterarSenhaForm()
     if request.method == 'POST':
@@ -76,9 +71,6 @@ def alterar_senha_view(request):
 
             except ValidationError as erro:
                 messages.error(request, erro)
-        
-        else:
-            form = AlterarSenhaForm()
 
     context = {
         'form': form

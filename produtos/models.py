@@ -32,6 +32,16 @@ class CarrinhoCompra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
 
+    def receber_carrinho(usuario):
+        if usuario.is_authenticated:
+            carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
+            carrinho_compra = [lista.id_produto for lista in carrinho_compra]
+        
+        else:
+            carrinho_compra = []
+
+        return carrinho_compra
+
 
 class ListaDesejo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
