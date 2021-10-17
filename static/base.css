@@ -11,5 +11,20 @@
 }
 
 .gambiarra {
-    width: 240px;
+    width: 220px;
+}
+
+.numero-carrinho {
+    position: relative;
+    right: 20px;
+    top: 10px;
+
+    padding-left: 5px;
+    padding-right: 5px;
+    
+    border-radius: 100%;
+
+    background-color: greenyellow;
+    color: gray;
+    
 }

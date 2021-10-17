@@ -18,10 +18,10 @@
         <header>
             <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="collapse navbar-collapse" id="navbar-menu">
                         <ul class="navbar-nav">
                             <li>
                                 <a class="nav-link" href="{% url 'home' %}" role="button">Home</a>
@@ -29,9 +29,7 @@
                             {% if request.user.is_authenticated %}
                             <li>
                                 <div class="dropdown">
-                                    <a class="nav-link dropdown-toggle" type="button" id="dropdown-conta" data-bs-toggle="dropdown" aria-expanded="false">
-                                      Minha conta
-                                    </a>
+                                    <a class="nav-link dropdown-toggle" type="button" id="dropdown-conta" data-bs-toggle="dropdown" aria-expanded="false">Minha conta</a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-conta">
                                       <li><a class="dropdown-item" href="#">Pedidos</a></li>
                                       <li><a class="dropdown-item" href="{% url 'lista_desejos' %}">Lista de desejos</a></li>
@@ -39,6 +37,12 @@
                                       <li><a class="dropdown-item" href="{% url 'logout' %}" role="button">Sair</a></li>
                                     </ul>
                                 </div>
+                            </li>
+                            <li>
+                                <a class="nav-link d-inline-block" href="#"><img src="{% static 'shopping_cart2.png' %}" alt="Imagem de um carrinho de compras" width="50px" height="28px"></a>
+                                {% if numero_produtos_carrinho %}
+                                <span class="numero-carrinho">{{ numero_produtos_carrinho }}</span>
+                                {% endif %}
                             </li>
                             {% endif %}
                         </ul>
@@ -51,7 +55,11 @@
                             </li>
                         </ul>
 
-                        {% if not request.user.is_authenticated %}
+                        {% if request.user.is_authenticated %}
+                        <div class="gambiarra"></div>
+                        
+
+                        {% else %}
                         <ul class="navbar-nav">
                             <li>
                                 <a class="nav-link" href="{% url 'registrar' %}" role="button">Registrar</a>
@@ -60,9 +68,6 @@
                                 <a class="nav-link" href="{% url 'login' %}" role="button">Login</a>
                             </li>
                         </ul>
-
-                        {% else %}
-                        <div class="gambiarra"></div>
                         {% endif %}
                     </div>
                 </div>

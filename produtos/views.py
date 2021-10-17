@@ -19,6 +19,7 @@ def pagina_produto_view(request, id_produto):
         'categoria': produto.id_categoria,
         'lista_desejos': lista_desejos,
         'carrinho_compra': carrinho_compra,
+        'numero_produtos_carrinho': len(carrinho_compra),
     }
 
     return render(request, 'pagina_produto.html', context)
@@ -35,10 +36,12 @@ def filtro_busca_view(request):
 
 def busca_produto_view(request, busca):
     produtos_encontrados = Produto.objects.filter(titulo__icontains=busca)
+    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
     context = {
         'busca': busca,
-        'produtos': produtos_encontrados
+        'produtos': produtos_encontrados,
+        'numero_produtos_carrinho': len(carrinho_compra),
     }
 
     return render(request, 'busca_produto.html', context)
@@ -64,9 +67,11 @@ def atualizar_lista_desejos_view(request, id_produto):
 @login_required(login_url=login_view)
 def buscar_lista_desejos_view(request):
     lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
+    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
     context = {
         'lista_desejos': lista_desejos,
+        'numero_produtos_carrinho': len(carrinho_compra),
     }
 
     return render(request, 'lista_desejos.html', context)
@@ -95,6 +100,7 @@ def buscar_carrinho_view(request):
 
     context = {
         'carrinho_compra': carrinho_compra,
+        'numero_produtos_carrinho': len(carrinho_compra),
     }
 
     return render(request, 'carrinho_compra.html', context)

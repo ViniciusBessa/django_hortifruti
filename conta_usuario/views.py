@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .forms import LoginForm, RegistrarForm, AlterarSenhaForm
+from produtos.models import CarrinhoCompra
 
 
 def registrar_view(request):
@@ -71,9 +72,12 @@ def alterar_senha_view(request):
 
             except ValidationError as erro:
                 messages.error(request, erro)
+    
+    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
     context = {
-        'form': form
+        'form': form,
+        'numero_produtos_carrinho': len(carrinho_compra),
     }
 
     return render(request, 'alterar_senha.html', context)
