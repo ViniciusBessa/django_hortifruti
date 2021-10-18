@@ -17,7 +17,7 @@
     </head>
     <body class="cor-primaria px-3">
         <header>
-            <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark">
+            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -76,9 +76,9 @@
             </nav>
         </header>
 
-        <main class="mt-5 pt-4">
+        <main id="main" class="cor-secundaria tamanho-pagina mt-5 pt-4">
             {% for message in messages %}
-            <div class="m-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
+            <div class="mx-4 my-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
                 <li>{{ message|cut:'['|cut:']'|cut:"'" }} </li>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -89,7 +89,8 @@
         </main>
 
         <footer>
-            <p>Eae</p>
+
         </footer>
+        <script src="{% static 'base.js' %}"></script>
     </body>
 </html>

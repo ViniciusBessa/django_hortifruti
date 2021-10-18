@@ -27,7 +27,7 @@
                         <div class="col d-flex justify-content-center">
                             <div>
                                 <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
-                                <h5 style="color: green; margin-bottom: 0%;">R$ {{produto.preco }}</h5>
+                                <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
                                 <p>{{ produto.titulo }}</p>
                             </div>
                         </div>
@@ -37,12 +37,12 @@
             </div>
             {% endfor %}
         </div>
-        <button style="width: 10%; height: 100%;" class="carousel-control-prev" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="prev">
-          <span style="background-color: gray; border-radius: 50%;" class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <button class="carousel-control-prev carousel-controller" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon carousel-controller-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button style="width: 10%; height: 100%;" class="carousel-control-next" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="next">
-          <span style="background-color: gray; border-radius: 50%;" class="carousel-control-next-icon" aria-hidden="true"></span>
+        <button class="carousel-control-next carousel-controller" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="next">
+          <span class="carousel-control-next-icon carousel-controller-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
     </div>

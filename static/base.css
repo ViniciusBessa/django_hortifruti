@@ -14,9 +14,12 @@
     color: gray;
 }
 
-.tamanho-pagina {
-    min-height: 575px;
+.cor-destaque {
+    color: red;
+}
 
+.tamanho-pagina {
+    min-height: 600px;
 }
 
 .input {

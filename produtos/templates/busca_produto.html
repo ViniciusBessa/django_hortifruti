@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block main %}
-<section class="cor-secundaria p-3">
+<section class="p-3">
     {% if produtos %}
-    <h2 class="text-center">Resultados para <span style="color: red;">{{ busca }}</span></h2>
+    <h2 class="text-center">Resultados para <span class="cor-destaque">{{ busca }}</span></h2>
     {% for produto in produtos%}
     <div class="container">
         <div class="row justify-content-center py-4">

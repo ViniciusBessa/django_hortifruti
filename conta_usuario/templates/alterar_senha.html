@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block main %}
-<section class="p-5 rounded d-flex justify-content-center">
+<section id="formulario" class="p-5 rounded d-flex justify-content-center">
     <form class="cor-secundaria borda p-3" action="." method="POST"> {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-outline-secondary" type="submit">Alterar senha</button>

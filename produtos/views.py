@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -55,9 +56,11 @@ def atualizar_lista_desejos_view(request, id_produto):
 
         if produto in lista_desejos:
             ListaDesejo.objects.filter(usuario=request.user, id_produto=produto).delete()
+            messages.success(request, 'Produto retirado da lista de desejos')
 
         else:
             ListaDesejo.objects.create(usuario=request.user, id_produto=produto)
+            messages.success(request, 'Produto adicionado à lista de desejos')
 
         return redirect(reverse('pagina_produto', args=(produto.id,)))
 
@@ -85,9 +88,11 @@ def atualizar_carrinho_view(request, id_produto):
 
         if produto in carrinho_compra:
             CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
+            messages.success(request, 'Produto retirado do carrinho de compras')
 
         else:
             CarrinhoCompra.objects.create(usuario=request.user, id_produto=produto)
+            messages.success(request, 'Produto adicionado ao carrinho de compras')
 
         return redirect(reverse('pagina_produto', args=(produto.id,)))
 
