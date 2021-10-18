@@ -6,6 +6,19 @@
     background-color: #f8f9fa;
 }
 
+.cor-dinheiro {
+    color: green;
+}
+
+.cor-categoria {
+    color: gray;
+}
+
+.tamanho-pagina {
+    min-height: 575px;
+
+}
+
 .input {
     width: 14em;
 }
@@ -16,15 +29,12 @@
 
 .numero-carrinho {
     position: relative;
-    right: 20px;
+    right: 10px;
     top: 10px;
-
     padding-left: 5px;
     padding-right: 5px;
-    
     border-radius: 100%;
-
     background-color: greenyellow;
     color: gray;
-    
+
 }

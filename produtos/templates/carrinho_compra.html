@@ -3,10 +3,10 @@
 
 {% block main %}
 <section class="cor-secundaria p-3">
-    {% if lista_desejos %}
-    <h1 class="text-center">Lista de desejos</h1>
+    {% if carrinho_compra %}
+    <h1 class="text-center">Carrinho de compras</h1>
 
-    {% for produto in lista_desejos %}
+    {% for produto in carrinho_compra %}
     <div class="container">
         <div class="row justify-content-center py-4">
             <div class="col-auto d-flex justify-content-center px-0">
@@ -14,7 +14,6 @@
             </div>
             <div class="col-sm-2 d-flex justify-content-start">
                 <div>
-                    <p class="cor-categoria mb-0">{{ produto.id_categoria.titulo }}</p>
                     <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
                     <p>{{ produto.titulo }}</p>
                 </div>
@@ -24,7 +23,7 @@
     {% endfor %}
 
     {% else %}
-    <h1 class="text-center">Não há nenhum produto em sua lista de desejos</h1>
+    <h1 class="text-center">Não há nenhum produto no carrinho</h1>
 
     {% endif %}
 </section>

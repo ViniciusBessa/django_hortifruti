@@ -10,7 +10,7 @@
             </div>
             <div class="col mx-5">
                 <h1>{{ produto.titulo }}</h1>
-                <h3 style="color: green;">R$ {{produto.preco }}</h3>
+                <h3 class="cor-dinheiro">R$ {{produto.preco }}</h3>
                 <p class="my-4">{{ produto.descricao }}</p>
 
                 <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
@@ -43,7 +43,7 @@
             <div class="col d-flex justify-content-center">
                 <div>
                     <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" width="250px" height="166px"/></a>
-                    <h5 style="color: green; margin-bottom: 0%;">R$ {{produtos.preco }}</h5>
+                    <h5 class="cor-dinheiro mb-0">R$ {{produtos.preco }}</h5>
                     <p>{{ produtos.titulo }}</p>
                 </div>
             </div>
