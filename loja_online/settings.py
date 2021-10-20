@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+
+from django.forms.utils import flatatt
 from .secret_settings import *
 from django.contrib.messages import constants as message_constants
 

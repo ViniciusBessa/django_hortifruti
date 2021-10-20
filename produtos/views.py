@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.shortcuts import redirect
 
@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def pagina_produto_view(request, id_produto):
-    produto = Produto.objects.get(id=id_produto)
+    produto = get_object_or_404(Produto, id=id_produto)
     produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
     lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
@@ -49,25 +49,6 @@ def busca_produto_view(request, busca):
 
 
 @login_required(login_url=login_view)
-def atualizar_lista_desejos_view(request, id_produto):
-    if request.method == 'POST':
-        lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
-        produto = Produto.objects.get(id=id_produto)
-
-        if produto in lista_desejos:
-            ListaDesejo.objects.filter(usuario=request.user, id_produto=produto).delete()
-            messages.success(request, 'Produto retirado da lista de desejos')
-
-        else:
-            ListaDesejo.objects.create(usuario=request.user, id_produto=produto)
-            messages.success(request, 'Produto adicionado à lista de desejos')
-
-        return redirect(reverse('pagina_produto', args=(produto.id,)))
-
-    return redirect(reverse('home'))
-
-
-@login_required(login_url=login_view)
 def pagina_lista_desejos_view(request):
     lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
@@ -81,18 +62,18 @@ def pagina_lista_desejos_view(request):
 
 
 @login_required(login_url=login_view)
-def atualizar_carrinho_view(request, id_produto):
+def atualizar_lista_desejos_view(request, id_produto):
     if request.method == 'POST':
-        carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
-        produto = Produto.objects.get(id=id_produto)
+        lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
+        produto = get_object_or_404(Produto, id=id_produto)
 
-        if produto in carrinho_compra:
-            CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
-            messages.success(request, 'Produto retirado do carrinho de compras')
+        if produto in lista_desejos:
+            ListaDesejo.objects.filter(usuario=request.user, id_produto=produto).delete()
+            messages.success(request, 'Produto retirado da lista de desejos')
 
         else:
-            CarrinhoCompra.objects.create(usuario=request.user, id_produto=produto)
-            messages.success(request, 'Produto adicionado ao carrinho de compras')
+            ListaDesejo.objects.create(usuario=request.user, id_produto=produto)
+            messages.success(request, 'Produto adicionado à lista de desejos')
 
         return redirect(reverse('pagina_produto', args=(produto.id,)))
 
@@ -117,8 +98,27 @@ def pagina_carrinho_view(request):
 
 
 @login_required(login_url=login_view)
+def atualizar_carrinho_view(request, id_produto):
+    if request.method == 'POST':
+        carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+        produto = get_object_or_404(Produto, id=id_produto)
+
+        if produto in carrinho_compra:
+            CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
+            messages.success(request, 'Produto retirado do carrinho de compras')
+
+        else:
+            CarrinhoCompra.objects.create(usuario=request.user, id_produto=produto)
+            messages.success(request, 'Produto adicionado ao carrinho de compras')
+
+        return redirect(reverse('pagina_produto', args=(produto.id,)))
+
+    return redirect(reverse('home'))
+
+
+@login_required(login_url=login_view)
 def alterar_carrinho_view(request, id_produto, quantidade):
-    carrinho = CarrinhoCompra.objects.get(id_produto=id_produto)
+    carrinho = get_object_or_404(CarrinhoCompra, id_produto=id_produto)
     carrinho.quantidade = quantidade
     carrinho.save()
     return redirect(reverse('carrinho'))
