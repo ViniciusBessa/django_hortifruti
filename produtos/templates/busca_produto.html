@@ -11,11 +11,11 @@
             <div class="col-auto d-flex justify-content-center px-0">
                 <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
             </div>
-            <div class="col-sm-2 d-flex justify-content-start">
+            <div class="col-sm-2">
                 <div>
                     <p class="cor-categoria mb-0">{{ produto.id_categoria.titulo }}</p>
+                    <p class="mb-1">{{ produto.titulo }}</p>
                     <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
-                    <p>{{ produto.titulo }}</p>
                 </div>
             </div>
         </div>

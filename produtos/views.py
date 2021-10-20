@@ -68,7 +68,7 @@ def atualizar_lista_desejos_view(request, id_produto):
 
 
 @login_required(login_url=login_view)
-def buscar_lista_desejos_view(request):
+def pagina_lista_desejos_view(request):
     lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
@@ -100,12 +100,25 @@ def atualizar_carrinho_view(request, id_produto):
 
 
 @login_required(login_url=login_view)
-def buscar_carrinho_view(request):
+def pagina_carrinho_view(request):
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+    subtotal = CarrinhoCompra.receber_soma_carrinho(request.user)
+    produtos_quantidades = CarrinhoCompra.receber_quantidade_produtos(request.user)
 
     context = {
         'carrinho_compra': carrinho_compra,
         'numero_produtos_carrinho': len(carrinho_compra),
+        'subtotal': subtotal,
+        'quantidades': produtos_quantidades,
+        'range': [1, 2, 3, 4, 5]
     }
 
     return render(request, 'carrinho_compra.html', context)
+
+
+@login_required(login_url=login_view)
+def alterar_carrinho_view(request, id_produto, quantidade):
+    carrinho = CarrinhoCompra.objects.get(id_produto=id_produto)
+    carrinho.quantidade = quantidade
+    carrinho.save()
+    return redirect(reverse('carrinho'))

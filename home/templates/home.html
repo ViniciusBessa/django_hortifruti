@@ -9,12 +9,12 @@
 {% block main %}
 <section class="cor-secundaria p-3">
     {% for categoria in categorias %}
-    {% if produtos_categorias|getvalues:categoria %}
+    {% if produtos_categorias|get_values:categoria %}
     <h2>{{ categoria.titulo }}</h2>
     <div id="carousel-{{ categoria.titulo|lower }}" class="carousel slide my-3" data-bs-ride="carousel">
         <div class="carousel-inner">
-            {% for produtos in produtos_categorias|getvalues:categoria %}
-            {% if produtos == produtos_categorias|firstvalues:categoria %}
+            {% for produtos in produtos_categorias|get_values:categoria %}
+            {% if produtos == produtos_categorias|first_value:categoria %}
             <div class="carousel-item active">
 
             {% else %}
@@ -27,8 +27,8 @@
                         <div class="col d-flex justify-content-center">
                             <div>
                                 <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
+                                <p class="mb-1">{{ produto.titulo }}</p>
                                 <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
-                                <p>{{ produto.titulo }}</p>
                             </div>
                         </div>
                         {% endfor %}

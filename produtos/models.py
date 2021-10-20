@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Produto(models.Model):
-    titulo = models.CharField(max_length=40)
+    titulo = models.CharField(max_length=30)
     preco = models.DecimalField(max_digits=12, decimal_places=2)
     descricao = models.CharField(max_length=500)
     imagem = models.ImageField()
@@ -31,17 +31,34 @@ class CategoriasProduto(models.Model):
 class CarrinhoCompra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
+    quantidade = models.IntegerField(default=1)
 
 
     def receber_carrinho(usuario):
         if usuario.is_authenticated:
             carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
             carrinho_compra = [lista.id_produto for lista in carrinho_compra]
-        
+
         else:
             carrinho_compra = []
 
         return carrinho_compra
+    
+
+    def receber_soma_carrinho(usuario):
+        carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
+        subtotal = sum(lista.id_produto.preco * lista.quantidade for lista in carrinho_compra)
+        return subtotal
+    
+
+    def receber_quantidade_produtos(usuario):
+        carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
+        quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
+        return quantidades
+    
+    
+    def alterar_quantidade_produto(usuario):
+        pass
 
 
 class ListaDesejo(models.Model):

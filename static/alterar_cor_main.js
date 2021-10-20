@@ -1,3 +1,4 @@
+// Função que modifica a cor de fundo do main se a página for um formulário
 function VerificarFormulario() {
   formulario = document.getElementById('formulario');
   console.log(formulario)
