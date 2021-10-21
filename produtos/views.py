@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from conta_usuario.views import login_view
+from conta_usuario.views import LoginView
 from .models import Produto, CategoriasProduto, CarrinhoCompra, ListaDesejo
 from django.contrib.auth.decorators import login_required
 
@@ -47,7 +47,7 @@ def busca_produto_view(request, busca):
     return render(request, 'busca_produto.html', context)
 
 
-@login_required(login_url=login_view)
+@login_required(login_url=LoginView)
 def pagina_lista_desejos_view(request):
     lista_desejos = ListaDesejo.receber_lista(request.user)
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
@@ -60,7 +60,7 @@ def pagina_lista_desejos_view(request):
     return render(request, 'lista_desejos.html', context)
 
 
-@login_required(login_url=login_view)
+@login_required(login_url=LoginView)
 def atualizar_lista_desejos_view(request, id_produto):
     if request.method == 'POST':
         lista_desejos = ListaDesejo.receber_lista(request.user)
@@ -79,7 +79,7 @@ def atualizar_lista_desejos_view(request, id_produto):
     return redirect(reverse('home'))
 
 
-@login_required(login_url=login_view)
+@login_required(login_url=LoginView)
 def pagina_carrinho_view(request):
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
     subtotal = CarrinhoCompra.receber_soma_carrinho(request.user)
@@ -96,7 +96,7 @@ def pagina_carrinho_view(request):
     return render(request, 'carrinho_compra.html', context)
 
 
-@login_required(login_url=login_view)
+@login_required(login_url=LoginView)
 def atualizar_carrinho_view(request, id_produto):
     if request.method == 'POST':
         carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
@@ -115,7 +115,7 @@ def atualizar_carrinho_view(request, id_produto):
     return redirect(reverse('home'))
 
 
-@login_required(login_url=login_view)
+@login_required(login_url=LoginView)
 def alterar_carrinho_view(request, id_produto, quantidade):
     produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, id_produto=id_produto)
     produto_carrinho.quantidade = quantidade

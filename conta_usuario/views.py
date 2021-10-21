@@ -4,79 +4,67 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views import View
 
 from .forms import LoginForm, RegistrarForm, AlterarSenhaForm
-from produtos.models import CarrinhoCompra
 
 
-def registrar_view(request):
-    form = RegistrarForm()
-    if request.method == 'POST':
-        form = RegistrarForm(request.POST)
+class RegistrarView(View):
+    form_class = RegistrarForm
+    template_name = 'registrar.html'
+    form_validacao = RegistrarForm.registrar_usuario
 
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+
+        context = {
+            'form': form
+        }
+
+        if request.user.is_authenticated:
+            return redirect(reverse('home'))
+        return render(request, self.template_name, context)
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
         if form.is_valid():
             try:
-                form.registrar_usuario(request)
+                self.form_validacao(request, form)
                 return redirect(reverse('home'))
 
             except ValidationError as erro:
                 messages.error(request, erro)
 
-    context = {
-        'form': form
-    }
-
-    if request.user.is_authenticated:
-        return redirect(reverse('home'))
-    return render(request, 'registrar.html', context)
-
-
-def login_view(request):
-    form = LoginForm()
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-
-        if form.is_valid():     
-            try:
-                form.logar_usuario(request)
-                return redirect(reverse('home'))
-
-            except ValidationError as erro:
-                messages.error(request, erro)
-
-    context = {
-        'form': form
-    }
-
-    if request.user.is_authenticated:
-        return redirect(reverse('home'))
-    return render(request, 'login.html', context)
+        context = {
+            'form': form
+        }
+        if request.user.is_authenticated:
+            return redirect(reverse('home'))
+        return render(request, self.template_name, context)
 
 
-@login_required(login_url=login_view)
-def alterar_senha_view(request):
-    form = AlterarSenhaForm()
-    if request.method == 'POST':
-        form = AlterarSenhaForm(request.POST)
+class LoginView(RegistrarView):
+    form_class = LoginForm
+    template_name = 'login.html'
+    form_validacao = LoginForm.logar_usuario
 
-        if form.is_valid():
-            try:
-                form.verificar_senhas(request)
-                
-                messages.success(request, 'Senha alterada com sucesso')
-                return redirect(reverse('home'))
 
-            except ValidationError as erro:
-                messages.error(request, erro)
-    
-    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+class AlterarSenhaView(RegistrarView):
+    form_class = AlterarSenhaForm
+    template_name = 'alterar_senha.html'
+    form_validacao = AlterarSenhaForm.verificar_senhas
 
-    context = {
-        'form': form,
-        'numero_produtos_carrinho': len(carrinho_compra),
-    }
 
-    return render(request, 'alterar_senha.html', context)
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+
+        context = {
+            'form': form
+        }
+
+        return render(request, self.template_name, context)
 
 
 def logout_view(request):
