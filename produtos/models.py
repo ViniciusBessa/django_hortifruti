@@ -42,7 +42,7 @@ class CarrinhoCompra(models.Model):
         else:
             carrinho_compra = []
 
-        return carrinho_compra
+        return sorted(carrinho_compra, key=lambda produto: produto.titulo)
     
 
     def receber_soma_carrinho(usuario):
@@ -55,10 +55,6 @@ class CarrinhoCompra(models.Model):
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
         return quantidades
-    
-    
-    def alterar_quantidade_produto(usuario):
-        pass
 
 
 class ListaDesejo(models.Model):
@@ -66,7 +62,7 @@ class ListaDesejo(models.Model):
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
 
 
-    def receber_lista_desejos(usuario):
+    def receber_lista(usuario):
         if usuario.is_authenticated:
             lista_desejos = ListaDesejo.objects.filter(usuario=usuario)
             lista_desejos = [lista.id_produto for lista in lista_desejos]

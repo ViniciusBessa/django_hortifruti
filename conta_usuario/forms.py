@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import authenticate, login
 
 
 class RegistrarForm(forms.Form):
@@ -10,33 +9,31 @@ class RegistrarForm(forms.Form):
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     email = forms.EmailField(max_length=30)
 
-    def validar_senha(self):
-        senha = self.cleaned_data.get('senha')
+
+    def registrar_usuario(self, request):
+        usuario, senha, email = self.cleaned_data.values()
 
         if len(senha) < 6:
             raise ValidationError('A senha deve ter pelo menos 6 caracteres.')
-
-    def registrar_usuario(self):
-        usuario, senha, email = self.cleaned_data.values()
 
         if User.objects.filter(username=usuario).exists():
             raise ValidationError('Esse nome de usuário já está em uso.')
 
         else:
             user = User.objects.create_user(username=usuario, password=senha, email=email)
-            return user
+            login(request, user)
 
 
 class LoginForm(forms.Form):
     usuario = forms.CharField(max_length=20, label='Usuário')
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
-    def autenticar_usuario(self, request):
+    def logar_usuario(self, request):
         usuario, senha = self.cleaned_data.values()
         user = authenticate(request, username=usuario, password=senha)
 
         if user is not None:
-            return user
+            login(request, user)
 
         else:
             raise ValidationError('Usuário ou senha incorretos.')
@@ -62,4 +59,5 @@ class AlterarSenhaForm(forms.Form):
         
         user.set_password(nova_senha)
         user.save()
-        return user
+        
+        login(request, user)

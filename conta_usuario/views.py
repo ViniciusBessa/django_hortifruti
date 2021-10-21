@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -16,10 +16,7 @@ def registrar_view(request):
 
         if form.is_valid():
             try:
-                form.validar_senha()
-                user = form.registrar_usuario()
-
-                login(request, user)
+                form.registrar_usuario(request)
                 return redirect(reverse('home'))
 
             except ValidationError as erro:
@@ -41,8 +38,7 @@ def login_view(request):
 
         if form.is_valid():     
             try:
-                user = form.autenticar_usuario(request)
-                login(request, user)
+                form.logar_usuario(request)
                 return redirect(reverse('home'))
 
             except ValidationError as erro:
@@ -65,8 +61,8 @@ def alterar_senha_view(request):
 
         if form.is_valid():
             try:
-                user = form.verificar_senhas(request)
-                login(request, user)
+                form.verificar_senhas(request)
+                
                 messages.success(request, 'Senha alterada com sucesso')
                 return redirect(reverse('home'))
 
@@ -83,7 +79,7 @@ def alterar_senha_view(request):
     return render(request, 'alterar_senha.html', context)
 
 
-@login_required(login_url=login_view)
 def logout_view(request):
-    logout(request)
+    if request.user.is_authenticated:
+        logout(request)
     return redirect(reverse('home'))

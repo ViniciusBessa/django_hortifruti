@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 def pagina_produto_view(request, id_produto):
     produto = get_object_or_404(Produto, id=id_produto)
     produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
-    lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
+    lista_desejos = ListaDesejo.receber_lista(request.user)
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
     context = {
@@ -49,7 +49,7 @@ def busca_produto_view(request, busca):
 
 @login_required(login_url=login_view)
 def pagina_lista_desejos_view(request):
-    lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
+    lista_desejos = ListaDesejo.receber_lista(request.user)
     carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
 
     context = {
@@ -63,8 +63,8 @@ def pagina_lista_desejos_view(request):
 @login_required(login_url=login_view)
 def atualizar_lista_desejos_view(request, id_produto):
     if request.method == 'POST':
-        lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
-        produto = get_object_or_404(Produto, usuario=request.user, id=id_produto)
+        lista_desejos = ListaDesejo.receber_lista(request.user)
+        produto = get_object_or_404(Produto, id=id_produto)
 
         if produto in lista_desejos:
             ListaDesejo.objects.filter(usuario=request.user, id_produto=produto).delete()
@@ -100,7 +100,7 @@ def pagina_carrinho_view(request):
 def atualizar_carrinho_view(request, id_produto):
     if request.method == 'POST':
         carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
-        produto = get_object_or_404(Produto, usuario=request.user, id=id_produto)
+        produto = get_object_or_404(Produto, id=id_produto)
 
         if produto in carrinho_compra:
             CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
