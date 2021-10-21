@@ -1,7 +1,6 @@
 from django.contrib import messages
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.shortcuts import redirect
 
 from conta_usuario.views import login_view
 from .models import Produto, CategoriasProduto, CarrinhoCompra, ListaDesejo
@@ -65,7 +64,7 @@ def pagina_lista_desejos_view(request):
 def atualizar_lista_desejos_view(request, id_produto):
     if request.method == 'POST':
         lista_desejos = ListaDesejo.receber_lista_desejos(request.user)
-        produto = get_object_or_404(Produto, id=id_produto)
+        produto = get_object_or_404(Produto, usuario=request.user, id=id_produto)
 
         if produto in lista_desejos:
             ListaDesejo.objects.filter(usuario=request.user, id_produto=produto).delete()
@@ -101,7 +100,7 @@ def pagina_carrinho_view(request):
 def atualizar_carrinho_view(request, id_produto):
     if request.method == 'POST':
         carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
-        produto = get_object_or_404(Produto, id=id_produto)
+        produto = get_object_or_404(Produto, usuario=request.user, id=id_produto)
 
         if produto in carrinho_compra:
             CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
@@ -118,7 +117,7 @@ def atualizar_carrinho_view(request, id_produto):
 
 @login_required(login_url=login_view)
 def alterar_carrinho_view(request, id_produto, quantidade):
-    carrinho = get_object_or_404(CarrinhoCompra, id_produto=id_produto)
-    carrinho.quantidade = quantidade
-    carrinho.save()
+    produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, id_produto=id_produto)
+    produto_carrinho.quantidade = quantidade
+    produto_carrinho.save()
     return redirect(reverse('carrinho'))
