@@ -6,25 +6,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
 
-from .forms import LoginForm, RegistrarForm, AlterarSenhaForm
+from .forms import RegistrarForm, LoginForm, AlterarSenhaForm
 
 
 class RegistrarView(View):
     form_class = RegistrarForm
     template_name = 'registrar.html'
     form_validacao = RegistrarForm.registrar_usuario
+    context = {}
 
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-
-        context = {
-            'form': form
-        }
+        self.context.update({'form':form})
 
         if request.user.is_authenticated:
             return redirect(reverse('home'))
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, self.context)
 
 
     def post(self, request, *args, **kwargs):
@@ -37,12 +35,11 @@ class RegistrarView(View):
             except ValidationError as erro:
                 messages.error(request, erro)
 
-        context = {
-            'form': form
-        }
+        self.context.update({'form':form})
+
         if request.user.is_authenticated:
             return redirect(reverse('home'))
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, self.context)
 
 
 class LoginView(RegistrarView):
@@ -55,17 +52,14 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
     login_url = '/conta/login/'
     form_class = AlterarSenhaForm
     template_name = 'alterar_senha.html'
-    form_validacao = AlterarSenhaForm.verificar_senhas
+    form_validacao = AlterarSenhaForm.alterar_senha
 
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
+        self.context.update({'form':form})
 
-        context = {
-            'form': form
-        }
-
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, self.context)
 
 
 def logout_view(request):

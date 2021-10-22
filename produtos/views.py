@@ -1,17 +1,18 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.views import View
 
-from conta_usuario.views import LoginView
-from .models import Produto, CategoriasProduto, CarrinhoCompra, ListaDesejo
+from .models import Produto, CarrinhoCompra, ListaDesejo
 from django.contrib.auth.decorators import login_required
 
 
 def pagina_produto_view(request, id_produto):
     produto = get_object_or_404(Produto, id=id_produto)
     produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
-    lista_desejos = ListaDesejo.receber_lista(request.user)
-    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+    lista_desejos = ListaDesejo.receber(request.user)
+    carrinho_compra = CarrinhoCompra.receber(request.user)
 
     context = {
         'produto': produto,
@@ -36,7 +37,7 @@ def filtro_busca_view(request):
 
 def busca_produto_view(request, busca):
     produtos_encontrados = Produto.objects.filter(titulo__icontains=busca)
-    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+    carrinho_compra = CarrinhoCompra.receber(request.user)
 
     context = {
         'busca': busca,
@@ -47,10 +48,10 @@ def busca_produto_view(request, busca):
     return render(request, 'busca_produto.html', context)
 
 
-@login_required(login_url=LoginView)
+@login_required(login_url='/conta/login/')
 def pagina_lista_desejos_view(request):
-    lista_desejos = ListaDesejo.receber_lista(request.user)
-    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+    lista_desejos = ListaDesejo.receber(request.user)
+    carrinho_compra = CarrinhoCompra.receber(request.user)
 
     context = {
         'lista_desejos': lista_desejos,
@@ -60,28 +61,9 @@ def pagina_lista_desejos_view(request):
     return render(request, 'lista_desejos.html', context)
 
 
-@login_required(login_url=LoginView)
-def atualizar_lista_desejos_view(request, id_produto):
-    if request.method == 'POST':
-        lista_desejos = ListaDesejo.receber_lista(request.user)
-        produto = get_object_or_404(Produto, id=id_produto)
-
-        if produto in lista_desejos:
-            ListaDesejo.objects.filter(usuario=request.user, id_produto=produto).delete()
-            messages.success(request, 'Produto retirado da lista de desejos')
-
-        else:
-            ListaDesejo.objects.create(usuario=request.user, id_produto=produto)
-            messages.success(request, 'Produto adicionado à lista de desejos')
-
-        return redirect(reverse('pagina_produto', args=(produto.id,)))
-
-    return redirect(reverse('home'))
-
-
-@login_required(login_url=LoginView)
+@login_required(login_url='/conta/login/')
 def pagina_carrinho_view(request):
-    carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+    carrinho_compra = CarrinhoCompra.receber(request.user)
     subtotal = CarrinhoCompra.receber_soma_carrinho(request.user)
     produtos_quantidades = CarrinhoCompra.receber_quantidade_produtos(request.user)
 
@@ -96,26 +78,39 @@ def pagina_carrinho_view(request):
     return render(request, 'carrinho_compra.html', context)
 
 
-@login_required(login_url=LoginView)
-def atualizar_carrinho_view(request, id_produto):
-    if request.method == 'POST':
-        carrinho_compra = CarrinhoCompra.receber_carrinho(request.user)
+class AtualizarListaView(LoginRequiredMixin, View):
+    login_url = '/conta/login/'
+    model_class = ListaDesejo
+    mensagem_retirada = 'Produto retirado da lista de desejos'
+    mensagem_adicionado = 'Produto adicionado à lista de desejos'
+
+
+    def get(self, request, *args, **kwargs):
+        return redirect(reverse('home'))
+
+
+    def post(self, request, id_produto, *args, **kwargs):
+        query_model = self.model_class.receber(request.user)
         produto = get_object_or_404(Produto, id=id_produto)
 
-        if produto in carrinho_compra:
-            CarrinhoCompra.objects.filter(usuario=request.user, id_produto=produto).delete()
-            messages.success(request, 'Produto retirado do carrinho de compras')
+        if produto in query_model:
+            self.model_class.objects.filter(usuario=request.user, id_produto=produto).delete()
+            messages.success(request, self.mensagem_retirada)
 
         else:
-            CarrinhoCompra.objects.create(usuario=request.user, id_produto=produto)
-            messages.success(request, 'Produto adicionado ao carrinho de compras')
+            self.model_class.objects.create(usuario=request.user, id_produto=produto)
+            messages.success(request, self.mensagem_adicionado)
 
-        return redirect(reverse('pagina_produto', args=(produto.id,)))
-
-    return redirect(reverse('home'))
+        return redirect(reverse('pagina_produto', args=(produto.id,)))    
 
 
-@login_required(login_url=LoginView)
+class AtualizarCarrinhoView(AtualizarListaView):
+    model_class = CarrinhoCompra
+    mensagem_retirada = 'Produto retirado do carrinho'
+    mensagem_adicionado = 'Produto adicionado ao carrinho'
+
+
+@login_required(login_url='/conta/login/')
 def alterar_carrinho_view(request, id_produto, quantidade):
     produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, id_produto=id_produto)
     produto_carrinho.quantidade = quantidade

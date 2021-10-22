@@ -44,7 +44,7 @@ class AlterarSenhaForm(forms.Form):
     nova_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     confirmar_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
-    def verificar_senhas(self, request, form):
+    def alterar_senha(self, request, form):
         senha_atual, nova_senha, senha_confirmacao = form.cleaned_data.values()
         user = authenticate(request, username=request.user, password=senha_atual)
 

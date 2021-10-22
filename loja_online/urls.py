@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-from home.views import home_view
+from home.views import HomeView
 
 urlpatterns = [
-    path('', home_view, name='home'),
+    path('', HomeView.as_view(), name='home'),
     path('conta/', include('conta_usuario.urls')),
     path('', include('produtos.urls')),
     path('admin/', admin.site.urls),
