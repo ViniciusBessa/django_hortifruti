@@ -28,6 +28,33 @@ class CategoriasProduto(models.Model):
     titulo = models.CharField(max_length=20)
 
 
+
+class ListaDesejo(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
+
+
+    def receber(usuario):
+        if usuario.is_authenticated:
+            lista_desejos = ListaDesejo.objects.filter(usuario=usuario)
+            lista_desejos = [lista.id_produto for lista in lista_desejos]
+
+        else:
+            lista_desejos = []
+
+        return lista_desejos
+    
+
+    def receber_pagina(request):
+        lista_desejos = ListaDesejo.receber(request.user)
+        carrinho_compra = CarrinhoCompra.receber(request.user)
+        return {
+            'lista_desejos': lista_desejos, 
+            'carrinho_compra': carrinho_compra,
+            'numero_produtos_carrinho': len(carrinho_compra),
+        }
+
+
 class CarrinhoCompra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
@@ -55,19 +82,16 @@ class CarrinhoCompra(models.Model):
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
         return quantidades
+    
 
-
-class ListaDesejo(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
-
-
-    def receber(usuario):
-        if usuario.is_authenticated:
-            lista_desejos = ListaDesejo.objects.filter(usuario=usuario)
-            lista_desejos = [lista.id_produto for lista in lista_desejos]
-
-        else:
-            lista_desejos = []
-
-        return lista_desejos
+    def receber_pagina(request):
+        carrinho_compra = CarrinhoCompra.receber(request.user)
+        subtotal = CarrinhoCompra.receber_soma_carrinho(request.user)
+        produtos_quantidades = CarrinhoCompra.receber_quantidade_produtos(request.user)
+        return {
+            'carrinho_compra': carrinho_compra,
+            'numero_produtos_carrinho': len(carrinho_compra),
+            'subtotal': subtotal,
+            'quantidades': produtos_quantidades,
+            'range': [1, 2, 3, 4, 5]
+        }
