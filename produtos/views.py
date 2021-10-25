@@ -107,7 +107,3 @@ class AlterarCarrinhoView(LoginRequiredMixin, View):
         produto_carrinho.quantidade = quantidade
         produto_carrinho.save()
         return redirect(reverse('carrinho'))
-
-
-    def post(self, request, *args, **kwargs):
-        return redirect(reverse('home'))

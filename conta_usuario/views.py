@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.views import View
 
 from .forms import RegistrarForm, LoginForm, AlterarSenhaForm
+from produtos.models import CarrinhoCompra
 
 
 class RegistrarView(View):
@@ -57,7 +58,11 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        self.context.update({'form':form})
+        carrinho = CarrinhoCompra.receber(request.user)
+        self.context.update({
+            'form':form,
+            'numero_produtos_carrinho': len(carrinho)
+            })
 
         return render(request, self.template_name, self.context)
 

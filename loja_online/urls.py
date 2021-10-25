@@ -21,7 +21,7 @@ from home.views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('conta/', include('conta_usuario.urls')),
+    path('conta/', include('conta_usuario.urls'), name='conta'),
     path('', include('produtos.urls')),
     path('admin/', admin.site.urls),
 ]
