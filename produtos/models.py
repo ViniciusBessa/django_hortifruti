@@ -28,7 +28,6 @@ class CategoriasProduto(models.Model):
     titulo = models.CharField(max_length=20)
 
 
-
 class ListaDesejo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
@@ -95,3 +94,14 @@ class CarrinhoCompra(models.Model):
             'quantidades': produtos_quantidades,
             'range': [1, 2, 3, 4, 5]
         }
+
+
+class Pedido(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    data_pedido = models.DateField(auto_now=True)
+
+
+class PedidoProduto(models.Model):
+    id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
+    id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
+    quantidade = models.IntegerField(default=1)
