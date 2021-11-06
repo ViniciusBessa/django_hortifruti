@@ -12,16 +12,16 @@ class RegistrarForm(forms.Form):
 
     def registrar_usuario(self, request, form):
         usuario, senha, email = form.cleaned_data.values()
+        usuario = usuario.title()
 
         if len(senha) < 6:
             raise ValidationError('A senha deve ter pelo menos 6 caracteres.')
 
-        if User.objects.filter(username=usuario).exists():
+        elif User.objects.filter(username=usuario).exists():
             raise ValidationError('Esse nome de usuário já está em uso.')
 
-        else:
-            user = User.objects.create_user(username=usuario, password=senha, email=email)
-            login(request, user)
+        user = User.objects.create_user(username=usuario, password=senha, email=email)
+        login(request, user)
 
 
 class LoginForm(forms.Form):
@@ -30,6 +30,8 @@ class LoginForm(forms.Form):
 
     def logar_usuario(self, request, form):
         usuario, senha = form.cleaned_data.values()
+        usuario = usuario.title()
+        print(usuario)
         user = authenticate(request, username=usuario, password=senha)
 
         if user is not None:

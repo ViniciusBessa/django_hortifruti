@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import View
 
-from .models import Produto, CarrinhoCompra, ListaDesejo
+from .models import Produto, CarrinhoCompra, ListaDesejo, Pedido, PedidoProduto
 
 
 def pagina_produto_view(request, id_produto):
@@ -54,7 +54,7 @@ class PaginaListaView(LoginRequiredMixin, View):
 
 
     def get(self, request, *args, **kwargs):
-        self.context.update(self.model_class.receber_pagina(request))
+        self.context.update(self.model_class.receber_pagina(request.user))
         return render(request, self.template_name, self.context)
 
 
@@ -65,6 +65,28 @@ class PaginaListaView(LoginRequiredMixin, View):
 class PaginaCarrinhoView(PaginaListaView):
     model_class = CarrinhoCompra
     template_name = 'carrinho_compra.html'
+
+
+class PaginaTodosPedidos(PaginaListaView):
+    model_class = Pedido
+    template_name = 'todos_pedidos.html'
+
+
+class CriarPedido(View):
+    model_class = Pedido
+
+
+    def get(self, request, *args, **kwargs):
+        pass
+    
+
+    def post(self, request, *args, **kwargs):
+        self.model_class.criar_pedido(request.user)
+        return redirect(reverse('home')) 
+
+
+class PaginaPedido(PaginaListaView):
+    model_class = PedidoProduto
 
 
 class AtualizarListaView(LoginRequiredMixin, View):
@@ -107,3 +129,6 @@ class AlterarCarrinhoView(LoginRequiredMixin, View):
         produto_carrinho.quantidade = quantidade
         produto_carrinho.save()
         return redirect(reverse('carrinho'))
+    
+    def post(self, request, *args, **kwargs):
+        return redirect(reverse('home'))

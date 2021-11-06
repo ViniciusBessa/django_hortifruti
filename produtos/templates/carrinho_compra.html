@@ -11,12 +11,12 @@
     {% if carrinho_compra %}
     <h1 class="text-center mb-5">Carrinho de compras</h1>
 
-    <div class="row container-fluid">
+    <div class="row">
         <div class="col">
             <h2 class="text-center">Produtos</h2>
             {% for produto in carrinho_compra %}
             <div class="row justify-content-center py-4">
-                <div class="col-auto d-flex justify-content-center px-0">
+                <div class="col-auto d-flex justify-content-center">
                     <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="166px"/></a>
                 </div>
                 <div class="col-sm-3">
@@ -44,7 +44,9 @@
             <div>
                 <h2>Subtotal</h2>
                 <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
-                <button class="btn btn-outline-secondary">Finalizar o pedido</button>
+                <form class="my-3" action="{% url 'criar_pedido'%}" method="POST"> {% csrf_token %}
+                    <button class="btn btn-outline-secondary" type="submit">Finalizar o pedido</button>
+                </form>    
             </div>
         </div>
     </div>

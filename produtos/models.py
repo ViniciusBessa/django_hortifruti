@@ -44,12 +44,11 @@ class ListaDesejo(models.Model):
         return lista_desejos
     
 
-    def receber_pagina(request):
-        lista_desejos = ListaDesejo.receber(request.user)
-        carrinho_compra = CarrinhoCompra.receber(request.user)
+    def receber_pagina(usuario):
+        lista_desejos = ListaDesejo.receber(usuario)
+        carrinho_compra = CarrinhoCompra.receber(usuario)
         return {
             'lista_desejos': lista_desejos, 
-            'carrinho_compra': carrinho_compra,
             'numero_produtos_carrinho': len(carrinho_compra),
         }
 
@@ -83,10 +82,10 @@ class CarrinhoCompra(models.Model):
         return quantidades
     
 
-    def receber_pagina(request):
-        carrinho_compra = CarrinhoCompra.receber(request.user)
-        subtotal = CarrinhoCompra.receber_soma_carrinho(request.user)
-        produtos_quantidades = CarrinhoCompra.receber_quantidade_produtos(request.user)
+    def receber_pagina(usuario):
+        carrinho_compra = CarrinhoCompra.receber(usuario)
+        subtotal = CarrinhoCompra.receber_soma_carrinho(usuario)
+        produtos_quantidades = CarrinhoCompra.receber_quantidade_produtos(usuario)
         return {
             'carrinho_compra': carrinho_compra,
             'numero_produtos_carrinho': len(carrinho_compra),
@@ -101,7 +100,37 @@ class Pedido(models.Model):
     data_pedido = models.DateField(auto_now=True)
 
 
+    def receber(usuario):
+        if usuario.is_authenticated:
+            pedidos = Pedido.objects.filter(usuario=usuario)
+
+        else:
+            pedidos = []
+
+        return pedidos
+
+    def receber_pagina(usuario):
+        pedidos = Pedido.receber(usuario)
+        carrinho_compra = CarrinhoCompra.receber(usuario)
+        return {
+            'pedidos': pedidos,
+            'numero_produtos_carrinho': len(carrinho_compra),
+        }
+    
+
+    def criar_pedido(usuario):
+        pedido = Pedido.objects.create(usuario=usuario)
+        carrinho = CarrinhoCompra.objects.filter(usuario=usuario)
+        PedidoProduto.registrar_pedido(pedido, carrinho)
+
+
 class PedidoProduto(models.Model):
     id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
+
+
+    def registrar_pedido(pedido, carrinho):
+        for queryset in carrinho:
+            PedidoProduto.objects.create(id_pedido=pedido, id_produto=queryset.id_produto, quantidade=queryset.quantidade)
+        carrinho.delete()
