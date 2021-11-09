@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404
 from more_itertools import divide
 from django.contrib.auth.models import User
 
@@ -147,10 +149,13 @@ class Pedido(models.Model):
                 'valor_final': valor_final, 'numero_produtos_carrinho': len(carrinho_compra),}
 
 
-    def criar_pedido(usuario):
+    def criar_pedido(form, usuario):
+        transportadora, forma_pagamento = form.cleaned_data.values()
+        transportadora = get_object_or_404(Transportadora, id=int(transportadora))
+        forma_pagamento = get_object_or_404(FormaPagamento, id=int(forma_pagamento))
         carrinho = CarrinhoCompra.objects.filter(usuario=usuario)
         if carrinho:
-            pedido = Pedido.objects.create(usuario=usuario)
+            pedido = Pedido.objects.create(usuario=usuario, id_transportadora=transportadora, id_forma_pagamento=forma_pagamento)
             PedidoProduto.registrar_pedido(pedido, carrinho)
 
 

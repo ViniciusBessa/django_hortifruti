@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import View
+from django.core.exceptions import ValidationError
 
 from .models import Produto, CarrinhoCompra, ListaDesejo, Pedido, PedidoProduto
 from .forms import FinalizarPedido
@@ -92,7 +93,15 @@ class PaginaFinalizarPedido(PaginaListaView):
 
 
     def post(self, request, *args, **kwargs):
-        self.model_class.criar_pedido(request.user)
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            try:
+                self.model_class.criar_pedido(form, request.user)
+                return redirect(reverse('home'))
+
+            except ValidationError as erro:
+                messages.error(request, erro)
+
         return redirect(reverse('home')) 
 
 
