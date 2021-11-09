@@ -44,7 +44,7 @@
             <div>
                 <h2 class="cor-destaque">Subtotal</h2>
                 <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
-                <form class="my-3" action="{% url 'criar_pedido'%}" method="POST"> {% csrf_token %}
+                <form class="my-3" action="{% url 'finalizar_pedido' %}" method="GET"> {% csrf_token %}
                     <button class="btn btn-outline-secondary" type="submit">Finalizar o pedido</button>
                 </form>    
             </div>
@@ -52,7 +52,7 @@
     </div>
 
     {% else %}
-    <h1 class="text-center">Não há nenhum produto no carrinho</h1>
+    <h1 class="text-center cor-destaque">Não há nenhum produto no carrinho</h1>
 
     {% endif %}
 </section>

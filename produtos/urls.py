@@ -10,6 +10,6 @@ urlpatterns = [
     path('atualizar_carrinho/<int:id_produto>', views.AtualizarCarrinhoView.as_view(), name='atualizar_carrinho'),
     path('alterar_carrinho/<int:id_produto>/<int:quantidade>', views.AlterarCarrinhoView.as_view(), name='alterar_carrinho'),
     path('pedidos', views.PaginaTodosPedidos.as_view(), name='pedidos'),
-    path('criar_produto', views.CriarPedido.as_view(), name='criar_pedido'),
+    path('finalizar_pedido', views.PaginaFinalizarPedido.as_view(), name='finalizar_pedido'),
     path('pedido/<int:id_pedido>', views.PaginaPedido.as_view(), name='pagina_pedido')
 ]

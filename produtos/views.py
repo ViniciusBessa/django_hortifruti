@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views import View
 
 from .models import Produto, CarrinhoCompra, ListaDesejo, Pedido, PedidoProduto
+from .forms import FinalizarPedido
 
 
 def pagina_produto_view(request, id_produto):
@@ -79,12 +80,15 @@ class PaginaPedido(PaginaListaView):
         return render(request, self.template_name, self.context)
 
 
-class CriarPedido(View):
+class PaginaFinalizarPedido(PaginaListaView):
     model_class = Pedido
-
+    form_class = FinalizarPedido
+    template_name = 'finalizar_pedido.html'
 
     def get(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        self.context.update({'form': self.form_class()})
+        self.context.update(self.model_class.receber_finalizacao(request.user))
+        return render(request, self.template_name, self.context)
 
 
     def post(self, request, *args, **kwargs):
@@ -132,6 +136,6 @@ class AlterarCarrinhoView(LoginRequiredMixin, View):
         produto_carrinho.quantidade = quantidade
         produto_carrinho.save()
         return redirect(reverse('carrinho'))
-    
+
     def post(self, request, *args, **kwargs):
         return redirect(reverse('home'))

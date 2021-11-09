@@ -42,7 +42,7 @@ class ListaDesejo(models.Model):
             lista_desejos = []
 
         return lista_desejos
-    
+
 
     def receber_pagina(usuario):
         lista_desejos = ListaDesejo.receber(usuario)
@@ -74,13 +74,13 @@ class CarrinhoCompra(models.Model):
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         subtotal = sum(lista.id_produto.preco * lista.quantidade for lista in carrinho_compra)
         return subtotal
-    
+
 
     def receber_quantidade_produtos(usuario):
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
         return quantidades
-    
+
 
     def receber_pagina(usuario):
         carrinho_compra = CarrinhoCompra.receber(usuario)
@@ -125,6 +125,18 @@ class Pedido(models.Model):
             'numero_produtos_carrinho': len(carrinho_compra),
         }
     
+
+    def receber_finalizacao(usuario):
+        carrinho_compra = CarrinhoCompra.receber(usuario)
+        transportadoras = Transportadora.objects.all()
+        formas_pagamento = FormaPagamento.objects.all()
+
+        return {
+            'transportadoras': transportadoras,
+            'formas_pagamento': formas_pagamento,
+            'numero_produtos_carrinho': len(carrinho_compra),
+        }
+
 
     def receber_pagina_pedido(usuario, pedido):
         produtos = list(PedidoProduto.objects.filter(id_pedido=pedido))

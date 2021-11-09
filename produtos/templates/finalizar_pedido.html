@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<section class="p-3">
+    <h1 class="text-center mb-5 cor-destaque">Finalizando o pedido</h1>
+    <div style="max-width: 350px; border: 1px solid lightgray; border-radius: 1%;" class="px-2 py-1 my-3 container">
+        <h4 class="cor-destaque mb-3">Transportadora</h4>
+        {% for transportadora in transportadoras %}
+        <input type="radio" name="transportadora" id="{{ transportadora.titulo }}"/>
+        <label for="{{ transportadora.titulo }}">{{ transportadora.titulo }}</label><br/>
+        {% endfor %}
+
+        <h4 class="cor-destaque my-3">Forma de pagamento</h4>
+        {% for forma_pagamento in formas_pagamento %}
+        <input type="radio" name="forma_pagamento" id="{{ forma_pagamento.titulo }}"/>
+        <label for="{{ forma_pagamento.titulo }}">{{ forma_pagamento.titulo }}</label><br/>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
