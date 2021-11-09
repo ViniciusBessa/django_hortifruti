@@ -40,10 +40,7 @@ class BuscaProdutoView(View):
             'numero_produtos_carrinho': len(carrinho_compra),
         }
 
-        if produtos_encontrados:
-            return render(request, 'busca_produto.html', context)
-
-        return redirect(reverse('home'))
+        return render(request, 'busca_produto.html', context)
 
 
 class PaginaListaView(LoginRequiredMixin, View):
@@ -72,21 +69,27 @@ class PaginaTodosPedidos(PaginaListaView):
     template_name = 'todos_pedidos.html'
 
 
+class PaginaPedido(PaginaListaView):
+    model_class = Pedido
+    template_name = 'pedido.html'
+
+    def get(self, request, id_pedido, *args, **kwargs):
+        pedido = get_object_or_404(self.model_class, id=id_pedido)
+        self.context.update(Pedido.receber_pagina_pedido(request.user, pedido))
+        return render(request, self.template_name, self.context)
+
+
 class CriarPedido(View):
     model_class = Pedido
 
 
     def get(self, request, *args, **kwargs):
-        pass
-    
+        return redirect(reverse('home'))
+
 
     def post(self, request, *args, **kwargs):
         self.model_class.criar_pedido(request.user)
         return redirect(reverse('home')) 
-
-
-class PaginaPedido(PaginaListaView):
-    model_class = PedidoProduto
 
 
 class AtualizarListaView(LoginRequiredMixin, View):

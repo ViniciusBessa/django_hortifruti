@@ -1,0 +1,19 @@
+.botao-carrinho {
+    background-color: #3972BE;
+    color: white;
+}
+
+.botao-carrinho:hover {
+    opacity: 75%;
+    color: white;
+}
+
+.botao-lista {
+    background-color: #EFAD00;
+    color: white;
+}
+
+.botao-lista:hover {
+    opacity: 75%;
+    color: white;
+}

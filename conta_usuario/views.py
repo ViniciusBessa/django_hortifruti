@@ -18,15 +18,18 @@ class RegistrarView(View):
 
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        self.context.update({'form':form})
-
         if request.user.is_authenticated:
             return redirect(reverse('home'))
+
+        form = self.form_class()
+        self.context.update({'form':form})
         return render(request, self.template_name, self.context)
 
 
     def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse('home'))
+
         form = self.form_class(request.POST)
         if form.is_valid():
             try:
@@ -37,9 +40,6 @@ class RegistrarView(View):
                 messages.error(request, erro)
 
         self.context.update({'form':form})
-
-        if request.user.is_authenticated:
-            return redirect(reverse('home'))
         return render(request, self.template_name, self.context)
 
 
@@ -64,6 +64,20 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
             'numero_produtos_carrinho': len(carrinho)
             })
 
+        return render(request, self.template_name, self.context)
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            try:
+                self.form_validacao(request, form)
+                return redirect(reverse('home'))
+
+            except ValidationError as erro:
+                messages.error(request, erro)
+
+        self.context.update({'form':form})
         return render(request, self.template_name, self.context)
 
 

@@ -3,6 +3,10 @@
 }
 
 .cor-secundaria {
+    background-color: white;
+}
+
+.cor-terciaria {
     background-color: #f8f9fa;
 }
 
@@ -15,7 +19,7 @@
 }
 
 .cor-destaque {
-    color: red;
+    color:royalblue;
 }
 
 .tamanho-pagina {

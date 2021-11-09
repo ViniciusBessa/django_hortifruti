@@ -98,6 +98,8 @@ class CarrinhoCompra(models.Model):
 class Pedido(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     data_pedido = models.DateField(auto_now=True)
+    id_transportadora = models.ForeignKey('Transportadora', on_delete=models.CASCADE, default=1)
+    id_forma_pagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE, default=1)
 
 
     def receber(usuario):
@@ -112,16 +114,32 @@ class Pedido(models.Model):
     def receber_pagina(usuario):
         pedidos = Pedido.receber(usuario)
         carrinho_compra = CarrinhoCompra.receber(usuario)
+        primeiro_produto_pedidos = {}
+        for pedido in pedidos:
+            produtos = PedidoProduto.objects.filter(id_pedido=pedido)
+            primeiro_produto_pedidos.update({pedido.id: produtos[0]})
+
         return {
-            'pedidos': pedidos,
+            'pedidos': sorted(pedidos, reverse=True, key=lambda pedido: pedido.id) ,
+            'produto_pedidos': primeiro_produto_pedidos,
             'numero_produtos_carrinho': len(carrinho_compra),
         }
     
 
+    def receber_pagina_pedido(usuario, pedido):
+        produtos = list(PedidoProduto.objects.filter(id_pedido=pedido))
+        soma_produtos = sum([produto.id_produto.preco * produto.quantidade for produto in produtos])
+        valor_final = (soma_produtos - soma_produtos * pedido.id_forma_pagamento.desconto) + pedido.id_transportadora.frete
+        carrinho_compra = CarrinhoCompra.receber(usuario)
+        return {'pedido': pedido, 'produtos': produtos, 'soma_produtos': soma_produtos, 
+                'valor_final': valor_final, 'numero_produtos_carrinho': len(carrinho_compra),}
+
+
     def criar_pedido(usuario):
-        pedido = Pedido.objects.create(usuario=usuario)
         carrinho = CarrinhoCompra.objects.filter(usuario=usuario)
-        PedidoProduto.registrar_pedido(pedido, carrinho)
+        if carrinho:
+            pedido = Pedido.objects.create(usuario=usuario)
+            PedidoProduto.registrar_pedido(pedido, carrinho)
 
 
 class PedidoProduto(models.Model):
@@ -134,3 +152,13 @@ class PedidoProduto(models.Model):
         for queryset in carrinho:
             PedidoProduto.objects.create(id_pedido=pedido, id_produto=queryset.id_produto, quantidade=queryset.quantidade)
         carrinho.delete()
+
+
+class Transportadora(models.Model):
+    titulo = models.CharField(max_length=30)
+    frete = models.DecimalField(max_digits=6, decimal_places=2)
+
+
+class FormaPagamento(models.Model):
+    titulo = models.CharField(max_length=30)
+    desconto = models.DecimalField(max_digits=3, decimal_places=2)

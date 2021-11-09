@@ -57,7 +57,7 @@ class AlterarSenhaForm(forms.Form):
             raise ValidationError('A nova senha deve ter pelo menos 6 caracteres.')
 
         elif senha_atual != senha_confirmacao:
-            raise ValidationError('Senha diferente.')
+            raise ValidationError('Senhas nos dois últimos campos eram diferentes.')
 
         user.set_password(nova_senha)
         user.save()

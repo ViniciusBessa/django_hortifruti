@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'botoes.css' %}"/>
+{% endblock %}
+
 {% block main %}
 <section>
     <div class="container-fluid">
@@ -15,19 +19,19 @@
 
                 <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
                     {% if produto in carrinho_compra %}
-                    <button class="btn btn-outline-secondary" type="submit">Retirar do carrinho</button>
+                    <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
 
                     {% else %}
-                    <button class="btn btn-outline-secondary" type="submit">Adicionar ao carrinho</button>
+                    <button class="btn botao-carrinho" type="submit">Adicionar ao carrinho</button>
                     {% endif %}
                 </form>
 
                 <form class="my-3" action="{% url 'atualizar_lista' produto.id %}" method="POST"> {% csrf_token %}
                     {% if produto in lista_desejos %}
-                    <button class="btn btn-outline-secondary" type="submit">Retirar da lista de desejos</button>
+                    <button class="btn botao-lista" type="submit">Retirar da lista de desejos</button>
 
                     {% else %}
-                    <button class="btn btn-outline-secondary" type="submit">Adicionar à lista de desejos</button>
+                    <button class="btn botao-lista" type="submit">Adicionar à lista de desejos</button>
                     {% endif %}
                 </form>
             </div>
@@ -42,7 +46,7 @@
             {% for produtos in produtos_mesma_categoria %}
             <div class="col d-flex justify-content-center">
                 <div>
-                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" width="250px" height="166px"/></a>
+                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" width="250px" height="200px"/></a>
                     <h5 class="cor-dinheiro mb-0">R$ {{produtos.preco }}</h5>
                     <p>{{ produtos.titulo }}</p>
                 </div>

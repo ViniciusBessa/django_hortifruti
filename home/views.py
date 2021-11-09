@@ -8,7 +8,7 @@ class HomeView(View):
 
 
     def get(self, request, *args, **kwargs):
-        categorias = CategoriasProduto.objects.all()
+        categorias = list(CategoriasProduto.objects.all())
         produtos_categorias = Produto.receber_produtos(categorias, 4, 2)
         carrinho_compra = CarrinhoCompra.receber(request.user)
 
