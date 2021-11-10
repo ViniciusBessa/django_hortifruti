@@ -30,13 +30,27 @@
                                 <div class="dropdown">
                                     <a class="nav-link dropdown-toggle" type="button" id="dropdown-conta" data-bs-toggle="dropdown" aria-expanded="false">Minha conta</a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown-conta">
-                                      <li><a class="dropdown-item" href="{% url 'pedidos' %}">Pedidos</a></li>
-                                      <li><a class="dropdown-item" href="{% url 'lista_desejos' %}">Lista de desejos</a></li>
-                                      <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar a senha</a></li>
-                                      <li><a class="dropdown-item" href="{% url 'logout' %}" role="button">Sair</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'pedidos' %}">Pedidos</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'lista_desejos' %}">Lista de desejos</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar a senha</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'logout' %}" role="button">Sair</a></li>
                                     </ul>
                                 </div>
                             </li>
+                            {% endif %}
+
+                            <li>
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" type="button" id="dropdown-categorias" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown-categorias">
+                                        {% for categoria in categorias %}
+                                        <li><a class="dropdown-item" href="{% url 'categorias' categoria.titulo|lower %}">{{ categoria.titulo }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </li>
+
+                            {% if request.user.is_authenticated %}
                             <li>
                                 <a class="nav-link d-inline-block" href="{% url 'carrinho' %}">
                                     <img src="{% static 'shopping_cart.png' %}" alt="Imagem de um carrinho de compras" width="40px" height="28px">

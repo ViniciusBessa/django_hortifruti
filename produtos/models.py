@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 from more_itertools import divide
 from django.contrib.auth.models import User
@@ -29,6 +28,16 @@ class Produto(models.Model):
 class CategoriasProduto(models.Model):
     titulo = models.CharField(max_length=20)
 
+    def receber_pagina(usuario, categoria):
+        categorias = CategoriasProduto.objects.all()
+        categoria = get_object_or_404(CategoriasProduto, titulo=categoria.title())
+        produtos = Produto.objects.filter(id_categoria=categoria)
+
+        return {
+            'categoria': categoria,
+            'produtos': produtos,
+        } 
+
 
 class ListaDesejo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -48,10 +57,8 @@ class ListaDesejo(models.Model):
 
     def receber_pagina(usuario):
         lista_desejos = ListaDesejo.receber(usuario)
-        carrinho_compra = CarrinhoCompra.receber(usuario)
         return {
             'lista_desejos': lista_desejos, 
-            'numero_produtos_carrinho': len(carrinho_compra),
         }
 
 
@@ -115,7 +122,6 @@ class Pedido(models.Model):
 
     def receber_pagina(usuario):
         pedidos = Pedido.receber(usuario)
-        carrinho_compra = CarrinhoCompra.receber(usuario)
         primeiro_produto_pedidos = {}
         for pedido in pedidos:
             produtos = PedidoProduto.objects.filter(id_pedido=pedido)
@@ -124,19 +130,16 @@ class Pedido(models.Model):
         return {
             'pedidos': sorted(pedidos, reverse=True, key=lambda pedido: pedido.id) ,
             'produto_pedidos': primeiro_produto_pedidos,
-            'numero_produtos_carrinho': len(carrinho_compra),
         }
     
 
     def receber_finalizacao(usuario):
-        carrinho_compra = CarrinhoCompra.receber(usuario)
         transportadoras = Transportadora.objects.all()
         formas_pagamento = FormaPagamento.objects.all()
 
         return {
             'transportadoras': transportadoras,
             'formas_pagamento': formas_pagamento,
-            'numero_produtos_carrinho': len(carrinho_compra),
         }
 
 
@@ -144,9 +147,10 @@ class Pedido(models.Model):
         produtos = list(PedidoProduto.objects.filter(id_pedido=pedido))
         soma_produtos = sum([produto.id_produto.preco * produto.quantidade for produto in produtos])
         valor_final = (soma_produtos - soma_produtos * pedido.id_forma_pagamento.desconto) + pedido.id_transportadora.frete
-        carrinho_compra = CarrinhoCompra.receber(usuario)
-        return {'pedido': pedido, 'produtos': produtos, 'soma_produtos': soma_produtos, 
-                'valor_final': valor_final, 'numero_produtos_carrinho': len(carrinho_compra),}
+        return {
+            'pedido': pedido, 'produtos': produtos, 'soma_produtos': soma_produtos, 
+            'valor_final': valor_final,
+        }
 
 
     def criar_pedido(form, usuario):
@@ -179,3 +183,12 @@ class Transportadora(models.Model):
 class FormaPagamento(models.Model):
     titulo = models.CharField(max_length=30)
     desconto = models.DecimalField(max_digits=3, decimal_places=2)
+
+
+def dados_comuns(usuario):
+    carrinho_compra = CarrinhoCompra.receber(usuario)
+    categorias = list(CategoriasProduto.objects.all())
+    return {
+        'categorias': categorias,
+        'numero_produtos_carrinho': len(carrinho_compra),
+    }

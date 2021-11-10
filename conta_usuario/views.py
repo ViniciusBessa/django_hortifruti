@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.views import View
 
 from .forms import RegistrarForm, LoginForm, AlterarSenhaForm
-from produtos.models import CarrinhoCompra
+from produtos.models import dados_comuns
 
 
 class RegistrarView(View):
@@ -22,6 +22,7 @@ class RegistrarView(View):
             return redirect(reverse('home'))
 
         form = self.form_class()
+        self.context.update(dados_comuns(request.user))
         self.context.update({'form':form})
         return render(request, self.template_name, self.context)
 
@@ -39,6 +40,7 @@ class RegistrarView(View):
             except ValidationError as erro:
                 messages.error(request, erro)
 
+        self.context.update(dados_comuns(request.user))
         self.context.update({'form':form})
         return render(request, self.template_name, self.context)
 
@@ -58,11 +60,8 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        carrinho = CarrinhoCompra.receber(request.user)
-        self.context.update({
-            'form':form,
-            'numero_produtos_carrinho': len(carrinho)
-            })
+        self.context.update(dados_comuns(request.user))
+        self.context.update({'form':form})
 
         return render(request, self.template_name, self.context)
 
@@ -77,6 +76,7 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
             except ValidationError as erro:
                 messages.error(request, erro)
 
+        self.context.update(dados_comuns(request.user))
         self.context.update({'form':form})
         return render(request, self.template_name, self.context)
 

@@ -4,7 +4,7 @@
 {% block main %}
 <section class="p-3">
     {% if produtos %}
-    <h1 class="text-center">Resultados para <span class="cor-destaque">{{ busca }}</span></h1>
+    <h1 class="text-center cor-destaque">{{ categoria.titulo }}</h1>
     {% for produto in produtos%}
     <div class="container">
         <div class="row justify-content-center py-4">

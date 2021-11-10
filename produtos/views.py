@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import View
 from django.core.exceptions import ValidationError
 
-from .models import Produto, CarrinhoCompra, ListaDesejo, Pedido, PedidoProduto
+from .models import CategoriasProduto, Produto, CarrinhoCompra, ListaDesejo, Pedido, PedidoProduto, dados_comuns
 from .forms import FinalizarPedido
 
 
@@ -28,21 +28,38 @@ def pagina_produto_view(request, id_produto):
 
 
 class BuscaProdutoView(View):
+    context = {}
+
     def get(self, request, *args, **kwargs):
         return redirect(reverse('home'))
 
 
     def post(self, request, busca, *args, **kwargs):
+        self.context.update(dados_comuns(request.user))
         produtos_encontrados = Produto.objects.filter(titulo__icontains=busca)
-        carrinho_compra = CarrinhoCompra.receber(request.user)
 
-        context = {
+        self.context.update({
             'busca': busca,
             'produtos': produtos_encontrados,
-            'numero_produtos_carrinho': len(carrinho_compra),
-        }
+        })
 
-        return render(request, 'busca_produto.html', context)
+        return render(request, 'busca_produto.html', self.context)
+
+
+class PaginaCategoriasView(View):
+    model_class = CategoriasProduto
+    template_name = 'categorias.html'
+    context = {}
+
+
+    def get(self, request, categoria, *args, **kwargs):
+        self.context.update(dados_comuns(request.user))
+        self.context.update(self.model_class.receber_pagina(request.user, categoria))
+        return render(request, self.template_name, self.context)
+
+
+    def post(self, request, *args, **kwargs):
+        return redirect(reverse('home'))
 
 
 class PaginaListaView(LoginRequiredMixin, View):
@@ -53,6 +70,7 @@ class PaginaListaView(LoginRequiredMixin, View):
 
 
     def get(self, request, *args, **kwargs):
+        self.context.update(dados_comuns(request.user))
         self.context.update(self.model_class.receber_pagina(request.user))
         return render(request, self.template_name, self.context)
 
@@ -66,28 +84,30 @@ class PaginaCarrinhoView(PaginaListaView):
     template_name = 'carrinho_compra.html'
 
 
-class PaginaTodosPedidos(PaginaListaView):
+class PaginaTodosPedidosView(PaginaListaView):
     model_class = Pedido
     template_name = 'todos_pedidos.html'
 
 
-class PaginaPedido(PaginaListaView):
+class PaginaPedidoView(PaginaListaView):
     model_class = Pedido
     template_name = 'pedido.html'
 
     def get(self, request, id_pedido, *args, **kwargs):
         pedido = get_object_or_404(self.model_class, id=id_pedido)
+        self.context.update(dados_comuns(request.user))
         self.context.update(Pedido.receber_pagina_pedido(request.user, pedido))
         return render(request, self.template_name, self.context)
 
 
-class PaginaFinalizarPedido(PaginaListaView):
+class PaginaFinalizarPedidoView(PaginaListaView):
     model_class = Pedido
     form_class = FinalizarPedido
     template_name = 'finalizar_pedido.html'
 
     def get(self, request, *args, **kwargs):
         self.context.update({'form': self.form_class()})
+        self.context.update(dados_comuns(request.user))
         self.context.update(self.model_class.receber_finalizacao(request.user))
         return render(request, self.template_name, self.context)
 

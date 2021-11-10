@@ -9,7 +9,8 @@ urlpatterns = [
     path('carrinho', views.PaginaCarrinhoView.as_view(), name='carrinho'),
     path('atualizar_carrinho/<int:id_produto>', views.AtualizarCarrinhoView.as_view(), name='atualizar_carrinho'),
     path('alterar_carrinho/<int:id_produto>/<int:quantidade>', views.AlterarCarrinhoView.as_view(), name='alterar_carrinho'),
-    path('pedidos', views.PaginaTodosPedidos.as_view(), name='pedidos'),
-    path('pedido/<int:id_pedido>', views.PaginaPedido.as_view(), name='pagina_pedido'),
-    path('finalizar_pedido', views.PaginaFinalizarPedido.as_view(), name='finalizar_pedido'),
+    path('categorias/<str:categoria>', views.PaginaCategoriasView.as_view(), name='categorias') ,
+    path('pedidos', views.PaginaTodosPedidosView.as_view(), name='pedidos'),
+    path('pedido/<int:id_pedido>', views.PaginaPedidoView.as_view(), name='pagina_pedido'),
+    path('finalizar_pedido', views.PaginaFinalizarPedidoView.as_view(), name='finalizar_pedido'),
 ]

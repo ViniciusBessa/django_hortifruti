@@ -1,3 +1,4 @@
 .borda {
+    border: 3px solid lightgray;
     border-radius: 5%;
 }
