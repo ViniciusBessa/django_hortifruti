@@ -5,30 +5,39 @@ from django.urls import reverse
 from django.views import View
 from django.core.exceptions import ValidationError
 
-from .models import CategoriasProduto, Produto, CarrinhoCompra, ListaDesejo, Pedido, PedidoProduto, dados_comuns
+from .models import CategoriasProduto, Produto, CarrinhoCompra, ListaDesejo, Pedido, dados_comuns
 from .forms import FinalizarPedido
 
 
-def pagina_produto_view(request, id_produto):
-    produto = get_object_or_404(Produto, id=id_produto)
-    produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
-    lista_desejos = ListaDesejo.receber(request.user)
-    carrinho_compra = CarrinhoCompra.receber(request.user)
+class PaginaProdutoView(View):
+    context = {}
+    template_name = 'pagina_produto.html'
 
-    context = {
-        'produto': produto,
-        'produtos_mesma_categoria': produtos_mesma_categoria,
-        'categoria': produto.id_categoria,
-        'lista_desejos': lista_desejos,
-        'carrinho_compra': carrinho_compra,
-        'numero_produtos_carrinho': len(carrinho_compra),
-    }
 
-    return render(request, 'pagina_produto.html', context)
+    def get(self, request, id_produto, *args, **kwargs):
+        produto = get_object_or_404(Produto, id=id_produto)
+        produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
+        lista_desejos = ListaDesejo.receber(request.user)
+        carrinho_compra = CarrinhoCompra.receber(request.user)
+
+        self.context.update({
+            'produto': produto,
+            'produtos_mesma_categoria': produtos_mesma_categoria,
+            'categoria': produto.id_categoria,
+            'lista_desejos': lista_desejos,
+            'carrinho_compra': carrinho_compra,
+        })
+        self.context.update(dados_comuns(request.user))
+        return render(request, self.template_name, self.context)
+
+
+    def post(self, request, *args, **kwargs):
+        return redirect(reverse('home'))
 
 
 class BuscaProdutoView(View):
     context = {}
+    template_name = 'busca_produto.html'
 
     def get(self, request, *args, **kwargs):
         return redirect(reverse('home'))
@@ -43,7 +52,7 @@ class BuscaProdutoView(View):
             'produtos': produtos_encontrados,
         })
 
-        return render(request, 'busca_produto.html', self.context)
+        return render(request, self.template_name, self.context)
 
 
 class PaginaCategoriasView(View):
@@ -106,7 +115,8 @@ class PaginaFinalizarPedidoView(PaginaListaView):
     template_name = 'finalizar_pedido.html'
 
     def get(self, request, *args, **kwargs):
-        self.context.update({'form': self.form_class()})
+        form = self.form_class()
+        self.context.update({'form': form})
         self.context.update(dados_comuns(request.user))
         self.context.update(self.model_class.receber_finalizacao(request.user))
         return render(request, self.template_name, self.context)
@@ -122,7 +132,7 @@ class PaginaFinalizarPedidoView(PaginaListaView):
             except ValidationError as erro:
                 messages.error(request, erro)
 
-        return redirect(reverse('home')) 
+        return redirect(reverse('lista_desejos')) 
 
 
 class AtualizarListaView(LoginRequiredMixin, View):

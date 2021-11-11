@@ -1,10 +1,13 @@
 from django import forms
-from django import forms
 from .models import Transportadora, FormaPagamento
 
 
 class FinalizarPedido(forms.Form):
-    transportadoras = [[transportadora.id, transportadora.titulo] for transportadora in Transportadora.objects.all()]
-    formas_pagamento = [[forma_pagamento.id, forma_pagamento.titulo] for forma_pagamento in FormaPagamento.objects.all()]
-    transportadora = forms.ChoiceField(choices=transportadoras, widget=forms.RadioSelect, label='')
-    forma_pagamento = forms.ChoiceField(choices=formas_pagamento, widget=forms.RadioSelect)
+    transportadora = forms.ChoiceField(choices=[], widget=forms.RadioSelect)
+    forma_pagamento = forms.ChoiceField(choices=[], widget=forms.RadioSelect)
+  
+
+    def __init__(self, *args, **kwargs):
+        super(forms.Form, self).__init__(*args, **kwargs)
+        self.fields['transportadora'].choices = Transportadora.receber()
+        self.fields['forma_pagamento'].choices = FormaPagamento.receber()

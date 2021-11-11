@@ -1,10 +1,14 @@
-{% extends 'base.html '%}
+{% extends 'base.html' %}
 {% load static %}
 {% load produtos_filters %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'bordas.css' %}"/>
+{% endblock %}
+
 {% block main %}
 <section class="p-2">
-    <div style="max-width: 600px; border: 1px solid lightgray; border-radius: 1%;" class="px-2 py-1 my-3 container">
+    <div class="px-2 py-1 my-3 container borda-grande">
         <h4 class="cor-destaque">Informações do pedido</h4>
         <p class="mb-2">Número do pedido: {{pedido.id}}</p>
         <p class="mb-2">Data do pedido: {{pedido.data_pedido|date:"d/m/Y"}}</p>
@@ -12,7 +16,7 @@
         <p class="mb-2">Forma de pagamento: {{ pedido.id_forma_pagamento.titulo }}</p>
     </div>
 
-    <div style="max-width: 600px; border: 1px solid lightgray; border-radius: 1%;" class="px-2 py-1 my-3 container">
+    <div class="px-2 py-1 my-3 container borda-grande">
         <h4 class="cor-destaque">Produtos</h4>
         {% for produto in produtos %}
         <div class="row justify-content-center py-4">
@@ -33,7 +37,7 @@
         {% endfor %}
     </div>
 
-    <div style="max-width: 600px; border: 1px solid lightgray; border-radius: 1%;" class="px-2 py-1 my-3 container">
+    <div class="px-2 py-1 my-3 container borda-grande">
         <h4 class="cor-destaque">Valor total</h4>
         <p class="mb-2">Frete: R${{ pedido.id_transportadora.frete }}</p>
         <p class="mb-2">Valor dos produtos: R${{ soma_produtos|floatformat:2 }}</p>

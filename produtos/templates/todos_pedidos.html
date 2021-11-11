@@ -2,13 +2,17 @@
 {% load static %}
 {% load produtos_filters %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'bordas.css' %}"/>
+{% endblock %}
+
 {% block main %}
 <section class="p-3">
     {% if pedidos %}
     <h1 class="text-center cor-destaque">Pedidos</h1>
 
     {% for pedido in pedidos %}
-    <div style="max-width: 350px; border: 1px solid lightgray; border-radius: 1%;" class="px-2 py-1 my-3 container">
+    <div class="px-2 py-1 my-3 container borda-pequena">
         <div class="row">
             <div class="col d-flex justify-content-start">
                 Nº do pedido: {{pedido.id}}

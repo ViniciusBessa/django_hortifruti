@@ -3,12 +3,13 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'lista.css' %}"/>
+<link rel="stylesheet" href="{% static 'bordas.css' %}"/>
 {% endblock %}
 
 {% block main %}
 <section class="p-3">
     <h1 class="text-center mb-5 cor-destaque">Finalizando o pedido</h1>
-    <form style="max-width: 350px; border: 1px solid lightgray; border-radius: 1%;" class="px-2 py-1 my-3 container" action="{% url 'finalizar_pedido' %}" method="POST"> {% csrf_token %}
+    <form class="px-2 py-1 my-3 container borda-pequena" action="{% url 'finalizar_pedido' %}" method="POST"> {% csrf_token %}
         <h4 class="cor-destaque mb-3">Transportadora</h4>
         {{ form.transportadora }}
 

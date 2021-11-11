@@ -179,11 +179,19 @@ class Transportadora(models.Model):
     titulo = models.CharField(max_length=30)
     frete = models.DecimalField(max_digits=6, decimal_places=2)
 
+    def receber():
+        transportadoras = [[transportadora.id, transportadora.titulo] for transportadora in Transportadora.objects.all()]
+        return transportadoras
+
 
 class FormaPagamento(models.Model):
     titulo = models.CharField(max_length=30)
     desconto = models.DecimalField(max_digits=3, decimal_places=2)
 
+
+    def receber():
+        formas_pagamento = [[forma_pagamento.id, forma_pagamento.titulo] for forma_pagamento in FormaPagamento.objects.all()]
+        return formas_pagamento
 
 def dados_comuns(usuario):
     carrinho_compra = CarrinhoCompra.receber(usuario)
