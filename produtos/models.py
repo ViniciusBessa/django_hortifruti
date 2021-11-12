@@ -29,14 +29,13 @@ class CategoriasProduto(models.Model):
     titulo = models.CharField(max_length=20)
 
     def receber_pagina(usuario, categoria):
-        categorias = CategoriasProduto.objects.all()
         categoria = get_object_or_404(CategoriasProduto, titulo=categoria.title())
         produtos = Produto.objects.filter(id_categoria=categoria)
 
         return {
             'categoria': categoria,
             'produtos': produtos,
-        } 
+        }
 
 
 class ListaDesejo(models.Model):

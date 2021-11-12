@@ -2,12 +2,15 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login
+import re
+
+regex_email = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 
 class RegistrarForm(forms.Form):
     usuario = forms.CharField(max_length=20, label='Usuário')
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
-    email = forms.EmailField(max_length=30)
+    email = forms.CharField(max_length=30)
 
 
     def registrar_usuario(self, request, form):
@@ -20,6 +23,9 @@ class RegistrarForm(forms.Form):
         elif User.objects.filter(username=usuario).exists():
             raise ValidationError('Esse nome de usuário já está em uso.')
 
+        elif not re.fullmatch(regex_email, email):
+            raise ValidationError('E-mail inválido, coloque-o na sequência nome_do_email@dominio.com')
+
         user = User.objects.create_user(username=usuario, password=senha, email=email)
         login(request, user)
 
@@ -31,7 +37,6 @@ class LoginForm(forms.Form):
     def logar_usuario(self, request, form):
         usuario, senha = form.cleaned_data.values()
         usuario = usuario.title()
-        print(usuario)
         user = authenticate(request, username=usuario, password=senha)
 
         if user is not None:
