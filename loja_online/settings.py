@@ -125,10 +125,10 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
-    os.path.join(BASE_DIR, 'conta_usuario/static'),
     os.path.join(BASE_DIR, 'home/static'),
     os.path.join(BASE_DIR, 'produtos/static'),
 )
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles/")
 
 # Image files
 MEDIA_URL = '/media/'
