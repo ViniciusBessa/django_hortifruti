@@ -12,7 +12,8 @@ class RegistrarForm(forms.Form):
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     email = forms.CharField(max_length=30)
 
-    def registrar_usuario(self, request, form):
+    @staticmethod
+    def validacao(request, form):
         usuario, senha, email = form.cleaned_data.values()
         usuario = usuario.title()
 
@@ -33,7 +34,8 @@ class LoginForm(forms.Form):
     usuario = forms.CharField(max_length=20, label='Usuário')
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
-    def logar_usuario(self, request, form):
+    @staticmethod
+    def validacao(request, form):
         usuario, senha = form.cleaned_data.values()
         usuario = usuario.title()
         user = authenticate(request, username=usuario, password=senha)
@@ -50,7 +52,8 @@ class AlterarSenhaForm(forms.Form):
     nova_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     confirmar_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
-    def alterar_senha(self, request, form):
+    @staticmethod
+    def validacao(request, form):
         senha_atual, nova_senha, senha_confirmacao = form.cleaned_data.values()
         user = authenticate(request, username=request.user, password=senha_atual)
 
@@ -60,7 +63,7 @@ class AlterarSenhaForm(forms.Form):
         elif len(nova_senha) < 6:
             raise ValidationError('A nova senha deve ter pelo menos 6 caracteres.')
 
-        elif senha_atual != senha_confirmacao:
+        elif nova_senha != senha_confirmacao:
             raise ValidationError('Senhas nos dois últimos campos eram diferentes.')
 
         user.set_password(nova_senha)

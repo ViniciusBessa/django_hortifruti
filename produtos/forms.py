@@ -7,6 +7,6 @@ class FinalizarPedido(forms.Form):
     forma_pagamento = forms.ChoiceField(choices=[], widget=forms.RadioSelect)
 
     def __init__(self, *args, **kwargs):
-        super(forms.Form, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['transportadora'].choices = Transportadora.receber()
         self.fields['forma_pagamento'].choices = FormaPagamento.receber()

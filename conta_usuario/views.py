@@ -13,7 +13,6 @@ from produtos.models import dados_comuns
 class RegistrarView(View):
     form_class = RegistrarForm
     template_name = 'registrar.html'
-    form_validacao = RegistrarForm.registrar_usuario
     context = {}
 
     def get(self, request, *args, **kwargs):
@@ -32,7 +31,7 @@ class RegistrarView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             try:
-                self.form_validacao(request, form)
+                self.form_class.validacao(request, form)
                 return redirect(reverse('home'))
 
             except ValidationError as erro:
@@ -46,14 +45,12 @@ class RegistrarView(View):
 class LoginView(RegistrarView):
     form_class = LoginForm
     template_name = 'login.html'
-    form_validacao = LoginForm.logar_usuario
 
 
 class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
     login_url = '/conta/login/'
     form_class = AlterarSenhaForm
     template_name = 'alterar_senha.html'
-    form_validacao = AlterarSenhaForm.alterar_senha
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -66,7 +63,7 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
         form = self.form_class(request.POST)
         if form.is_valid():
             try:
-                self.form_validacao(request, form)
+                self.form_class.validacao(request, form)
                 return redirect(reverse('home'))
 
             except ValidationError as erro:

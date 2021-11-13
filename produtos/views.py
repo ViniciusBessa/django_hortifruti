@@ -59,7 +59,7 @@ class PaginaCategoriasView(View):
 
     def get(self, request, categoria, *args, **kwargs):
         self.context.update(dados_comuns(request.user))
-        self.context.update(self.model_class.receber_pagina(request.user, categoria))
+        self.context.update(self.model_class.receber_pagina(categoria))
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
@@ -98,7 +98,7 @@ class PaginaPedidoView(PaginaListaView):
     def get(self, request, id_pedido, *args, **kwargs):
         pedido = get_object_or_404(self.model_class, id=id_pedido)
         self.context.update(dados_comuns(request.user))
-        self.context.update(Pedido.receber_pagina_pedido(request.user, pedido))
+        self.context.update(Pedido.receber_pagina_pedido(pedido))
         return render(request, self.template_name, self.context)
 
 
@@ -111,7 +111,6 @@ class PaginaFinalizarPedidoView(PaginaListaView):
         form = self.form_class()
         self.context.update({'form': form})
         self.context.update(dados_comuns(request.user))
-        self.context.update(self.model_class.receber_finalizacao(request.user))
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
