@@ -159,7 +159,7 @@ class Pedido(models.Model):
         carrinho = CarrinhoCompra.objects.filter(usuario=usuario)
         if carrinho:
             pedido = Pedido.objects.create(usuario=usuario, id_transportadora=transportadora, id_forma_pagamento=forma_pagamento)
-            PedidoProduto.registrar_pedido(pedido, carrinho)
+            PedidoProduto.registrar_pedido(pedido, carrinho, usuario)
 
 
 class PedidoProduto(models.Model):
@@ -168,9 +168,11 @@ class PedidoProduto(models.Model):
     quantidade = models.IntegerField(default=1)
 
 
-    def registrar_pedido(pedido, carrinho):
+    def registrar_pedido(pedido, carrinho, usuario):
         for queryset in carrinho:
             PedidoProduto.objects.create(id_pedido=pedido, id_produto=queryset.id_produto, quantidade=queryset.quantidade)
+            lista_desejo = ListaDesejo.objects.filter(usuario=usuario, id_produto=queryset.id_produto)
+            lista_desejo.delete()
         carrinho.delete()
 
 
