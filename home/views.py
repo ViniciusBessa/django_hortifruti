@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.views import View
-from produtos.models import Produto, CategoriasProduto, CarrinhoCompra, dados_comuns
+from produtos.models import Produto, CategoriasProduto, dados_comuns
 
 
 class HomeView(View):
     template_name = 'home.html'
     context = {}
-
 
     def get(self, request, *args, **kwargs):
         categorias = list(CategoriasProduto.objects.all())

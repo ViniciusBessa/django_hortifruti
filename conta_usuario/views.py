@@ -16,16 +16,14 @@ class RegistrarView(View):
     form_validacao = RegistrarForm.registrar_usuario
     context = {}
 
-
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect(reverse('home'))
 
         form = self.form_class()
         self.context.update(dados_comuns(request.user))
-        self.context.update({'form':form})
+        self.context.update({'form': form})
         return render(request, self.template_name, self.context)
-
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -41,7 +39,7 @@ class RegistrarView(View):
                 messages.error(request, erro)
 
         self.context.update(dados_comuns(request.user))
-        self.context.update({'form':form})
+        self.context.update({'form': form})
         return render(request, self.template_name, self.context)
 
 
@@ -57,14 +55,12 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
     template_name = 'alterar_senha.html'
     form_validacao = AlterarSenhaForm.alterar_senha
 
-
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         self.context.update(dados_comuns(request.user))
-        self.context.update({'form':form})
+        self.context.update({'form': form})
 
         return render(request, self.template_name, self.context)
-
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -77,7 +73,7 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
                 messages.error(request, erro)
 
         self.context.update(dados_comuns(request.user))
-        self.context.update({'form':form})
+        self.context.update({'form': form})
         return render(request, self.template_name, self.context)
 
 

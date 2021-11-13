@@ -12,7 +12,6 @@ class RegistrarForm(forms.Form):
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     email = forms.CharField(max_length=30)
 
-
     def registrar_usuario(self, request, form):
         usuario, senha, email = form.cleaned_data.values()
         usuario = usuario.title()

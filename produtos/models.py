@@ -11,16 +11,15 @@ class Produto(models.Model):
     imagem = models.ImageField()
     id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
 
-
     def receber_produtos(categorias, numero_produtos, partes):
         dicionario_produtos: dict = {}
         for categoria in categorias:
             produtos_da_categoria = Produto.objects.filter(id_categoria=categoria)[:numero_produtos]
 
             if produtos_da_categoria:
-               produtos_divididos = divide(partes, produtos_da_categoria)
-               produtos_divididos = [list(x) for x in produtos_divididos]
-               dicionario_produtos.update({categoria: produtos_divididos.copy()})
+                produtos_divididos = divide(partes, produtos_da_categoria)
+                produtos_divididos = [list(x) for x in produtos_divididos]
+                dicionario_produtos.update({categoria: produtos_divididos.copy()})
 
         return dicionario_produtos
 
@@ -42,7 +41,6 @@ class ListaDesejo(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
 
-
     def receber(usuario):
         if usuario.is_authenticated:
             lista_desejos = ListaDesejo.objects.filter(usuario=usuario)
@@ -52,7 +50,6 @@ class ListaDesejo(models.Model):
             lista_desejos = []
 
         return lista_desejos
-
 
     def receber_pagina(usuario):
         lista_desejos = ListaDesejo.receber(usuario)
@@ -66,7 +63,6 @@ class CarrinhoCompra(models.Model):
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
 
-
     def receber(usuario):
         if usuario.is_authenticated:
             carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
@@ -77,18 +73,15 @@ class CarrinhoCompra(models.Model):
 
         return sorted(carrinho_compra, key=lambda produto: produto.titulo)
 
-
     def receber_soma_carrinho(usuario):
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         subtotal = sum(lista.id_produto.preco * lista.quantidade for lista in carrinho_compra)
         return subtotal
 
-
     def receber_quantidade_produtos(usuario):
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
         return quantidades
-
 
     def receber_pagina(usuario):
         carrinho_compra = CarrinhoCompra.receber(usuario)
@@ -108,7 +101,6 @@ class Pedido(models.Model):
     data_pedido = models.DateField(auto_now=True)
     id_transportadora = models.ForeignKey('Transportadora', on_delete=models.CASCADE, default=1)
     id_forma_pagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE, default=1)
-
 
     def receber(usuario):
         if usuario.is_authenticated:
@@ -130,7 +122,6 @@ class Pedido(models.Model):
             'pedidos': sorted(pedidos, reverse=True, key=lambda pedido: pedido.id) ,
             'produto_pedidos': primeiro_produto_pedidos,
         }
-    
 
     def receber_finalizacao(usuario):
         transportadoras = Transportadora.objects.all()
@@ -141,7 +132,6 @@ class Pedido(models.Model):
             'formas_pagamento': formas_pagamento,
         }
 
-
     def receber_pagina_pedido(usuario, pedido):
         produtos = list(PedidoProduto.objects.filter(id_pedido=pedido))
         soma_produtos = sum([produto.id_produto.preco * produto.quantidade for produto in produtos])
@@ -150,7 +140,6 @@ class Pedido(models.Model):
             'pedido': pedido, 'produtos': produtos, 'soma_produtos': soma_produtos, 
             'valor_final': valor_final,
         }
-
 
     def criar_pedido(form, usuario):
         transportadora, forma_pagamento = form.cleaned_data.values()
@@ -166,7 +155,6 @@ class PedidoProduto(models.Model):
     id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
-
 
     def registrar_pedido(pedido, carrinho, usuario):
         for queryset in carrinho:
@@ -189,10 +177,10 @@ class FormaPagamento(models.Model):
     titulo = models.CharField(max_length=30)
     desconto = models.DecimalField(max_digits=3, decimal_places=2)
 
-
     def receber():
         formas_pagamento = [[forma_pagamento.id, forma_pagamento.titulo] for forma_pagamento in FormaPagamento.objects.all()]
         return formas_pagamento
+
 
 def dados_comuns(usuario):
     carrinho_compra = CarrinhoCompra.receber(usuario)

@@ -13,7 +13,6 @@ class PaginaProdutoView(View):
     context = {}
     template_name = 'pagina_produto.html'
 
-
     def get(self, request, id_produto, *args, **kwargs):
         produto = get_object_or_404(Produto, id=id_produto)
         produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
@@ -30,7 +29,6 @@ class PaginaProdutoView(View):
         self.context.update(dados_comuns(request.user))
         return render(request, self.template_name, self.context)
 
-
     def post(self, request, *args, **kwargs):
         return redirect(reverse('home'))
 
@@ -41,7 +39,6 @@ class BuscaProdutoView(View):
 
     def get(self, request, *args, **kwargs):
         return redirect(reverse('home'))
-
 
     def post(self, request, busca, *args, **kwargs):
         self.context.update(dados_comuns(request.user))
@@ -60,12 +57,10 @@ class PaginaCategoriasView(View):
     template_name = 'categorias.html'
     context = {}
 
-
     def get(self, request, categoria, *args, **kwargs):
         self.context.update(dados_comuns(request.user))
         self.context.update(self.model_class.receber_pagina(request.user, categoria))
         return render(request, self.template_name, self.context)
-
 
     def post(self, request, *args, **kwargs):
         return redirect(reverse('home'))
@@ -77,12 +72,10 @@ class PaginaListaView(LoginRequiredMixin, View):
     template_name = 'lista_desejos.html'
     context = {}
 
-
     def get(self, request, *args, **kwargs):
         self.context.update(dados_comuns(request.user))
         self.context.update(self.model_class.receber_pagina(request.user))
         return render(request, self.template_name, self.context)
-
 
     def post(self, request, *args, **kwargs):
         return redirect(reverse('home'))
@@ -121,7 +114,6 @@ class PaginaFinalizarPedidoView(PaginaListaView):
         self.context.update(self.model_class.receber_finalizacao(request.user))
         return render(request, self.template_name, self.context)
 
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -141,10 +133,8 @@ class AtualizarListaView(LoginRequiredMixin, View):
     mensagem_retirado = 'Produto retirado da lista de desejos'
     mensagem_adicionado = 'Produto adicionado à lista de desejos'
 
-
     def get(self, request, *args, **kwargs):
         return redirect(reverse('home'))
-
 
     def post(self, request, id_produto, *args, **kwargs):
         query_model = self.model_class.receber(request.user)
