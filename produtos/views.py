@@ -10,8 +10,15 @@ from .forms import FinalizarPedido
 
 
 class PaginaProdutoView(View):
-    context = {}
+    """
+    View que renderiza a página de um produto
+
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     template_name = 'pagina_produto.html'
+    context = {}
 
     def get(self, request, id_produto, *args, **kwargs):
         produto = get_object_or_404(Produto, id=id_produto)
@@ -34,8 +41,15 @@ class PaginaProdutoView(View):
 
 
 class BuscaProdutoView(View):
-    context = {}
+    """
+    View que renderiza a página de busca de produtos
+
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     template_name = 'busca_produto.html'
+    context = {}
 
     def get(self, request, *args, **kwargs):
         return redirect(reverse('home'))
@@ -53,6 +67,14 @@ class BuscaProdutoView(View):
 
 
 class PaginaCategoriasView(View):
+    """
+    View que renderiza uma página com todos produtos de uma determinada categoria
+
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     model_class = CategoriasProduto
     template_name = 'categorias.html'
     context = {}
@@ -67,6 +89,15 @@ class PaginaCategoriasView(View):
 
 
 class PaginaListaView(LoginRequiredMixin, View):
+    """
+    View que renderiza a página da lista de desejos do usuário
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     login_url = '/conta/login/'
     model_class = ListaDesejo
     template_name = 'lista_desejos.html'
@@ -82,16 +113,44 @@ class PaginaListaView(LoginRequiredMixin, View):
 
 
 class PaginaCarrinhoView(PaginaListaView):
+    """
+    View que renderiza a página do carrinho de compras do usuário
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     model_class = CarrinhoCompra
     template_name = 'carrinho_compra.html'
 
 
 class PaginaTodosPedidosView(PaginaListaView):
+    """
+    View que renderiza uma página com todos os pedidos já efetuados pelo usuário
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     model_class = Pedido
     template_name = 'todos_pedidos.html'
 
 
 class PaginaPedidoView(PaginaListaView):
+    """
+    View que renderiza a página de um pedido escolhido pelo usuário, mostrando informações
+    como data do pedido, forma de pagamento, quantidade dos produtos, etc
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     model_class = Pedido
     template_name = 'pedido.html'
 
@@ -103,6 +162,17 @@ class PaginaPedidoView(PaginaListaView):
 
 
 class PaginaFinalizarPedidoView(PaginaListaView):
+    """
+    View que renderiza um form em que o usuário escolhe a transportadora e a forma de pagamento
+    do pedido
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute form_class: Recebe o form que será utilizado no view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     model_class = Pedido
     form_class = FinalizarPedido
     template_name = 'finalizar_pedido.html'
@@ -127,6 +197,16 @@ class PaginaFinalizarPedidoView(PaginaListaView):
 
 
 class AtualizarListaView(LoginRequiredMixin, View):
+    """
+    View que atualiza a lista de desejos de um usuário em relação a um produto, se ele já estiver
+    na lista, será retirado da mesma, do contrário, é adicionado a ela
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute mensagem_retirado: Mensagem que será mostrada ao usuário retirar o produto
+    Attribute mensagem_adicionado: Mensagem que será mostrada ao usuário adicionar o produto
+    """
+
     login_url = '/conta/login/'
     model_class = ListaDesejo
     mensagem_retirado = 'Produto retirado da lista de desejos'
@@ -151,12 +231,28 @@ class AtualizarListaView(LoginRequiredMixin, View):
 
 
 class AtualizarCarrinhoView(AtualizarListaView):
+    """
+    View que atualiza o carrinho de compras de um usuário em relação a um produto, se ele já estiver
+    no carrinho, será retirado do mesmo, do contrário, é adicionado a ele
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute model_class: Recebe o model que será utilizado pelo view
+    Attribute mensagem_retirado: Mensagem que será mostrada ao usuário retirar o produto
+    Attribute mensagem_adicionado: Mensagem que será mostrada ao usuário adicionar o produto
+    """
+
     model_class = CarrinhoCompra
     mensagem_retirado = 'Produto retirado do carrinho'
     mensagem_adicionado = 'Produto adicionado ao carrinho'
 
 
 class AlterarCarrinhoView(LoginRequiredMixin, View):
+    """
+    View utilizado para alterar a quantidade de um produto no carrinho de compras do usuário
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    """
+
     login_url = '/conta/login/'
 
     def get(self, request, id_produto, quantidade, *args, **kwargs):

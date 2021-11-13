@@ -4,6 +4,13 @@ from produtos.models import Produto, CategoriasProduto, dados_comuns
 
 
 class HomeView(View):
+    """
+    View que renderiza a home do projeto
+
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     template_name = 'home.html'
     context = {}
 

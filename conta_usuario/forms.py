@@ -8,12 +8,22 @@ regex_email = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 
 class RegistrarForm(forms.Form):
+    """
+    Formulário para registrar um usuário
+
+    Attribute usuario: Recebe uma string que é o nome do usuário
+    Attribute senha: Recebe uma string que é a senha
+    Attribute email: Recebe uma string que é um e-mail válido
+    """
+
     usuario = forms.CharField(max_length=20, label='Usuário')
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     email = forms.CharField(max_length=30)
 
     @staticmethod
     def validacao(request, form):
+        """Função que valida os dados no form para registrar o usuário"""
+
         usuario, senha, email = form.cleaned_data.values()
         usuario = usuario.title()
 
@@ -31,11 +41,20 @@ class RegistrarForm(forms.Form):
 
 
 class LoginForm(forms.Form):
+    """
+    Formulário para verificar e logar um usuário
+
+    Attribute usuario: Recebe uma string que é o nome do usuário
+    Attribute senha: Recebe uma string que é a senha
+    """
+
     usuario = forms.CharField(max_length=20, label='Usuário')
     senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
     @staticmethod
     def validacao(request, form):
+        """Função que valida os dados no form para efetuar o login"""
+
         usuario, senha = form.cleaned_data.values()
         usuario = usuario.title()
         user = authenticate(request, username=usuario, password=senha)
@@ -48,12 +67,22 @@ class LoginForm(forms.Form):
 
 
 class AlterarSenhaForm(forms.Form):
+    """
+    Formulário para alterar a senha do usuário
+
+    Attribute senha_atual: Recebe uma string que é a senha do usuário
+    Attribute nova_senha: Recebe uma string que será a nova senha
+    Attribute confirmar_senha: Recebe uma string que confirma a nova senha
+    """
+
     senha_atual = forms.CharField(max_length=30, widget=forms.PasswordInput())
     nova_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
     confirmar_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
 
     @staticmethod
     def validacao(request, form):
+        """Função que valida os dados no form para alterar a senha"""
+
         senha_atual, nova_senha, senha_confirmacao = form.cleaned_data.values()
         user = authenticate(request, username=request.user, password=senha_atual)
 

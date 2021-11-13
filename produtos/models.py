@@ -5,6 +5,16 @@ from django.contrib.auth.models import User
 
 
 class Produto(models.Model):
+    """
+    Model para registrar um produto
+
+    Attribute titulo: Uma string para ser o titulo do produto
+    Attribute preco: Um número decimal que representa o preço do produto
+    Attribute descricao: Uma string para ser uma breve descrição do produto
+    Attribute imagem: Umm arquivo de imagem do produto
+    Attribute id_categoria: Uma fk para uma das categorias
+    """
+
     titulo = models.CharField(max_length=30)
     preco = models.DecimalField(max_digits=12, decimal_places=2)
     descricao = models.CharField(max_length=500)
@@ -26,6 +36,12 @@ class Produto(models.Model):
 
 
 class CategoriasProduto(models.Model):
+    """
+    Model para registrar uma categoria de produto
+
+    Attribute titulo: Uma string para ser o titulo da categoria
+    """
+
     titulo = models.CharField(max_length=20)
 
     @staticmethod
@@ -40,6 +56,13 @@ class CategoriasProduto(models.Model):
 
 
 class ListaDesejo(models.Model):
+    """
+    Model para registrar produtos na lista de desejos de um usuário
+
+    Attribute usuario: Um usuário registrado
+    Attribute id_produto: Uma fk para um produto
+    """
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
 
@@ -63,6 +86,14 @@ class ListaDesejo(models.Model):
 
 
 class CarrinhoCompra(models.Model):
+    """
+    Model para registrar produtos no carrinho de compras de um usuário
+
+    Attribute usuario: Um usuário registrado
+    Attribute id_produto: Uma fk para um produto
+    Attribute quantidade: Um número inteiro para ser a quantidade do produto
+    """
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
@@ -105,6 +136,15 @@ class CarrinhoCompra(models.Model):
 
 
 class Pedido(models.Model):
+    """
+    Model para registrar um pedido realizado pelo usuário
+
+    Attribute usuario: Um usuário registrado
+    Attribute data_pedido: A data em que foi efetuado o pedido
+    Attribute id_transportadora: Uma fk para uma transportadora
+    Attribute id_forma_pagamento: Uma fk para uma forma de pagamento
+    """
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     data_pedido = models.DateField(auto_now=True)
     id_transportadora = models.ForeignKey('Transportadora', on_delete=models.CASCADE, default=1)
@@ -155,6 +195,14 @@ class Pedido(models.Model):
 
 
 class PedidoProduto(models.Model):
+    """
+    Model para registrar os produtos e suas quantidades em um pedido
+
+    Attribute id_pedido: Uma fk de um pedido
+    Attribute id_produto: Uma fk de um produto
+    Attribute quantidade: Um número inteiro para ser a quantidade do produto
+    """
+
     id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
@@ -169,6 +217,13 @@ class PedidoProduto(models.Model):
 
 
 class Transportadora(models.Model):
+    """
+    Model para registrar as transportadoras disponíveis
+
+    Attribute titulo: Uma string para ser o titulo da transportadora
+    Attribute frete: Uma número decimal que será o preço do frete da transportadora
+    """
+
     titulo = models.CharField(max_length=30)
     frete = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -179,6 +234,13 @@ class Transportadora(models.Model):
 
 
 class FormaPagamento(models.Model):
+    """
+    Model para registrar as formas de pagamento disponíveis
+
+    Attribute titulo: Uma string para ser o titulo da forma de pagamento
+    Attribute desconto: O desconto aplicado no pedido com determinada forma de pagamento
+    """
+
     titulo = models.CharField(max_length=30)
     desconto = models.DecimalField(max_digits=3, decimal_places=2)
 
@@ -189,6 +251,9 @@ class FormaPagamento(models.Model):
 
 
 def dados_comuns(usuario):
+    """Função que retorna o número de produtos no carrinho e todas categorias registradas, 
+       dados que são utilizados em diversas partes do projeto"""
+
     carrinho_compra = CarrinhoCompra.receber(usuario)
     categorias = list(CategoriasProduto.objects.all())
     return {

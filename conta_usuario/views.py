@@ -11,6 +11,14 @@ from produtos.models import dados_comuns
 
 
 class RegistrarView(View):
+    """
+    View que renderiza um form de registro para o usuário
+
+    Attribute form_class: Recebe o form que será utilizado no view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     form_class = RegistrarForm
     template_name = 'registrar.html'
     context = {}
@@ -43,11 +51,28 @@ class RegistrarView(View):
 
 
 class LoginView(RegistrarView):
+    """
+    View que renderiza um form de login para o usuário
+
+    Attribute form_class: Recebe o form que será utilizado no view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     form_class = LoginForm
     template_name = 'login.html'
 
 
 class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
+    """
+    View que renderiza um form para o usuário trocar de senha
+
+    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
+    Attribute form_class: Recebe o form que será utilizado no view
+    Attribute template_name: Recebe o template que deve ser renderizado pelo view
+    Attribute context: Um dicionário que será utilizado no template
+    """
+
     login_url = '/conta/login/'
     form_class = AlterarSenhaForm
     template_name = 'alterar_senha.html'
@@ -75,6 +100,8 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
 
 
 def logout_view(request):
+    """Função para deslogar o usuário do sistema"""
+
     if request.user.is_authenticated:
         logout(request)
     return redirect(reverse('home'))
