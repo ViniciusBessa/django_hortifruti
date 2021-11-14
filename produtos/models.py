@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import IntegerField
 from django.shortcuts import get_object_or_404
 from more_itertools import divide
 from django.contrib.auth.models import User
@@ -11,7 +12,7 @@ class Produto(models.Model):
     Attribute titulo: Uma string para ser o titulo do produto
     Attribute preco: Um número decimal que representa o preço do produto
     Attribute descricao: Uma string para ser uma breve descrição do produto
-    Attribute imagem: Umm arquivo de imagem do produto
+    Attribute imagem: Um arquivo de imagem do produto
     Attribute id_categoria: Uma fk para uma das categorias
     """
 
@@ -20,6 +21,7 @@ class Produto(models.Model):
     descricao = models.CharField(max_length=500)
     imagem = models.ImageField()
     id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
+    estoque = models.IntegerField(default=100)
 
     @staticmethod
     def receber_produtos(categorias, numero_produtos, partes):
@@ -211,8 +213,18 @@ class PedidoProduto(models.Model):
     def registrar_pedido(pedido, carrinho, usuario):
         for queryset in carrinho:
             PedidoProduto.objects.create(id_pedido=pedido, id_produto=queryset.id_produto, quantidade=queryset.quantidade)
+            
+            # Retirando da lista de desejos os produtos comprados
             lista_desejo = ListaDesejo.objects.filter(usuario=usuario, id_produto=queryset.id_produto)
             lista_desejo.delete()
+
+            # Diminuindo o estoque do produto pela quantidade comprada
+            produto = queryset.id_produto
+            produto.estoque -= queryset.quantidade
+            if produto.estoque <= 0:
+                produto.estoque = 100
+
+            produto.save()
         carrinho.delete()
 
 

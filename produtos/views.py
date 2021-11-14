@@ -198,7 +198,7 @@ class PaginaFinalizarPedidoView(PaginaListaView):
 
 class AtualizarListaView(LoginRequiredMixin, View):
     """
-    View que atualiza a lista de desejos de um usuário em relação a um produto, se ele já estiver
+    View que atualiza a lista de desejos de um usuário em relação a um produto. Se ele já estiver
     na lista, será retirado da mesma, do contrário, é adicionado a ela
 
     Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
@@ -232,7 +232,7 @@ class AtualizarListaView(LoginRequiredMixin, View):
 
 class AtualizarCarrinhoView(AtualizarListaView):
     """
-    View que atualiza o carrinho de compras de um usuário em relação a um produto, se ele já estiver
+    View que atualiza o carrinho de compras de um usuário em relação a um produto. Se ele já estiver
     no carrinho, será retirado do mesmo, do contrário, é adicionado a ele
 
     Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
