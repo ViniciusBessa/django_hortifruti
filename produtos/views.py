@@ -188,12 +188,13 @@ class PaginaFinalizarPedidoView(PaginaListaView):
         if form.is_valid():
             try:
                 self.model_class.criar_pedido(form, request.user)
+                messages.success(request, 'Pedido efetuado com sucesso')
                 return redirect(reverse('home'))
 
             except ValidationError as erro:
                 messages.error(request, erro)
 
-        return redirect(reverse('lista_desejos')) 
+        return redirect(reverse('finalizar_pedido')) 
 
 
 class AtualizarListaView(LoginRequiredMixin, View):

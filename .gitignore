@@ -68,6 +68,7 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 secret_settings.py
+static/media/*
 
 # Flask stuff:
 instance/
@@ -135,3 +136,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Java files
+*.jar
