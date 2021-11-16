@@ -22,7 +22,7 @@ class PaginaProdutoView(View):
 
     def get(self, request, id_produto, *args, **kwargs):
         produto = get_object_or_404(Produto, id=id_produto)
-        produtos_mesma_categoria = Produto.objects.filter(id_categoria=produto.id_categoria)
+        produtos_mesma_categoria = Produto.mesma_categoria(produto)
         lista_desejos = ListaDesejo.receber(request.user)
         carrinho_compra = CarrinhoCompra.receber(request.user)
 

@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import IntegerField
 from django.shortcuts import get_object_or_404
 from more_itertools import divide
 from django.contrib.auth.models import User
@@ -23,6 +22,9 @@ class Produto(models.Model):
     id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
     estoque = models.IntegerField(default=100)
 
+    def __str__(self):
+        return self.titulo
+
     @staticmethod
     def receber_produtos(categorias, numero_produtos, partes):
         dicionario_produtos: dict = {}
@@ -36,6 +38,12 @@ class Produto(models.Model):
 
         return dicionario_produtos
 
+    @staticmethod
+    def mesma_categoria(produto):
+        produtos = Produto.objects.filter(id_categoria=produto.id_categoria)
+        produtos = [prod for prod in produtos if prod.id != produto.id][:5]
+        return produtos
+
 
 class CategoriasProduto(models.Model):
     """
@@ -45,6 +53,9 @@ class CategoriasProduto(models.Model):
     """
 
     titulo = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.titulo
 
     @staticmethod
     def receber_pagina(categoria):
@@ -67,6 +78,9 @@ class ListaDesejo(models.Model):
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.usuario + ' ' + self.id_produto
 
     @staticmethod
     def receber(usuario):
@@ -99,6 +113,9 @@ class CarrinhoCompra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.usuario + ' ' + self.id_produto
 
     @staticmethod
     def receber(usuario):
@@ -151,6 +168,9 @@ class Pedido(models.Model):
     data_pedido = models.DateField(auto_now=True)
     id_transportadora = models.ForeignKey('Transportadora', on_delete=models.CASCADE, default=1)
     id_forma_pagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE, default=1)
+
+    def __str__(self):
+        return self.usuario + ' ' + self.data_pedido
 
     @staticmethod
     def receber(usuario):
@@ -209,6 +229,9 @@ class PedidoProduto(models.Model):
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
 
+    def __str__(self):
+        return self.id_pedido + ' ' + self.id_produto
+
     @staticmethod
     def registrar_pedido(pedido, carrinho, usuario):
         for queryset in carrinho:
@@ -239,6 +262,9 @@ class Transportadora(models.Model):
     titulo = models.CharField(max_length=30)
     frete = models.DecimalField(max_digits=6, decimal_places=2)
 
+    def __str__(self):
+        return self.titulo
+
     @staticmethod
     def receber():
         transportadoras = [[transportadora.id, transportadora.titulo] for transportadora in Transportadora.objects.all()]
@@ -255,6 +281,9 @@ class FormaPagamento(models.Model):
 
     titulo = models.CharField(max_length=30)
     desconto = models.DecimalField(max_digits=3, decimal_places=2)
+
+    def __str__(self):
+        return self.titulo
 
     @staticmethod
     def receber():
