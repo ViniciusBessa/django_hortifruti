@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row justify-content-center py-4">
             <div class="col-auto d-flex justify-content-center px-0">
-                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" width="250px" height="200px"/></a>
+                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
             </div>
             <div class="col-sm-2">
                 <div>

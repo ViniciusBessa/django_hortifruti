@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center p-2">
             <div class="col-md-4">
-                <img class="img-fluid w-100" src="{% static produto.imagem.path %}"/>
+                <img class="img-fluid w-100" src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}"/>
             </div>
             <div class="col mx-5">
                 <h1>{{ produto.titulo }}</h1>
@@ -46,7 +46,7 @@
             {% for produtos in produtos_mesma_categoria %}
             <div class="col d-flex justify-content-center">
                 <div>
-                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" width="250px" height="200px"/></a>
+                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
                     <h5 class="cor-dinheiro mb-0">R$ {{produtos.preco }}</h5>
                     <p>{{ produtos.titulo }}</p>
                 </div>
