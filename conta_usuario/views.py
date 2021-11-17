@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.views import View
 
 from .forms import RegistrarForm, LoginForm, AlterarSenhaForm
-from produtos.models import dados_comuns
+from dados_comuns import dados_comuns
 
 
 class RegistrarView(View):

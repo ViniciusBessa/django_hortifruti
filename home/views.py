@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from produtos.models import Produto, CategoriasProduto, dados_comuns
+from produtos.models import Produto, CategoriasProduto
+from dados_comuns import dados_comuns
 
 
 class HomeView(View):
