@@ -65,7 +65,7 @@
                             <li class="my-2">
                                 <form id="motor-busca" class="d-flex" action="{% url 'busca' ' ' %}" method="POST"> {% csrf_token %}
                                     <input id="busca-usuario" class="input" type="search" placeholder="Procurar por um produto" maxlength="20" name="busca"/>
-                                    <input onclick="Busca()" type="submit"/>
+                                    <input id="botao-busca" type="submit"/>
                                 </form>
                             </li>
                         </ul>
@@ -112,6 +112,8 @@
             </nav>
             <script src="{% static 'alterar_cor_main.js' %}"></script>
             <script src="{% static 'busca.js' %}"></script>
+            {% block footer %}
+            {% endblock %}
         </footer>
     </body>
 </html>

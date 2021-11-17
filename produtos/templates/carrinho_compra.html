@@ -2,10 +2,6 @@
 {% load static %}
 {% load produtos_filters %}
 
-{% block head %}
-<script src="{% static 'alterar_carrinho.js' %}"></script>
-{% endblock %}
-
 {% block main %}
 <section class="p-3">
     {% if carrinho_compra %}
@@ -24,7 +20,7 @@
                         <p class="mb-1">{{ produto.titulo }}</p>
                         <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
                         <p class="d-inline">Quantidade:</p>
-                        <select id="quantidade-{{ produto.id }}" onchange="alterarCarrinho('{{ produto.id }}')">
+                        <select id="{{ produto.id }}">
                             {% for numero in produto.estoque|range_estoque %}
                             {% if numero == produto|get_quantidade:quantidades %}
                             <option value="{{ numero }}" selected>{{ numero }}</option>
@@ -56,4 +52,8 @@
 
     {% endif %}
 </section>
+{% endblock %}
+
+{% block footer %}
+<script src="{% static 'alterar_carrinho.js' %}"></script>
 {% endblock %}

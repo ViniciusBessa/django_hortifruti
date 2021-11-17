@@ -1,6 +1,10 @@
-function alterarCarrinho(id_produto) {
-  let select_produto = document.getElementById('quantidade-' + id_produto);
-  let quantidade_produto = select_produto.value;
+let selects = document.getElementsByTagName('select')
 
-  location.href = '/alterar_carrinho/' + id_produto + '/' + quantidade_produto
+for (let i = 0; i < selects.length; i++) {
+  let select = selects[i];
+  select.addEventListener('change', function() {
+    let id_produto = select.id;
+    let quantidade_produto = select.value;
+    location.href = '/alterar_carrinho/' + id_produto + '/' + quantidade_produto;
+  })
 }
