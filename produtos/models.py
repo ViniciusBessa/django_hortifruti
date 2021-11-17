@@ -80,7 +80,7 @@ class ListaDesejo(models.Model):
     id_produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario + ' ' + self.id_produto
+        return 'Usuário ' + self.usuario.username + ' Produto ' + self.id_produto.titulo
 
     @staticmethod
     def receber(usuario):
@@ -115,7 +115,7 @@ class CarrinhoCompra(models.Model):
     quantidade = models.IntegerField(default=1)
 
     def __str__(self):
-        return self.usuario + ' ' + self.id_produto
+        return 'Usuário ' + self.usuario.username + ' Produto ' + self.id_produto.titulo
 
     @staticmethod
     def receber(usuario):
@@ -170,7 +170,7 @@ class Pedido(models.Model):
     id_forma_pagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE, default=1)
 
     def __str__(self):
-        return self.usuario + ' ' + self.data_pedido
+        return 'Pedido ' + str(self.id) + ' Usuário ' + self.usuario.username
 
     @staticmethod
     def receber(usuario):
@@ -230,7 +230,7 @@ class PedidoProduto(models.Model):
     quantidade = models.IntegerField(default=1)
 
     def __str__(self):
-        return self.id_pedido + ' ' + self.id_produto
+        return 'Pedido ' + str(self.id_pedido.id) + ' Produto ' + self.id_produto.titulo
 
     @staticmethod
     def registrar_pedido(pedido, carrinho, usuario):
