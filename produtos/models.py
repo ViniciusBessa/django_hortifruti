@@ -59,7 +59,7 @@ class CategoriasProduto(models.Model):
     @staticmethod
     def receber_pagina(categoria):
         categoria = get_object_or_404(CategoriasProduto, titulo=categoria.title())
-        produtos = Produto.objects.filter(id_categoria=categoria)
+        produtos = list(Produto.objects.filter(id_categoria=categoria))
 
         return {
             'categoria': categoria,

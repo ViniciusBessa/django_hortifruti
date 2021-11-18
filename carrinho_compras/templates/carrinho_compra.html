@@ -15,8 +15,8 @@
                 <div class="col-auto d-flex justify-content-center">
                     <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
                 </div>
-                <div class="col-sm-3">
-                    <div>
+                <div class="col-sm-3 d-flex justify-content-center">
+                    <div class="container-detalhes">
                         <p class="mb-1">{{ produto.titulo }}</p>
                         <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
                         <p class="d-inline">Quantidade:</p>
@@ -34,6 +34,11 @@
                     </div>
                 </div>
             </div>
+            {% if produto != carrinho_compra|last %}
+            <div class="d-flex justify-content-center">
+                <hr width="500px"/> 
+            </div>
+            {% endif %}
             {% endfor %}
         </div>
         <div class="col-md-4 d-flex justify-content-center">

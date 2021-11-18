@@ -55,7 +55,7 @@ class BuscaProdutoView(View):
 
     def post(self, request, busca, *args, **kwargs):
         self.context.update(dados_comuns(request.user))
-        produtos_encontrados = Produto.objects.filter(titulo__icontains=busca)
+        produtos_encontrados = list(Produto.objects.filter(titulo__icontains=busca))
 
         self.context.update({
             'busca': busca,

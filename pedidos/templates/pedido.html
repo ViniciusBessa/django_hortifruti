@@ -23,8 +23,8 @@
             <div class="col-auto d-flex justify-content-center">
                 <img src="{% static produto.id_produto.imagem.path %}" alt="Imagem de um(a) {{ produto.id_produto.titulo|lower }}" width="250px" height="200px"/>
             </div>
-            <div class="col-sm-3">
-                <div>
+            <div class="col-sm-3 d-flex justify-content-center">
+                <div class="container-detalhes">
                     <p class="mb-1">{{ produto.id_produto.titulo }}</p>
                     <h5 class="cor-dinheiro">R$ {{produto.id_produto.preco }}</h5>
                     <p class="d-inline">Quantidade: {{ produto.quantidade }}</p> 

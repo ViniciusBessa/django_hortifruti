@@ -16,9 +16,8 @@ class HomeView(View):
     context = {}
 
     def get(self, request, *args, **kwargs):
-        categorias = list(CategoriasProduto.objects.all())
-        produtos_categorias = Produto.receber_produtos(categorias, 4, 2)
         self.context.update(dados_comuns(request.user))
+        produtos_categorias = Produto.receber_produtos(self.context.get('categorias'), 4, 2)
         self.context.update({
             'produtos_categorias': produtos_categorias,
         })
