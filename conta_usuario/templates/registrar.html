@@ -7,7 +7,7 @@
 
 {% block main %}
 <section id="formulario" class="p-5 rounded d-flex justify-content-center">
-    <form class="cor-secundaria borda p-4" action="." method="POST"> {% csrf_token %}
+    <form class="cor-primaria borda p-4" action="." method="POST"> {% csrf_token %}
         {{ form.as_p }}
         <button class="btn btn-outline-secondary" type="submit">Registrar</button>
     </form>

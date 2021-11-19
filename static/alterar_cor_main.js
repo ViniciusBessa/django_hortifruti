@@ -3,7 +3,7 @@ function VerificarFormulario() {
   let formulario = document.getElementById('formulario');
   if (formulario) {
     let main = document.getElementById('main');
-    main.className = "cor-primaria tamanho-pagina mt-5 pt-4";
+    main.className = "cor-secundaria tamanho-pagina mt-5 pt-4";
   }
 }
 

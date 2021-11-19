@@ -1,13 +1,13 @@
 .cor-primaria {
-    background-color: #45CBF3;
-}
-
-.cor-secundaria {
     background-color: white;
 }
 
-.cor-terciaria {
-    background-color: #f8f9fa;
+.cor-secundaria {
+    background-color: #45CBF3;
+}
+
+.cor-footer {
+    background-color: #373c41;
 }
 
 .cor-dinheiro {

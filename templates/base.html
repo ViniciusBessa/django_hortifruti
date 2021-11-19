@@ -14,7 +14,7 @@
         {% block head %}
         {% endblock %}
     </head>
-    <body class="cor-primaria">
+    <body>
         <header>
             <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
@@ -89,7 +89,7 @@
             </nav>
         </header>
 
-        <main id="main" class="cor-secundaria tamanho-pagina mt-5 pt-4">
+        <main id="main" class="cor-primaria tamanho-pagina mt-5 pt-4">
             {% for message in messages %}
             <div class="mx-4 my-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
                 <li>{{ message|cut:'['|cut:']'|cut:"'" }} </li>
@@ -101,8 +101,8 @@
             {% endblock %}
         </main>
 
-        <footer>
-            <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <footer class="cor-footer">
+            <nav class="navbar navbar-expand">
                 <div class="container-fluid">
                     <ul class="navbar-nav d-flex mx-auto">
                         <li>
