@@ -89,7 +89,7 @@
             </nav>
         </header>
 
-        <main id="main" class="cor-primaria tamanho-pagina mt-5 pt-4">
+        <main id="main" class="cor-primaria mt-5 pt-4">
             {% for message in messages %}
             <div class="mx-4 my-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
                 <li>{{ message|cut:'['|cut:']'|cut:"'" }} </li>

@@ -22,10 +22,6 @@
     color:royalblue;
 }
 
-.tamanho-pagina {
-    min-height: 600px;
-}
-
 .input {
     width: 14em;
 }
@@ -48,4 +44,16 @@
 
 .opacidade:hover {
     opacity: 50%;
+}
+
+body {
+    height: 100vh;
+}
+
+main {
+    min-height: 90%;
+}
+
+footer {
+    min-height: 10%;
 }
