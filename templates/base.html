@@ -64,7 +64,7 @@
                         </ul>
                         <ul class="navbar-nav mx-auto">
                             <li class="my-2">
-                                <form id="motor-busca" class="d-flex" action="{% url 'busca' ' ' %}" method="POST"> {% csrf_token %}
+                                <form id="motor-busca" class="d-flex" action="{% url 'busca' ' ' %}" method="GET">
                                     <input id="busca-usuario" class="input" type="search" placeholder="Procurar por um produto" maxlength="20" name="busca"/>
                                     <input id="botao-busca" type="submit"/>
                                 </form>

@@ -50,10 +50,7 @@ class BuscaProdutoView(View):
     template_name = 'busca_produto.html'
     context = {}
 
-    def get(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
-
-    def post(self, request, busca, *args, **kwargs):
+    def get(self, request, busca, *args, **kwargs):
         self.context.update(dados_comuns(request.user))
         produtos_encontrados = list(Produto.objects.filter(titulo__icontains=busca))
 
@@ -63,6 +60,9 @@ class BuscaProdutoView(View):
         })
 
         return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        return redirect(reverse('home'))
 
 
 class PaginaCategoriasView(View):
