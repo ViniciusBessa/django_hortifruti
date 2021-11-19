@@ -49,7 +49,7 @@ class PaginaPedidoView(PaginaTodosPedidosView):
     template_name = 'pedido.html'
 
     def get(self, request, id_pedido, *args, **kwargs):
-        pedido = get_object_or_404(self.model_class, id=id_pedido)
+        pedido = get_object_or_404(self.model_class, usuario=request.user, id=id_pedido)
         self.context.update(dados_comuns(request.user))
         self.context.update(Pedido.receber_pagina_pedido(pedido))
         return render(request, self.template_name, self.context)
