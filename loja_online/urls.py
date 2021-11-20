@@ -28,3 +28,5 @@ urlpatterns = [
     path('', include('pedidos.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = "loja_online.views.page_error_404_view"
