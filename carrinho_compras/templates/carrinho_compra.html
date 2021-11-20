@@ -8,7 +8,7 @@
     <h1 class="text-center mb-5 cor-destaque">Carrinho de compras</h1>
 
     <div class="row">
-        <div class="col">
+        <div class="col my-5">
             <h2 class="text-center cor-destaque">Produtos</h2>
             {% for produto in carrinho_compra %}
             <div class="row justify-content-center py-4">
@@ -41,7 +41,7 @@
             {% endif %}
             {% endfor %}
         </div>
-        <div class="col-md-4 d-flex justify-content-center">
+        <div class="col-md-4 d-flex justify-content-center my-5">
             <div>
                 <h2 class="cor-destaque">Subtotal</h2>
                 <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
