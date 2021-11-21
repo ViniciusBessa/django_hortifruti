@@ -93,9 +93,11 @@ class PedidoProduto(models.Model):
             lista_desejo = ListaDesejo.objects.filter(usuario=usuario, id_produto=queryset.id_produto)
             lista_desejo.delete()
 
-            # Diminuindo o estoque do produto pela quantidade comprada
+            # Retirando do estoque a quantidade comprada, e aumentando o número de vendas
             produto = queryset.id_produto
             produto.estoque -= queryset.quantidade
+            produto.vendas += queryset.quantidade
+
             if produto.estoque <= 0:
                 produto.estoque = 100
 

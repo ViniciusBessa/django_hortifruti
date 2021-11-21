@@ -8,6 +8,22 @@
 
 {% block main %}
 <section class="p-3">
+    <h2 class="cor-destaque">Mais vendidos</h2>
+    <div class="container">
+        <div class="row">
+            {% for produto in produtos_mais_vendidos %}
+            <div class="col d-flex justify-content-center">
+                <div>
+                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
+                    <p class="mb-1">{{ produto.titulo }}</p>
+                    <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <hr/>
+
     {% for categoria in categorias %}
     {% if produtos_categorias|get_values:categoria %}
     <h2 class="cor-destaque">{{ categoria.titulo }}</h2>
@@ -23,7 +39,7 @@
             {% endif %}
                 <div class="container">
                     <div class="row">
-                        {% for produto in produtos%}
+                        {% for produto in produtos %}
                         <div class="col d-flex justify-content-center">
                             <div>
                                 <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>

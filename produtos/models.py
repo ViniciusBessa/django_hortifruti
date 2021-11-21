@@ -20,6 +20,7 @@ class Produto(models.Model):
     imagem = models.ImageField()
     id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
     estoque = models.IntegerField(default=100)
+    vendas = models.IntegerField(default=0)
 
     def __str__(self):
         return self.titulo
@@ -42,6 +43,12 @@ class Produto(models.Model):
         produtos = Produto.objects.filter(id_categoria=produto.id_categoria)
         produtos = [prod for prod in produtos if prod.id != produto.id][:5]
         return produtos
+    
+    @staticmethod
+    def mais_vendidos():
+        produtos = Produto.objects.all()
+        produtos = sorted(produtos, key=lambda produto: produto.vendas, reverse=True)
+        return produtos[:4]
 
 
 class CategoriasProduto(models.Model):
