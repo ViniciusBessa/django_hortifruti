@@ -2,6 +2,10 @@
 {% load static %}
 {% load carrinho_filters %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'botoes.css' %}"/>
+{% endblock %}
+
 {% block main %}
 <section class="p-3">
     {% if carrinho_compra %}
@@ -30,7 +34,11 @@
 
                             {% endif %}
                             {% endfor%}
-                        </select>   
+                        </select>
+                        <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
+                        </form> 
                     </div>
                 </div>
             </div>

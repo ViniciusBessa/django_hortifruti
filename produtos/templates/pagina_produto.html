@@ -18,6 +18,7 @@
                 <p class="my-4">{{ produto.descricao }}</p>
 
                 <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
                     {% if produto in carrinho_compra %}
                     <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
 
@@ -27,6 +28,7 @@
                 </form>
 
                 <form class="my-3" action="{% url 'atualizar_lista' produto.id %}" method="POST"> {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
                     {% if produto in lista_desejos %}
                     <button class="btn botao-lista" type="submit">Retirar da lista de desejos</button>
 
@@ -41,7 +43,7 @@
 
 <section class="p-4">
     <div class="container-fluid">
-        <h1>Produtos semelhantes</h1>
+        <h1 class="cor-destaque">Produtos semelhantes</h1>
         <div class="row">
             {% for produtos in produtos_mesma_categoria %}
             <div class="col d-flex justify-content-center">

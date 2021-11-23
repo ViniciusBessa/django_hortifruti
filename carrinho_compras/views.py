@@ -64,7 +64,10 @@ class AtualizarCarrinhoView(LoginRequiredMixin, View):
             self.model_class.objects.create(usuario=request.user, id_produto=produto)
             messages.success(request, self.mensagem_adicionado)
 
-        return redirect(reverse('pagina_produto', args=(produto.id,)))
+        # Variável utilizada para redirecionar o usuário à página em que ele estava
+        next = request.POST.get('next', '/')
+
+        return redirect(next)
 
 
 class AlterarCarrinhoView(LoginRequiredMixin, View):
