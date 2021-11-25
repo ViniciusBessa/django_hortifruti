@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from produtos.models import Produto
+
+from core.models import Produto
 from dados_comuns import dados_comuns
 
 
@@ -16,10 +17,10 @@ class HomeView(View):
     context = {}
 
     def get(self, request, *args, **kwargs):
+        self.context.update(dados_comuns(request.user))
         produtos_mais_vendidos = Produto.mais_vendidos()
         produtos_categorias = Produto.receber_produtos(self.context.get('categorias'), 4, 2)
 
-        self.context.update(dados_comuns(request.user))
         self.context.update({
             'produtos_categorias': produtos_categorias,
             'produtos_mais_vendidos': produtos_mais_vendidos,

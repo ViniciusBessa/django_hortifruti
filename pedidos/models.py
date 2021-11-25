@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-from produtos.models import Produto
-from lista_desejos.models import ListaDesejo
-from carrinho_compras.models import CarrinhoCompra
+from core.models import Produto, CarrinhoCompra, ListaDesejo
 
 class Pedido(models.Model):
     """

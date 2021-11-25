@@ -1,5 +1,4 @@
-from produtos.models import CategoriasProduto
-from carrinho_compras.models import CarrinhoCompra
+from core.models import CategoriasProduto, CarrinhoCompra
 
 def dados_comuns(usuario):
     """Função que retorna o número de produtos no carrinho e todas categorias registradas, 

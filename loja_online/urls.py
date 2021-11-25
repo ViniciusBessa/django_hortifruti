@@ -22,9 +22,7 @@ from home.views import HomeView
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('conta/', include('conta_usuario.urls'), name='conta'),
-    path('', include('produtos.urls')),
-    path('carrinho/', include('carrinho_compras.urls')),
-    path('lista_desejos/', include('lista_desejos.urls')),
+    path('', include('core.urls')),
     path('', include('pedidos.urls')),
     path('admin/', admin.site.urls),
 ]

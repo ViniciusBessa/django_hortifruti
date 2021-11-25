@@ -10,52 +10,45 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('core', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FormaPagamento',
+            name='CategoriasProduto',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('titulo', models.CharField(max_length=20)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Produto',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('titulo', models.CharField(max_length=30)),
-                ('desconto', models.DecimalField(decimal_places=2, max_digits=3)),
+                ('preco', models.DecimalField(decimal_places=2, max_digits=12)),
+                ('descricao', models.CharField(max_length=500)),
+                ('imagem', models.ImageField(upload_to='')),
+                ('estoque', models.IntegerField(default=100)),
+                ('vendas', models.IntegerField(default=0)),
+                ('id_categoria', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.categoriasproduto')),
             ],
         ),
         migrations.CreateModel(
-            name='Pedido',
+            name='ListaDesejo',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data_pedido', models.DateField(auto_now=True)),
-                ('id_forma_pagamento', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='pedidos.formapagamento')),
+                ('id_produto', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.produto')),
+                ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
-            name='Transportadora',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titulo', models.CharField(max_length=30)),
-                ('frete', models.DecimalField(decimal_places=2, max_digits=6)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='PedidoProduto',
+            name='CarrinhoCompra',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantidade', models.IntegerField(default=1)),
-                ('id_pedido', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pedidos.pedido')),
                 ('id_produto', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.produto')),
+                ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
-        ),
-        migrations.AddField(
-            model_name='pedido',
-            name='id_transportadora',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='pedidos.transportadora'),
-        ),
-        migrations.AddField(
-            model_name='pedido',
-            name='usuario',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]
