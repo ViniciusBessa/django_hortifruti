@@ -22,6 +22,9 @@ class CarrinhoCompra(models.Model):
 
     @staticmethod
     def receber(usuario):
+        """Método que retorna uma lista dos produtos no carrinho do usuário, ordenados em 
+        ordem alfabética"""
+
         if usuario.is_authenticated:
             carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
             carrinho_compra = [lista.id_produto for lista in carrinho_compra]
@@ -33,18 +36,24 @@ class CarrinhoCompra(models.Model):
 
     @staticmethod
     def receber_soma_carrinho(usuario):
+        """Método que retorna a soma de todos produtos no carrinho do usuário"""
+
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         subtotal = sum(lista.id_produto.preco * lista.quantidade for lista in carrinho_compra)
         return subtotal
 
     @staticmethod
     def receber_quantidade_produtos(usuario):
+        """Método que retorna um dicionário com a quantidade de cada produto no carrinho do usuário"""
+
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
         quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
         return quantidades
 
     @staticmethod
     def receber_pagina(usuario):
+        """Método que retorna um dicionário com os dados utilizados pelo view PaginaCarrinhoView"""
+
         carrinho_compra = CarrinhoCompra.receber(usuario)
         subtotal = CarrinhoCompra.receber_soma_carrinho(usuario)
         produtos_quantidades = CarrinhoCompra.receber_quantidade_produtos(usuario)

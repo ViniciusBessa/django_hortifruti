@@ -81,7 +81,6 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
         form = self.form_class()
         self.context.update(dados_comuns(request.user))
         self.context.update({'form': form})
-
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):

@@ -25,6 +25,7 @@ class PaginaProdutoView(View):
         lista_desejos = ListaDesejo.receber(request.user)
         carrinho_compra = CarrinhoCompra.receber(request.user)
 
+        self.context.update(dados_comuns(request.user))
         self.context.update({
             'produto': produto,
             'produtos_mesma_categoria': produtos_mesma_categoria,
@@ -32,7 +33,7 @@ class PaginaProdutoView(View):
             'lista_desejos': lista_desejos,
             'carrinho_compra': carrinho_compra,
         })
-        self.context.update(dados_comuns(request.user))
+
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):

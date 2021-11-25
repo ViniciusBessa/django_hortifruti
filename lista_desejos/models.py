@@ -20,6 +20,8 @@ class ListaDesejo(models.Model):
 
     @staticmethod
     def receber(usuario):
+        """Método que retorna uma lista de todos produtos na lista de desejos do usuário"""
+
         if usuario.is_authenticated:
             lista_desejos = ListaDesejo.objects.filter(usuario=usuario)
             lista_desejos = [lista.id_produto for lista in lista_desejos]
@@ -31,6 +33,8 @@ class ListaDesejo(models.Model):
 
     @staticmethod
     def receber_pagina(usuario):
+        """Método que retorna um dicionário com os dados utilizados pelo view PaginaListaView"""
+
         lista_desejos = ListaDesejo.receber(usuario)
         return {
             'lista_desejos': lista_desejos, 

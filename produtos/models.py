@@ -40,12 +40,16 @@ class Produto(models.Model):
 
     @staticmethod
     def mesma_categoria(produto):
+        """Método que retorna alguns produtos da mesma categoria do argumento produto"""
+
         produtos = Produto.objects.filter(id_categoria=produto.id_categoria)
-        produtos = [prod for prod in produtos if prod.id != produto.id][:5]
+        produtos = [prod for prod in produtos if prod.id != produto.id][:4]
         return produtos
-    
+
     @staticmethod
     def mais_vendidos():
+        """Método que retorna os produtos mais vendidos"""
+
         produtos = Produto.objects.all()
         produtos = sorted(produtos, key=lambda produto: produto.vendas, reverse=True)
         return produtos[:4]
