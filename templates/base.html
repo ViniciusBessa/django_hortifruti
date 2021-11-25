@@ -9,6 +9,7 @@
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>
         <link href="{% static 'base.css' %}" rel="stylesheet"/>
+        <link href="{% static 'botoes.css' %}" rel="stylesheet"/>
         <link href="{% static 'container_detalhes.css' %}" rel="stylesheet"/>
 
         {% block head %}
@@ -66,7 +67,7 @@
                             <li class="my-2">
                                 <form id="motor-busca" class="d-flex" action="{% url 'busca' ' ' %}" method="GET">
                                     <input id="busca-usuario" class="input" type="search" placeholder="Procurar por um produto..." maxlength="20" name="busca"/>
-                                    <input id="botao-busca" type="submit"/>
+                                    <button id="botao-busca" class="btn botao-busca rounded-end btn-sm" type="submit">Buscar</button>
                                 </form>
                             </li>
                         </ul>

@@ -1,19 +1,33 @@
 .botao-carrinho {
+    border: 1px solid #3972BE;
+    background-color: none;
+    color: #3972BE;
+}
+
+.botao-carrinho:hover {
     background-color: #3972BE;
     color: white;
 }
 
-.botao-carrinho:hover {
-    opacity: 75%;
-    color: white;
+.botao-lista {
+    border: 1px solid #EFAD00;;
+    background-color: none;
+    color: #EFAD00;
 }
 
-.botao-lista {
+.botao-lista:hover {
     background-color: #EFAD00;
     color: white;
 }
 
-.botao-lista:hover {
-    opacity: 75%;
+.botao-busca {
+    border: 1px solid green;
+    border-radius: 0%;
+    background-color: none;
+    color: green;
+}
+
+.botao-busca:hover {
+    background-color: green;
     color: white;
 }

@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 
 from core.models import Produto, CarrinhoCompra, ListaDesejo
 
+
 class Pedido(models.Model):
     """
     Model para registrar um pedido realizado pelo usuário
