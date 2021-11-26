@@ -145,4 +145,7 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+# URL do login
+LOGIN_URL = '/conta/login/'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

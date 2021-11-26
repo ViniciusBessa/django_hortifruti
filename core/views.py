@@ -83,13 +83,11 @@ class PaginaCarrinhoView(LoginRequiredMixin, View):
     """
     View que renderiza a página do carrinho de compras do usuário
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute template_name: Recebe o template que deve ser renderizado pelo view
     Attribute context: Um dicionário que será utilizado no template
     """
 
-    login_url = '/conta/login/'
     model_class = CarrinhoCompra
     template_name = 'carrinho_compra.html'
     context = {}
@@ -107,7 +105,6 @@ class PaginaListaView(PaginaCarrinhoView):
     """
     View que renderiza a página da lista de desejos do usuário
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute template_name: Recebe o template que deve ser renderizado pelo view
     Attribute context: Um dicionário que será utilizado no template
@@ -122,13 +119,11 @@ class AtualizarCarrinhoView(LoginRequiredMixin, View):
     View que atualiza o carrinho de compras de um usuário em relação a um produto. Se ele já estiver
     no carrinho, será retirado do mesmo, do contrário, é adicionado a ele
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute mensagem_retirado: Mensagem que será mostrada ao usuário retirar o produto
     Attribute mensagem_adicionado: Mensagem que será mostrada ao usuário adicionar o produto
     """
 
-    login_url = '/conta/login/'
     model_class = CarrinhoCompra
     mensagem_retirado = 'Produto retirado do carrinho de compras'
     mensagem_adicionado = 'Produto adicionado ao carrinho de compras'
@@ -159,7 +154,6 @@ class AtualizarListaView(AtualizarCarrinhoView):
     View que atualiza a lista de desejos de um usuário em relação a um produto. Se ele já estiver
     na lista, será retirado da mesma, do contrário, é adicionado a ela
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute mensagem_retirado: Mensagem que será mostrada ao usuário retirar o produto
     Attribute mensagem_adicionado: Mensagem que será mostrada ao usuário adicionar o produto
@@ -173,11 +167,7 @@ class AtualizarListaView(AtualizarCarrinhoView):
 class AlterarCarrinhoView(LoginRequiredMixin, View):
     """
     View utilizado para alterar a quantidade de um produto no carrinho de compras do usuário
-
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     """
-
-    login_url = '/conta/login/'
 
     def get(self, request, id_produto, quantidade, *args, **kwargs):
         produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, id_produto=id_produto)

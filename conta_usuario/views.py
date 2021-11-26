@@ -67,13 +67,11 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
     """
     View que renderiza um form para o usuário trocar de senha
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute form_class: Recebe o form que será utilizado no view
     Attribute template_name: Recebe o template que deve ser renderizado pelo view
     Attribute context: Um dicionário que será utilizado no template
     """
 
-    login_url = '/conta/login/'
     form_class = AlterarSenhaForm
     template_name = 'alterar_senha.html'
 

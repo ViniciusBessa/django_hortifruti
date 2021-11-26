@@ -14,13 +14,11 @@ class PaginaTodosPedidosView(LoginRequiredMixin, View):
     """
     View que renderiza uma página com todos os pedidos já efetuados pelo usuário
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute template_name: Recebe o template que deve ser renderizado pelo view
     Attribute context: Um dicionário que será utilizado no template
     """
 
-    login_url = '/conta/login/'
     model_class = Pedido
     template_name = 'todos_pedidos.html'
     context = {}
@@ -39,7 +37,6 @@ class PaginaPedidoView(PaginaTodosPedidosView):
     View que renderiza a página de um pedido escolhido pelo usuário, mostrando informações
     como data do pedido, forma de pagamento, quantidade dos produtos, etc
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute template_name: Recebe o template que deve ser renderizado pelo view
     Attribute context: Um dicionário que será utilizado no template
@@ -60,7 +57,6 @@ class PaginaFinalizarPedidoView(PaginaTodosPedidosView):
     View que renderiza um form em que o usuário escolhe a transportadora e a forma de pagamento
     do pedido
 
-    Attribute login_url: URL que o usuário será redirecionado caso não esteja logado
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute form_class: Recebe o form que será utilizado no view
     Attribute template_name: Recebe o template que deve ser renderizado pelo view
