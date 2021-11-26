@@ -3,8 +3,8 @@
 
 Atualmente, o projeto possui:
 
-- Sistema de usuário
-- Sistema de produtos
+- Sistema de registro, login e alteração da senha do usuário
+- Sistema de produtos com imagem, preço, categoria, etc
 - Busca de produtos por nome
 - Lista de desejos
 - Carrinho de compras
@@ -18,7 +18,7 @@ pip install -r requirements.txt
 ```
 
 ## Executando no servidor local
-Para executar no servidor local, pasta estar na pasta do projeto e executar o comando:
+Para executar no servidor local, basta estar na pasta do projeto e usar o comando:
 
 ```sh
 python manage.py runserver
