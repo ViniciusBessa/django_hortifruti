@@ -1,7 +1,9 @@
 # django_loja_online
 > Um projeto django de uma loja online
 
-Atualmente, o projeto possui:
+[Aqui você pode visitar o site hospedado no heroku.](https://django-loja-online.herokuapp.com/ "Site do projeto")
+
+Atualmente possui:
 
 - Sistema de registro, login e alteração da senha do usuário
 - Sistema de produtos com imagem, preço, categoria, etc
@@ -11,7 +13,7 @@ Atualmente, o projeto possui:
 - Sistema de pedidos
 
 ## Instalando as dependências
-Para instalar as dependências do projeto, basta ir até sua pasta e executar o seguinte comando:
+Para instalar as dependências, basta ir até sua pasta e executar o seguinte comando:
 
 ```sh
 pip install -r requirements.txt
