@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import HASH_SESSION_KEY, authenticate, login
 import re
 
 regex_email = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -16,9 +16,17 @@ class RegistrarForm(forms.Form):
     Attribute email: Recebe uma string que é um e-mail válido
     """
 
-    usuario = forms.CharField(max_length=20, label='Usuário')
-    senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
-    email = forms.CharField(max_length=30)
+    usuario = forms.CharField(
+        max_length=20, label=False, widget=forms.TextInput(attrs={'placeholder': 'Usuário'})
+        )
+
+    senha = forms.CharField(
+        max_length=30, label=False, widget=forms.PasswordInput(attrs={'placeholder': 'Senha'}) 
+        )
+
+    email = forms.CharField(
+        max_length=20, label=False, widget=forms.TextInput(attrs={'placeholder': 'Email'}) 
+        )
 
     @staticmethod
     def validacao(request, form):
@@ -48,8 +56,13 @@ class LoginForm(forms.Form):
     Attribute senha: Recebe uma string que é a senha
     """
 
-    usuario = forms.CharField(max_length=20, label='Usuário')
-    senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
+    usuario = forms.CharField(
+        max_length=20, label=False, widget=forms.TextInput(attrs={'placeholder': 'Usuário'})
+        )
+
+    senha = forms.CharField(
+        max_length=30, label=False, widget=forms.PasswordInput(attrs={'placeholder': 'Senha'}) 
+        )
 
     @staticmethod
     def validacao(request, form):
@@ -75,9 +88,17 @@ class AlterarSenhaForm(forms.Form):
     Attribute confirmar_senha: Recebe uma string que confirma a nova senha
     """
 
-    senha_atual = forms.CharField(max_length=30, widget=forms.PasswordInput())
-    nova_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
-    confirmar_senha = forms.CharField(max_length=30, widget=forms.PasswordInput())
+    senha_atual = forms.CharField(
+        max_length=30, label=False, widget=forms.PasswordInput(attrs={'placeholder': 'Senha atual'}) 
+        )
+
+    nova_senha = forms.CharField(
+        max_length=30, label=False, widget=forms.PasswordInput(attrs={'placeholder': 'Nova senha'}) 
+        )
+
+    confirmar_senha = forms.CharField(
+        max_length=30, label=False, widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar senha'}) 
+        )
 
     @staticmethod
     def validacao(request, form):

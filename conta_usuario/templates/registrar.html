@@ -3,13 +3,20 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'bordas.css' %}"/>
+<link rel="stylesheet" href="{% static 'botoes.css' %}"/>
 {% endblock %}
 
 {% block main %}
-<section id="formulario" class="p-5 rounded d-flex justify-content-center">
-    <form class="cor-primaria borda p-4" action="." method="POST"> {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-outline-secondary" type="submit">Registrar</button>
-    </form>
+<section class="p-5 d-flex justify-content-center">
+    <div class="p-3">
+        <h1 class="cor-destaque">Cadastro</h1>
+        <hr class="mb-4"/>
+        <div class="d-flex justify-content-start">
+            <form action="." method="POST"> {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-outline-secondary botao-form" type="submit">Registrar</button>
+            </form>
+        </div>
+    </div>
 </section>
 {% endblock %}
