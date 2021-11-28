@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.contrib.auth import HASH_SESSION_KEY, authenticate, login
+from django.contrib.auth import authenticate, login
 import re
 
 regex_email = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'

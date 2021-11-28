@@ -4,8 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views import View
 
-from .models import CategoriasProduto, Produto, CarrinhoCompra, ListaDesejo
-from dados_comuns import dados_comuns
+from .models import CategoriasProduto, Produto, CarrinhoCompra, ListaDesejo, dados_comuns
 
 
 class PaginaProdutoView(View):

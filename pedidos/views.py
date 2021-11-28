@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 from .forms import FinalizarPedido
 from .models import Pedido
-from dados_comuns import dados_comuns
+from core.models import dados_comuns
 
 
 class PaginaTodosPedidosView(LoginRequiredMixin, View):
