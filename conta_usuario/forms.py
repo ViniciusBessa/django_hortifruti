@@ -118,5 +118,4 @@ class AlterarSenhaForm(forms.Form):
 
         user.set_password(nova_senha)
         user.save()
-
         login(request, user)
