@@ -116,7 +116,7 @@ class PaginaListaView(PaginaCarrinhoView):
 class AtualizarCarrinhoView(LoginRequiredMixin, View):
     """
     View que atualiza o carrinho de compras de um usuário em relação a um produto. Se ele já estiver
-    no carrinho, será retirado do mesmo, do contrário, é adicionado a ele
+    no carrinho, será retirado do mesmo, caso contrário é adicionado a ele
 
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute mensagem_retirado: Mensagem que será mostrada ao usuário retirar o produto
@@ -151,7 +151,7 @@ class AtualizarCarrinhoView(LoginRequiredMixin, View):
 class AtualizarListaView(AtualizarCarrinhoView):
     """
     View que atualiza a lista de desejos de um usuário em relação a um produto. Se ele já estiver
-    na lista, será retirado da mesma, do contrário, é adicionado a ela
+    na lista, será retirado da mesma, caso contrário é adicionado a ela
 
     Attribute model_class: Recebe o model que será utilizado pelo view
     Attribute mensagem_retirado: Mensagem que será mostrada ao usuário retirar o produto

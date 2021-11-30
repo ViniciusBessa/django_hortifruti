@@ -25,6 +25,8 @@ class Pedido(models.Model):
 
     @staticmethod
     def receber(usuario):
+        """Método que retorna todos os pedidos feitos por um usuário"""
+
         if usuario.is_authenticated:
             pedidos = Pedido.objects.filter(usuario=usuario)
 
@@ -35,6 +37,8 @@ class Pedido(models.Model):
 
     @staticmethod
     def receber_pagina(usuario):
+        """Método que retorna um dicionário com os dados utilizados pelo view PaginaTodosPedidosView"""
+
         pedidos = Pedido.receber(usuario)
         primeiro_produto_pedidos = {}
         for pedido in pedidos:
@@ -48,6 +52,8 @@ class Pedido(models.Model):
 
     @staticmethod
     def receber_pagina_pedido(pedido):
+        """Método que retorna um dicionário com os dados utilizados pelo view PaginaPedidoView"""
+
         produtos = list(PedidoProduto.objects.filter(id_pedido=pedido))
         soma_produtos = sum([produto.id_produto.preco * produto.quantidade for produto in produtos])
         valor_final = (soma_produtos - soma_produtos * pedido.id_forma_pagamento.desconto) + pedido.id_transportadora.frete
@@ -58,6 +64,8 @@ class Pedido(models.Model):
 
     @staticmethod
     def criar_pedido(form, usuario):
+        """Método utilizado para criar um novo pedido do usuário"""
+
         transportadora, forma_pagamento = form.cleaned_data.values()
         transportadora = get_object_or_404(Transportadora, id=int(transportadora))
         forma_pagamento = get_object_or_404(FormaPagamento, id=int(forma_pagamento))
@@ -85,6 +93,10 @@ class PedidoProduto(models.Model):
 
     @staticmethod
     def registrar_pedido(pedido, carrinho, usuario):
+        """Método utilizado para registrar todos produtos de um pedido, retirar produtos comprados da
+        lista de desejos, retira a quantidade comprada do estoque e aumenta o número de vendas do
+        produto"""
+
         for queryset in carrinho:
             PedidoProduto.objects.create(id_pedido=pedido, id_produto=queryset.id_produto, quantidade=queryset.quantidade)
             
@@ -120,6 +132,8 @@ class Transportadora(models.Model):
 
     @staticmethod
     def receber():
+        """Método que retorna uma lista com sublistas contendo o id de cada transportadora e seu nome"""
+
         transportadoras = [[transportadora.id, transportadora.titulo] for transportadora in Transportadora.objects.all()]
         return transportadoras
 
@@ -140,5 +154,8 @@ class FormaPagamento(models.Model):
 
     @staticmethod
     def receber():
+        """Método que retorna uma lista com sublistas contendo o id de cada forma de pagamento 
+        e seu nome"""
+
         formas_pagamento = [[forma_pagamento.id, forma_pagamento.titulo] for forma_pagamento in FormaPagamento.objects.all()]
         return formas_pagamento

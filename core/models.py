@@ -28,6 +28,8 @@ class Produto(models.Model):
 
     @staticmethod
     def receber_produtos(categorias, numero_produtos, partes):
+        """Método que retorna alguns produtos das categorias passadas como argumento"""
+
         dicionario_produtos: dict = {}
         for categoria in categorias:
             produtos_da_categoria = Produto.objects.filter(id_categoria=categoria)[:numero_produtos]
@@ -57,6 +59,8 @@ class Produto(models.Model):
 
     @staticmethod
     def receber_pagina(produto, usuario):
+        """Método que retorna um dicionário com os dados utilizados pelo view PaginaProdutoView"""
+
         produtos_mesma_categoria = Produto.mesma_categoria(produto)
         lista_desejos = ListaDesejo.receber(usuario)
         carrinho_compra = CarrinhoCompra.receber(usuario)
@@ -84,6 +88,8 @@ class CategoriasProduto(models.Model):
 
     @staticmethod
     def receber_pagina(categoria):
+        """Método que retorna um dicionário com os dados utilizados pelo view PaginaCategoriasView"""
+
         categoria = get_object_or_404(CategoriasProduto, titulo=categoria.title())
         produtos = list(Produto.objects.filter(id_categoria=categoria))
 
