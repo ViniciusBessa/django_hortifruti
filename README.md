@@ -1,5 +1,5 @@
 # django_loja_online
-> Um projeto Django de uma loja online
+> Um projeto Django de um hortifrúti
 
 [Aqui você pode visitar o site hospedado no heroku.](https://django-loja-online.herokuapp.com/ "Site do projeto")
 
