@@ -1,7 +1,7 @@
-# django_loja_online
+# django_hortifruti
 > Um projeto Django de um hortifrúti
 
-[Aqui você pode visitar o site hospedado no heroku.](https://django-loja-online.herokuapp.com/ "Site do projeto")
+[Aqui você pode visitar o site hospedado no heroku.](https://django-hortifruti.herokuapp.com/ "Site do projeto")
 
 Atualmente possui:
 
