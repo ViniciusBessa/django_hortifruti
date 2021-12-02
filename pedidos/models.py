@@ -75,7 +75,8 @@ class Pedido(models.Model):
             pedido = Pedido.objects.create(usuario=usuario, id_transportadora=transportadora, id_forma_pagamento=forma_pagamento)
             PedidoProduto.registrar_pedido(pedido, carrinho, usuario)
 
-        raise ValidationError('Seu carrinho de compras está vazio')
+        else:
+            raise ValidationError('Seu carrinho de compras está vazio')
 
 
 class PedidoProduto(models.Model):
