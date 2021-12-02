@@ -1,10 +1,10 @@
 let selects = document.getElementsByTagName('select');
+selects = Array.from(selects);
 
-for (let i = 0; i < selects.length; i++) {
-  let select = selects[i];
-  select.addEventListener('change', function() {
-    let idProduto = select.id;
-    let quantidadeProduto = select.value;
-    location.href = 'alterar/' + idProduto + '/' + quantidadeProduto;
-  })
-}
+selects.forEach(function (item) {
+  item.addEventListener('change', function() {
+  let idProduto = item.id;
+  let quantidadeProduto = item.value;
+  location.href = 'alterar/' + idProduto + '/' + quantidadeProduto;
+  });
+});

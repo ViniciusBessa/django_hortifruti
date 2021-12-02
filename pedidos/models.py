@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 
 from core.models import Produto, CarrinhoCompra, ListaDesejo
 
@@ -73,6 +74,8 @@ class Pedido(models.Model):
         if carrinho:
             pedido = Pedido.objects.create(usuario=usuario, id_transportadora=transportadora, id_forma_pagamento=forma_pagamento)
             PedidoProduto.registrar_pedido(pedido, carrinho, usuario)
+
+        raise ValidationError('Seu carrinho de compras está vazio')
 
 
 class PedidoProduto(models.Model):
