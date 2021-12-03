@@ -144,7 +144,6 @@ class AtualizarCarrinhoView(LoginRequiredMixin, View):
 
         # Variável utilizada para redirecionar o usuário à página em que ele estava
         next = request.POST.get('next', '/')
-
         return redirect(next)
 
 

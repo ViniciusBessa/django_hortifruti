@@ -59,7 +59,9 @@ class Pedido(models.Model):
         soma_produtos = sum([produto.id_produto.preco * produto.quantidade for produto in produtos])
         valor_final = (soma_produtos - soma_produtos * pedido.id_forma_pagamento.desconto) + pedido.id_transportadora.frete
         return {
-            'pedido': pedido, 'produtos': produtos, 'soma_produtos': soma_produtos, 
+            'pedido': pedido, 
+            'produtos': produtos, 
+            'soma_produtos': soma_produtos, 
             'valor_final': valor_final,
         }
 
@@ -71,6 +73,7 @@ class Pedido(models.Model):
         transportadora = get_object_or_404(Transportadora, id=int(transportadora))
         forma_pagamento = get_object_or_404(FormaPagamento, id=int(forma_pagamento))
         carrinho = CarrinhoCompra.objects.filter(usuario=usuario)
+
         if carrinho:
             pedido = Pedido.objects.create(usuario=usuario, id_transportadora=transportadora, id_forma_pagamento=forma_pagamento)
             PedidoProduto.registrar_pedido(pedido, carrinho, usuario)

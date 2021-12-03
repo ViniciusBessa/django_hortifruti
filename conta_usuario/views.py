@@ -37,6 +37,7 @@ class RegistrarView(View):
             return redirect(reverse('home'))
 
         form = self.form_class(request.POST)
+
         if form.is_valid():
             try:
                 self.form_class.validacao(request, form)
@@ -83,6 +84,7 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
+
         if form.is_valid():
             try:
                 self.form_class.validacao(request, form)
