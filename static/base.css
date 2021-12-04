@@ -57,3 +57,11 @@ main {
 footer {
     min-height: 10%;
 }
+
+input:focus {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+}
