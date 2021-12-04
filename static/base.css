@@ -65,3 +65,7 @@ input:focus {
 a {
     text-decoration: none;
 }
+
+a:hover {
+    text-decoration: underline #0d6efd 1px;
+}
