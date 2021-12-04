@@ -46,6 +46,30 @@
     opacity: 50%;
 }
 
+.footer-item {
+    color: lightgray;
+}
+
+.footer-link{
+    display: block;
+    color: gray;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    display: block;
+    color: gray;
+    text-decoration: underline gray 1px;
+}
+
+.link-pedido {
+    text-decoration: none;
+}
+
+.link-pedido:hover {
+    text-decoration: underline #0d6efd 1px;
+}
+
 body {
     height: 100vh;
 }
@@ -60,12 +84,4 @@ footer {
 
 input:focus {
     outline: none;
-}
-
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline #0d6efd 1px;
 }
