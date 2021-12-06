@@ -45,8 +45,8 @@
             {% endif %}
             {% endfor %}
         </div>
-        <div class="col-md-4 d-flex justify-content-center my-5">
-            <div>
+        <div class="col d-flex justify-content-center my-5">
+            <div class="text-center">
                 <h2 class="cor-destaque">Subtotal</h2>
                 <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
                 <a class="btn btn-outline-secondary my-2" href="{% url 'finalizar_pedido' %}">Finalizar o pedido</a> 
