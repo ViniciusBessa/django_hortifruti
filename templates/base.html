@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
     {% load static %}
     <head>
         <meta charset="UTF-8"/>
@@ -55,7 +55,7 @@
                             {% if request.user.is_authenticated %}
                             <li>
                                 <a class="nav-link d-inline-block" href="{% url 'carrinho' %}">
-                                    <img src="{% static 'shopping_cart.png' %}" alt="Imagem de um carrinho de compras" width="40px" height="28px">
+                                    <img src="{% static 'shopping_cart.png' %}" alt="Imagem de um carrinho de compras" width="40" height="28">
                                     {% if numero_produtos_carrinho %}
                                     <span class="numero-carrinho">{{ numero_produtos_carrinho }}</span>
                                     {% endif %}

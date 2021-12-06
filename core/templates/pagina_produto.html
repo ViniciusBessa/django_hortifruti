@@ -44,7 +44,7 @@
             {% for produtos in produtos_mesma_categoria %}
             <div class="col d-flex justify-content-center">
                 <div>
-                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
+                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
                     <h5 class="cor-dinheiro mb-0">R$ {{produtos.preco }}</h5>
                     <p>{{ produtos.titulo }}</p>
                 </div>

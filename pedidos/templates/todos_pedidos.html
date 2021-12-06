@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-center my-3">
-            <img src="{% static produto_pedidos|get_image:pedido.id %}" alt="Imagem do primeiro produto do pedido" width="250px" height="200px"/>
+            <img src="{% static produto_pedidos|get_image:pedido.id %}" alt="Imagem do primeiro produto do pedido" width="250" height="200"/>
         </div>
         <div class="d-flex justify-content-center">
             <a class="link-pedido" href="{% url 'pagina_pedido' pedido.id %}">Visualizar pedido</a>

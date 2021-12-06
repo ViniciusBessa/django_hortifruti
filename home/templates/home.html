@@ -14,7 +14,7 @@
             {% for produto in produtos_mais_vendidos %}
             <div class="col d-flex justify-content-center">
                 <div>
-                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
+                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
                     <p class="mb-1">{{ produto.titulo }}</p>
                     <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
                 </div>
@@ -42,7 +42,7 @@
                         {% for produto in produtos %}
                         <div class="col d-flex justify-content-center">
                             <div>
-                                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250px" height="200px"/></a>
+                                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
                                 <p class="mb-1">{{ produto.titulo }}</p>
                                 <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
                             </div>
