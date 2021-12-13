@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
@@ -98,9 +99,9 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
         return render(request, self.template_name, self.context)
 
 
+@login_required
 def logout_view(request):
     """Função para deslogar o usuário do sistema"""
 
-    if request.user.is_authenticated:
-        logout(request)
+    logout(request)
     return redirect(reverse('home'))
