@@ -113,7 +113,7 @@ class CarrinhoCompra(models.Model):
     quantidade = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"'Usuário {self.usuario.username} - Produto {self.produto.titulo}"
+        return f"Usuário {self.usuario.username} - Produto {self.produto.titulo}"
 
     @staticmethod
     def receber(usuario):
@@ -173,7 +173,7 @@ class ListaDesejo(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"'Usuário {self.usuario.username} - Produto {self.produto.titulo}"
+        return f"Usuário {self.usuario.username} - Produto {self.produto.titulo}"
 
     @staticmethod
     def receber(usuario):
