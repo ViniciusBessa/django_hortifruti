@@ -135,11 +135,11 @@ class AtualizarCarrinhoView(LoginRequiredMixin, View):
         produto = get_object_or_404(Produto, id=id_produto)
 
         if produto in query_model:
-            self.model_class.objects.filter(usuario=request.user, id_produto=produto).delete()
+            self.model_class.objects.filter(usuario=request.user, produto=produto).delete()
             messages.success(request, self.mensagem_retirado)
 
         else:
-            self.model_class.objects.create(usuario=request.user, id_produto=produto)
+            self.model_class.objects.create(usuario=request.user, produto=produto)
             messages.success(request, self.mensagem_adicionado)
 
         # Variável utilizada para redirecionar o usuário à página em que ele estava
@@ -168,7 +168,7 @@ class AlterarCarrinhoView(LoginRequiredMixin, View):
     """
 
     def get(self, request, id_produto, quantidade, *args, **kwargs):
-        produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, id_produto=id_produto)
+        produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, produto=id_produto)
         produto_carrinho.quantidade = quantidade
         produto_carrinho.save()
         return redirect(reverse('carrinho'))

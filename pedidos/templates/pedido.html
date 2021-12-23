@@ -12,8 +12,8 @@
         <h4 class="cor-destaque">Informações do pedido</h4>
         <p class="mb-2">Número do pedido: {{pedido.id}}</p>
         <p class="mb-2">Data do pedido: {{pedido.data_pedido|date:"d/m/Y"}}</p>
-        <p class="mb-2">Transportadora: {{ pedido.id_transportadora.titulo }}</p>
-        <p class="mb-2">Forma de pagamento: {{ pedido.id_forma_pagamento.titulo }}</p>
+        <p class="mb-2">Transportadora: {{ pedido.transportadora.titulo }}</p>
+        <p class="mb-2">Forma de pagamento: {{ pedido.forma_pagamento.titulo }}</p>
     </div>
 
     <div class="px-2 py-1 my-3 container borda-grande">
@@ -21,12 +21,12 @@
         {% for produto in produtos %}
         <div class="row justify-content-center py-4">
             <div class="col-auto d-flex justify-content-center">
-                <img src="{% static produto.id_produto.imagem.path %}" alt="Imagem de um(a) {{ produto.id_produto.titulo|lower }}" width="250" height="200"/>
+                <img src="{% static produto.produto.imagem.path %}" alt="Imagem de um(a) {{ produto.produto.titulo|lower }}" width="250" height="200"/>
             </div>
             <div class="col-sm-3 d-flex justify-content-center">
                 <div class="container-detalhes">
-                    <p class="mb-1">{{ produto.id_produto.titulo }}</p>
-                    <h5 class="cor-dinheiro">R$ {{produto.id_produto.preco }}</h5>
+                    <p class="mb-1">{{ produto.produto.titulo }}</p>
+                    <h5 class="cor-dinheiro">R$ {{produto.produto.preco }}</h5>
                     <p class="d-inline">Quantidade: {{ produto.quantidade }}</p> 
                 </div>
             </div>
@@ -39,9 +39,9 @@
 
     <div class="px-2 py-1 my-3 container borda-grande">
         <h4 class="cor-destaque">Valor total</h4>
-        <p class="mb-2">Frete: R${{ pedido.id_transportadora.frete }}</p>
+        <p class="mb-2">Frete: R${{ pedido.transportadora.frete }}</p>
         <p class="mb-2">Valor dos produtos: R${{ soma_produtos|floatformat:2 }}</p>
-        <p class="mb-2">Desconto da forma de pagamento: {{pedido.id_forma_pagamento.desconto|multi:100|floatformat}}%</p>
+        <p class="mb-2">Desconto da forma de pagamento: {{pedido.forma_pagamento.desconto|multi:100|floatformat}}%</p>
         <h4 class="mb-2 cor-dinheiro">R${{ valor_final|floatformat:2 }} </h4>
     </div>
 </section>

@@ -12,14 +12,14 @@ class Produto(models.Model):
     Attribute preco: Um número decimal que representa o preço do produto
     Attribute descricao: Uma string para ser uma breve descrição do produto
     Attribute imagem: Um arquivo de imagem do produto
-    Attribute id_categoria: Uma fk para uma das categorias
+    Attribute categoria: Uma fk para uma das categorias
     """
 
+    categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
     titulo = models.CharField(max_length=30)
     preco = models.DecimalField(max_digits=12, decimal_places=2)
     descricao = models.CharField(max_length=500)
     imagem = models.ImageField()
-    id_categoria = models.ForeignKey('CategoriasProduto', on_delete=models.CASCADE)
     estoque = models.IntegerField(default=100)
     vendas = models.IntegerField(default=0)
 
@@ -32,7 +32,7 @@ class Produto(models.Model):
 
         dicionario_produtos: dict = {}
         for categoria in categorias:
-            produtos_da_categoria = Produto.objects.filter(id_categoria=categoria)[:numero_produtos]
+            produtos_da_categoria = Produto.objects.filter(categoria=categoria)[:numero_produtos]
 
             if produtos_da_categoria:
                 produtos_divididos = divide(partes, produtos_da_categoria)
@@ -45,7 +45,7 @@ class Produto(models.Model):
     def mesma_categoria(produto):
         """Método que retorna alguns produtos da mesma categoria do argumento produto"""
 
-        produtos = Produto.objects.filter(id_categoria=produto.id_categoria)
+        produtos = Produto.objects.filter(categoria=produto.categoria)
         produtos = [prod for prod in produtos if prod.id != produto.id][:4]
         return produtos
 
@@ -68,7 +68,7 @@ class Produto(models.Model):
         return {
             'produto': produto,
             'produtos_mesma_categoria': produtos_mesma_categoria,
-            'categoria': produto.id_categoria,
+            'categoria': produto.categoria,
             'lista_desejos': lista_desejos,
             'carrinho_compra': carrinho_compra,
         }
@@ -91,7 +91,7 @@ class CategoriasProduto(models.Model):
         """Método que retorna um dicionário com os dados utilizados pelo view PaginaCategoriasView"""
 
         categoria = get_object_or_404(CategoriasProduto, titulo=categoria.title())
-        produtos = list(Produto.objects.filter(id_categoria=categoria))
+        produtos = list(Produto.objects.filter(categoria=categoria))
 
         return {
             'categoria': categoria,
@@ -104,16 +104,16 @@ class CarrinhoCompra(models.Model):
     Model para registrar produtos no carrinho de compras de um usuário
 
     Attribute usuario: Um usuário registrado
-    Attribute id_produto: Uma fk para um produto
+    Attribute produto: Uma fk para um produto
     Attribute quantidade: Um número inteiro para ser a quantidade do produto
     """
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
 
     def __str__(self):
-        return 'Usuário ' + self.usuario.username + ' Produto ' + self.id_produto.titulo
+        return f"'Usuário {self.usuario.username} - Produto {self.produto.titulo}"
 
     @staticmethod
     def receber(usuario):
@@ -122,7 +122,7 @@ class CarrinhoCompra(models.Model):
 
         if usuario.is_authenticated:
             carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
-            carrinho_compra = [lista.id_produto for lista in carrinho_compra]
+            carrinho_compra = [lista.produto for lista in carrinho_compra]
 
         else:
             carrinho_compra = []
@@ -134,7 +134,7 @@ class CarrinhoCompra(models.Model):
         """Método que retorna a soma de todos produtos no carrinho do usuário"""
 
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
-        subtotal = sum(lista.id_produto.preco * lista.quantidade for lista in carrinho_compra)
+        subtotal = sum(lista.produto.preco * lista.quantidade for lista in carrinho_compra)
         return subtotal
 
     @staticmethod
@@ -142,7 +142,7 @@ class CarrinhoCompra(models.Model):
         """Método que retorna um dicionário com a quantidade de cada produto no carrinho do usuário"""
 
         carrinho_compra = CarrinhoCompra.objects.filter(usuario=usuario)
-        quantidades = {lista.id_produto: lista.quantidade for lista in carrinho_compra}
+        quantidades = {lista.produto: lista.quantidade for lista in carrinho_compra}
         return quantidades
 
     @staticmethod
@@ -166,14 +166,14 @@ class ListaDesejo(models.Model):
     Model para registrar produtos na lista de desejos de um usuário
 
     Attribute usuario: Um usuário registrado
-    Attribute id_produto: Uma fk para um produto
+    Attribute produto: Uma fk para um produto
     """
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'Usuário ' + self.usuario.username + ' Produto ' + self.id_produto.titulo
+        return f"'Usuário {self.usuario.username} - Produto {self.produto.titulo}"
 
     @staticmethod
     def receber(usuario):
@@ -181,7 +181,7 @@ class ListaDesejo(models.Model):
 
         if usuario.is_authenticated:
             lista_desejos = ListaDesejo.objects.filter(usuario=usuario)
-            lista_desejos = [lista.id_produto for lista in lista_desejos]
+            lista_desejos = [lista.produto for lista in lista_desejos]
 
         else:
             lista_desejos = []

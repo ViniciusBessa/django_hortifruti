@@ -12,17 +12,17 @@ class Pedido(models.Model):
 
     Attribute usuario: Um usuário registrado
     Attribute data_pedido: A data em que foi efetuado o pedido
-    Attribute id_transportadora: Uma fk para uma transportadora
-    Attribute id_forma_pagamento: Uma fk para uma forma de pagamento
+    Attribute transportadora: Uma fk para uma transportadora
+    Attribute forma_pagamento: Uma fk para uma forma de pagamento
     """
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    transportadora = models.ForeignKey('Transportadora', on_delete=models.CASCADE, default=1)
+    forma_pagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE, default=1)
     data_pedido = models.DateField(auto_now=True)
-    id_transportadora = models.ForeignKey('Transportadora', on_delete=models.CASCADE, default=1)
-    id_forma_pagamento = models.ForeignKey('FormaPagamento', on_delete=models.CASCADE, default=1)
 
     def __str__(self):
-        return 'Pedido ' + str(self.id) + ' Usuário ' + self.usuario.username
+        return f"Pedido {str(self.id)} - Usuário {self.usuario.username}"
 
     @staticmethod
     def receber(usuario):
@@ -43,7 +43,7 @@ class Pedido(models.Model):
         pedidos = Pedido.receber(usuario)
         primeiro_produto_pedidos = {}
         for pedido in pedidos:
-            produtos = PedidoProduto.objects.filter(id_pedido=pedido)
+            produtos = PedidoProduto.objects.filter(pedido=pedido)
             primeiro_produto_pedidos.update({pedido.id: produtos[0]})
 
         return {
@@ -55,9 +55,9 @@ class Pedido(models.Model):
     def receber_pagina_pedido(pedido):
         """Método que retorna um dicionário com os dados utilizados pelo view PaginaPedidoView"""
 
-        produtos = list(PedidoProduto.objects.filter(id_pedido=pedido))
-        soma_produtos = sum([produto.id_produto.preco * produto.quantidade for produto in produtos])
-        valor_final = (soma_produtos - soma_produtos * pedido.id_forma_pagamento.desconto) + pedido.id_transportadora.frete
+        produtos = list(PedidoProduto.objects.filter(pedido=pedido))
+        soma_produtos = sum([produto.produto.preco * produto.quantidade for produto in produtos])
+        valor_final = (soma_produtos - soma_produtos * pedido.forma_pagamento.desconto) + pedido.transportadora.frete
         return {
             'pedido': pedido, 
             'produtos': produtos, 
@@ -75,7 +75,7 @@ class Pedido(models.Model):
         carrinho = CarrinhoCompra.objects.filter(usuario=usuario)
 
         if carrinho:
-            pedido = Pedido.objects.create(usuario=usuario, id_transportadora=transportadora, id_forma_pagamento=forma_pagamento)
+            pedido = Pedido.objects.create(usuario=usuario, transportadora=transportadora, forma_pagamento=forma_pagamento)
             PedidoProduto.registrar_pedido(pedido, carrinho, usuario)
 
         else:
@@ -86,17 +86,17 @@ class PedidoProduto(models.Model):
     """
     Model para registrar os produtos e suas quantidades em um pedido
 
-    Attribute id_pedido: Uma fk de um pedido
-    Attribute id_produto: Uma fk de um produto
+    Attribute pedido: Uma fk de um pedido
+    Attribute produto: Uma fk de um produto
     Attribute quantidade: Um número inteiro para ser a quantidade do produto
     """
 
-    id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
-    id_produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
+    pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
     quantidade = models.IntegerField(default=1)
 
     def __str__(self):
-        return 'Pedido ' + str(self.id_pedido.id) + ' Produto ' + self.id_produto.titulo
+        return f"Pedido {str(self.pedido.id)} - Produto {self.produto.titulo}"
 
     @staticmethod
     def registrar_pedido(pedido, carrinho, usuario):
@@ -105,14 +105,14 @@ class PedidoProduto(models.Model):
         produto"""
 
         for queryset in carrinho:
-            PedidoProduto.objects.create(id_pedido=pedido, id_produto=queryset.id_produto, quantidade=queryset.quantidade)
+            PedidoProduto.objects.create(pedido=pedido, produto=queryset.produto, quantidade=queryset.quantidade)
             
             # Retirando da lista de desejos os produtos comprados
-            lista_desejo = ListaDesejo.objects.filter(usuario=usuario, id_produto=queryset.id_produto)
+            lista_desejo = ListaDesejo.objects.filter(usuario=usuario, produto=queryset.produto)
             lista_desejo.delete()
 
             # Retirando do estoque a quantidade comprada, e aumentando o número de vendas
-            produto = queryset.id_produto
+            produto = queryset.produto
             produto.estoque -= queryset.quantidade
             produto.vendas += queryset.quantidade
 
