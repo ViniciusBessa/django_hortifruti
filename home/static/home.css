@@ -1,19 +1,19 @@
 .slider-sizo {
-    width: 1000px;
-    height: 200px;
+  width: 1000px;
+  height: 200px;
 }
 
 .margem {
-    margin-left: 100px;
-    margin-right: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 .carousel-controller {
-    width: 10%;
-    height: 100%;
+  width: 10%;
+  height: 100%;
 }
 
 .carousel-controller-icon {
-    background-color: gray;
-    border-radius: 50%;
+  background-color: gray;
+  border-radius: 50%;
 }

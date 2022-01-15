@@ -1,56 +1,68 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
 {% block main %}
 <section>
-    <div class="container-fluid">
-        <div class="row justify-content-center p-2">
-            <div class="col-md-4">
-                <img class="img-fluid w-100" src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}"/>
-            </div>
-            <div class="col mx-5">
-                <h1>{{ produto.titulo }}</h1>
-                <h3 class="cor-dinheiro">R$ {{produto.preco }}</h3>
-                <p class="my-4">{{ produto.descricao }}</p>
+  <div class="container-fluid">
+    <div class="row justify-content-center p-2">
+      <div class="col-md-4">
+        <img
+          class="img-fluid w-100"
+          src="{% static produto.imagem.path %}"
+          alt="Imagem de um(a) {{ produto.titulo|lower }}"
+        />
+      </div>
+      <div class="col mx-5">
+        <h1>{{ produto.titulo }}</h1>
+        <h3 class="cor-dinheiro">R$ {{produto.preco }}</h3>
+        <p class="my-4">{{ produto.descricao }}</p>
 
-                <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
-                    <input type="hidden" name="next" value="{{ request.path }}">
-                    {% if produto in carrinho_compra %}
-                    <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
+        <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}" />
+          {% if produto in carrinho_compra %}
+          <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
 
-                    {% else %}
-                    <button class="btn botao-carrinho" type="submit">Adicionar ao carrinho</button>
-                    {% endif %}
-                </form>
+          {% else %}
+          <button class="btn botao-carrinho" type="submit">Adicionar ao carrinho</button>
+          {% endif %}
+        </form>
 
-                <form class="my-3" action="{% url 'atualizar_lista' produto.id %}" method="POST"> {% csrf_token %}
-                    <input type="hidden" name="next" value="{{ request.path }}">
-                    {% if produto in lista_desejos %}
-                    <button class="btn botao-lista" type="submit">Retirar da lista de desejos</button>
+        <form class="my-3" action="{% url 'atualizar_lista' produto.id %}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.path }}" />
+          {% if produto in lista_desejos %}
+          <button class="btn botao-lista" type="submit">Retirar da lista de desejos</button>
 
-                    {% else %}
-                    <button class="btn botao-lista" type="submit">Adicionar à lista de desejos</button>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
+          {% else %}
+          <button class="btn botao-lista" type="submit">Adicionar à lista de desejos</button>
+          {% endif %}
+        </form>
+      </div>
     </div>
+  </div>
 </section>
 
 <section class="p-4">
-    <div class="container-fluid">
-        <h1 class="cor-destaque">Produtos semelhantes</h1>
-        <div class="row">
-            {% for produtos in produtos_mesma_categoria %}
-            <div class="col d-flex justify-content-center">
-                <div>
-                    <a href="{% url 'pagina_produto' produtos.id %}"><img src="{% static produtos.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
-                    <h5 class="cor-dinheiro mb-0">R$ {{produtos.preco }}</h5>
-                    <p>{{ produtos.titulo }}</p>
-                </div>
-            </div>
-            {% endfor %}
+  <div class="container-fluid">
+    <h1 class="cor-destaque">Produtos semelhantes</h1>
+    <div class="row">
+      {% for produtos in produtos_mesma_categoria %}
+      <div class="col d-flex justify-content-center">
+        <div>
+          <a href="{% url 'pagina_produto' produtos.id %}"
+            ><img
+              src="{% static produtos.imagem.path %}"
+              alt="Imagem de um(a) {{ produto.titulo|lower }}"
+              width="250"
+              height="200"
+          /></a>
+          <h5 class="cor-dinheiro mb-0">R$ {{produtos.preco }}</h5>
+          <p>{{ produtos.titulo }}</p>
         </div>
+      </div>
+      {% endfor %}
     </div>
+  </div>
 </section>
 {% endblock %}

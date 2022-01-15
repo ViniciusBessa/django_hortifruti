@@ -1,87 +1,90 @@
 .cor-primaria {
-    background-color: white;
+  background-color: white;
 }
 
 .cor-secundaria {
-    background-color: royalblue;
+  background-color: royalblue;
 }
 
 .cor-footer {
-    background-color: #373c41;
+  background-color: #373c41;
 }
 
 .cor-dinheiro {
-    color: green;
+  color: green;
 }
 
 .cor-categoria {
-    color: gray;
+  color: gray;
 }
 
 .cor-destaque {
-    color:royalblue;
+  color: royalblue;
 }
 
 .input {
-    width: 14em;
+  width: 14em;
 }
 
 .gambiarra {
-    width: 330px;
+  width: 330px;
+}
+
+.nav-carrinho {
+  width: 80px;
 }
 
 .numero-carrinho {
-    position: relative;
-    right: 10px;
-    top: 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    border-radius: 100%;
-    background-color: greenyellow;
-    color: gray;
-
+  position: relative;
+  right: 10px;
+  top: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 100%;
+  background-color: greenyellow;
+  color: gray;
 }
 
 .opacidade:hover {
-    opacity: 50%;
+  opacity: 50%;
 }
 
 .footer-item {
-    color: lightgray;
+  color: lightgray;
 }
 
-.footer-link{
-    display: block;
-    color: gray;
-    text-decoration: none;
+.footer-link {
+  display: block;
+  color: gray;
+  text-decoration: none;
 }
 
 .footer-link:hover {
-    display: block;
-    color: gray;
-    text-decoration: underline gray 1px;
+  display: block;
+  color: gray;
+  text-decoration: underline gray 1px;
 }
 
 .link-pedido {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .link-pedido:hover {
-    text-decoration: underline #0d6efd 1px;
+  text-decoration: underline #0d6efd 1px;
 }
 
 body {
-    height: 100vh;
+  height: 100vh;
 }
 
 main {
-    min-height: 90%;
+  min-height: 90%;
 }
 
 footer {
-    min-height: 10%;
+  min-height: 10%;
 }
 
 input:focus {
-    outline: none;
+  outline: none;
 }

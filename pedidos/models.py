@@ -41,26 +41,26 @@ class Pedido(models.Model):
         """Método que retorna um dicionário com os dados utilizados pelo view PaginaTodosPedidosView"""
 
         pedidos = Pedido.receber(usuario)
-        primeiro_produto_pedidos = {}
+        primeiro_produto_do_pedido = {}
         for pedido in pedidos:
             produtos = PedidoProduto.objects.filter(pedido=pedido)
-            primeiro_produto_pedidos.update({pedido.id: produtos[0]})
+            primeiro_produto_do_pedido.update({pedido.id: produtos[0]})
 
         return {
             'pedidos': sorted(pedidos, reverse=True, key=lambda pedido: pedido.id),
-            'produto_pedidos': primeiro_produto_pedidos,
+            'produto_pedidos': primeiro_produto_do_pedido,
         }
 
     @staticmethod
     def receber_pagina_pedido(pedido):
         """Método que retorna um dicionário com os dados utilizados pelo view PaginaPedidoView"""
 
-        produtos = list(PedidoProduto.objects.filter(pedido=pedido))
-        soma_produtos = sum([produto.produto.preco * produto.quantidade for produto in produtos])
+        pedido_produtos = list(PedidoProduto.objects.filter(pedido=pedido))
+        soma_produtos = sum([pedido_produto.produto.preco * pedido_produto.quantidade for pedido_produto in pedido_produtos])
         valor_final = (soma_produtos - soma_produtos * pedido.forma_pagamento.desconto) + pedido.transportadora.frete
         return {
             'pedido': pedido, 
-            'produtos': produtos, 
+            'pedido_produtos': pedido_produtos, 
             'soma_produtos': soma_produtos, 
             'valor_final': valor_final,
         }
@@ -101,7 +101,7 @@ class PedidoProduto(models.Model):
     @staticmethod
     def registrar_pedido(pedido, carrinho, usuario):
         """Método utilizado para registrar todos produtos de um pedido, retirar produtos comprados da
-        lista de desejos, retira a quantidade comprada do estoque e aumenta o número de vendas do
+        lista de desejos, retirar a quantidade comprada do estoque e aumentar o número de vendas do
         produto"""
 
         for queryset in carrinho:

@@ -1,72 +1,112 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load produtos_filters %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% load produtos_filters %} 
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'home.css' %}"/>
-{% endblock %}
+<link rel="stylesheet" href="{% static 'home.css' %}" />
+{% endblock %} 
 
 {% block main %}
 <section class="p-3">
-    <h2 class="cor-destaque">Mais vendidos</h2>
-    <div class="container">
-        <div class="row">
-            {% for produto in produtos_mais_vendidos %}
+  <h2 class="cor-destaque">Mais vendidos</h2>
+  <div class="container">
+    <div class="row">
+      {% for produto in produtos_mais_vendidos %}
+      <div class="col d-flex justify-content-center">
+        <div>
+          <a href="{% url 'pagina_produto' produto.id %}"
+            ><img
+              src="{% static produto.imagem.path %}"
+              alt="Imagem de um(a) {{ produto.titulo|lower }}"
+              width="250"
+              height="200"
+          /></a>
+          <p class="mb-1">{{ produto.titulo }}</p>
+          <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <hr />
+
+  {% for categoria in categorias %} 
+  {% if produtos_categorias|get_values:categoria %}
+  <h2 class="cor-destaque">{{ categoria.titulo }}</h2>
+  <div id="carousel-{{ categoria.titulo|lower }}" class="carousel slide my-3" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for produtos in produtos_categorias|get_values:categoria %} 
+      {% if produtos == produtos_categorias|get_values:categoria|first %}
+      <div class="carousel-item active">
+        <div class="container">
+          <div class="row">
+            {% for produto in produtos %}
             <div class="col d-flex justify-content-center">
-                <div>
-                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
-                    <p class="mb-1">{{ produto.titulo }}</p>
-                    <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
-                </div>
+              <div>
+                <a href="{% url 'pagina_produto' produto.id %}"
+                  ><img
+                    src="{% static produto.imagem.path %}"
+                    alt="Imagem de um(a) {{ produto.titulo|lower }}"
+                    width="250"
+                    height="200"
+                /></a>
+                <p class="mb-1">{{ produto.titulo }}</p>
+                <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
+              </div>
             </div>
             {% endfor %}
+          </div>
         </div>
-    </div>
-    <hr/>
+      </div>
 
-    {% for categoria in categorias %}
-    {% if produtos_categorias|get_values:categoria %}
-    <h2 class="cor-destaque">{{ categoria.titulo }}</h2>
-    <div id="carousel-{{ categoria.titulo|lower }}" class="carousel slide my-3" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            {% for produtos in produtos_categorias|get_values:categoria %}
-            {% if produtos == produtos_categorias|get_values:categoria|first %}
-            <div class="carousel-item active">
-
-            {% else %}
-            <div class="carousel-item">
-
-            {% endif %}
-                <div class="container">
-                    <div class="row">
-                        {% for produto in produtos %}
-                        <div class="col d-flex justify-content-center">
-                            <div>
-                                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
-                                <p class="mb-1">{{ produto.titulo }}</p>
-                                <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
+      {% else %}
+      <div class="carousel-item">
+        <div class="container">
+          <div class="row">
+            {% for produto in produtos %}
+            <div class="col d-flex justify-content-center">
+              <div>
+                <a href="{% url 'pagina_produto' produto.id %}"
+                  ><img
+                    src="{% static produto.imagem.path %}"
+                    alt="Imagem de um(a) {{ produto.titulo|lower }}"
+                    width="250"
+                    height="200"
+                /></a>
+                <p class="mb-1">{{ produto.titulo }}</p>
+                <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
+              </div>
             </div>
             {% endfor %}
+          </div>
         </div>
-        <button class="carousel-control-prev carousel-controller" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon carousel-controller-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next carousel-controller" type="button" data-bs-target="#carousel-{{ categoria.titulo|lower }}" data-bs-slide="next">
-          <span class="carousel-control-next-icon carousel-controller-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+      </div>
+      {% endif %} 
+      {% endfor %}
     </div>
-    {% if categoria != categorias|last %}
-    <hr/>
-    {% endif%}
-
-    {% endif %}
-    {% endfor %}
+    <button
+      class="carousel-control-prev carousel-controller"
+      type="button"
+      data-bs-target="#carousel-{{ categoria.titulo|lower }}"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon carousel-controller-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next carousel-controller"
+      type="button"
+      data-bs-target="#carousel-{{ categoria.titulo|lower }}"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon carousel-controller-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  {% if categoria != categorias|last %}
+  <hr />
+  {% endif %} 
+  {% endif %} 
+  {% endfor %}
 </section>
 {% endblock %}

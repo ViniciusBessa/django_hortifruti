@@ -1,38 +1,39 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load pedidos_filters %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% load pedidos_filters %} 
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'bordas.css' %}"/>
-{% endblock %}
+<link rel="stylesheet" href="{% static 'bordas.css' %}" />
+{% endblock %} 
 
 {% block main %}
 <section class="p-3">
-    {% if pedidos %}
-    <h1 class="text-center cor-destaque">Pedidos</h1>
+  {% if pedidos %}
+  <h1 class="text-center cor-destaque">Pedidos</h1>
 
-    {% for pedido in pedidos %}
-    <div class="px-2 py-1 my-3 container borda-pequena">
-        <div class="row">
-            <div class="col d-flex justify-content-start">
-                Nº do pedido: {{pedido.id}}
-            </div>
-            <div class="col d-flex justify-content-end">
-                Data: {{pedido.data_pedido|date:"d/m/Y"}}
-            </div>
-        </div>
-        <div class="d-flex justify-content-center my-3">
-            <img src="{% static produto_pedidos|get_image:pedido.id %}" alt="Imagem do primeiro produto do pedido" width="250" height="200"/>
-        </div>
-        <div class="d-flex justify-content-center">
-            <a class="link-pedido" href="{% url 'pagina_pedido' pedido.id %}">Visualizar pedido</a>
-        </div>
+  {% for pedido in pedidos %}
+  <div class="px-2 py-1 my-3 container borda-pequena">
+    <div class="row">
+      <div class="col d-flex justify-content-start">Nº do pedido: {{pedido.id}}</div>
+      <div class="col d-flex justify-content-end">Data: {{pedido.data_pedido|date:"d/m/Y"}}</div>
     </div>
-    {% endfor %}
+    <div class="d-flex justify-content-center my-3">
+      <img
+        src="{% static produto_pedidos|get_image:pedido.id %}"
+        alt="Imagem do primeiro produto do pedido"
+        width="250"
+        height="200"
+      />
+    </div>
+    <div class="d-flex justify-content-center">
+      <a class="link-pedido" href="{% url 'pagina_pedido' pedido.id %}">Visualizar pedido</a>
+    </div>
+  </div>
+  {% endfor %} 
+  
+  {% else %}
+  <h1 class="text-center cor-destaque">Você ainda não possui nenhum pedido</h1>
 
-    {% else %}
-    <h1 class="text-center cor-destaque">Você ainda não possui nenhum pedido</h1>
-
-    {% endif %}
+  {% endif %}
 </section>
 {% endblock %}

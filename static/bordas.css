@@ -1,16 +1,16 @@
 .borda {
-    border: 2px solid lightgray;
-    border-radius: 5%;
+  border: 2px solid lightgray;
+  border-radius: 5%;
 }
 
 .borda-pequena {
-    max-width: 350px;
-    border: 1px solid lightgray;
-    border-radius: 1%;
+  max-width: 350px;
+  border: 1px solid lightgray;
+  border-radius: 1%;
 }
 
 .borda-grande {
-    max-width: 600px;
-    border: 1px solid lightgray;
-    border-radius: 1%;
+  max-width: 600px;
+  border: 1px solid lightgray;
+  border-radius: 1%;
 }

@@ -1,21 +1,21 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %} 
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'lista.css' %}"/>
-<link rel="stylesheet" href="{% static 'bordas.css' %}"/>
-{% endblock %}
+<link rel="stylesheet" href="{% static 'lista.css' %}" />
+<link rel="stylesheet" href="{% static 'bordas.css' %}" />
+{% endblock %} 
 
 {% block main %}
 <section class="p-3">
-    <h1 class="text-center mb-5 cor-destaque">Finalizando o pedido</h1>
-    <form class="px-2 py-1 my-3 container borda-pequena" action="{% url 'finalizar_pedido' %}" method="POST"> {% csrf_token %}
-        <h4 class="cor-destaque mb-3">Transportadora</h4>
-        {{ form.transportadora }}
+  <h1 class="text-center mb-5 cor-destaque">Finalizando o pedido</h1>
+  <form class="px-2 py-1 my-3 container borda-pequena" action="{% url 'finalizar_pedido' %}" method="POST">
+    {% csrf_token %}
+    <h4 class="cor-destaque mb-3">Transportadora</h4>
+    {{ form.transportadora }}
 
-        <h4 class="cor-destaque my-3">Forma de pagamento</h4>
-        {{ form.forma_pagamento }}
-        <button class="btn btn-outline-secondary" type="submit">Finalizar pedido</button>
-    </form>
+    <h4 class="cor-destaque my-3">Forma de pagamento</h4>
+    {{ form.forma_pagamento }}
+    <button class="btn btn-outline-secondary" type="submit">Finalizar pedido</button>
+  </form>
 </section>
 {% endblock %}

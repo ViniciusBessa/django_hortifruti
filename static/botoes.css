@@ -1,37 +1,37 @@
 .botao-carrinho {
-    border: 1px solid #3972BE;
-    background-color: none;
-    color: #3972BE;
+  border: 1px solid #3972be;
+  background-color: none;
+  color: #3972be;
 }
 
 .botao-carrinho:hover {
-    background-color: #3972BE;
-    color: white;
+  background-color: #3972be;
+  color: white;
 }
 
 .botao-lista {
-    border: 1px solid #EFAD00;;
-    background-color: none;
-    color: #EFAD00;
+  border: 1px solid #efad00;
+  background-color: none;
+  color: #efad00;
 }
 
 .botao-lista:hover {
-    background-color: #EFAD00;
-    color: white;
+  background-color: #efad00;
+  color: white;
 }
 
 .botao-busca {
-    border: 1px solid green;
-    border-radius: 0%;
-    background-color: none;
-    color: green;
+  border: 1px solid green;
+  border-radius: 0%;
+  background-color: none;
+  color: green;
 }
 
 .botao-busca:hover {
-    background-color: green;
-    color: white;
+  background-color: green;
+  color: white;
 }
 
 .botao-form {
-    width: 100%;
+  width: 100%;
 }

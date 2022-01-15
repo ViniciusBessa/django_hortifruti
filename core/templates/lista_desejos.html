@@ -1,36 +1,41 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
 {% block main %}
 <section class="p-3">
-    {% if lista_desejos %}
-    <h1 class="text-center cor-destaque">Lista de desejos</h1>
+  {% if lista_desejos %}
+  <h1 class="text-center cor-destaque">Lista de desejos</h1>
 
-    {% for produto in lista_desejos %}
-    <div class="container">
-        <div class="row justify-content-center py-4">
-            <div class="col-auto d-flex justify-content-center px-0">
-                <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
-            </div>
-            <div class="col-sm-2 d-flex justify-content-center">
-                <div class="container-detalhes">
-                    <p class="cor-categoria mb-0">{{ produto.categoria.titulo }}</p>
-                    <p class="mb-1">{{ produto.titulo }}</p>
-                    <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
-                </div>
-            </div>
+  {% for produto in lista_desejos %}
+  <div class="container">
+    <div class="row justify-content-center py-4">
+      <div class="col-auto d-flex justify-content-center px-0">
+        <a href="{% url 'pagina_produto' produto.id %}"
+          ><img
+            src="{% static produto.imagem.path %}"
+            alt="Imagem de um(a) {{ produto.titulo|lower }}"
+            width="250"
+            height="200"
+        /></a>
+      </div>
+      <div class="col-sm-2 d-flex justify-content-center">
+        <div class="container-detalhes">
+          <p class="cor-categoria mb-0">{{ produto.categoria.titulo }}</p>
+          <p class="mb-1">{{ produto.titulo }}</p>
+          <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
         </div>
-        {% if produto != lista_desejos|last %}
-        <div class="d-flex justify-content-center">
-            <hr width="500px"/> 
-        </div>
-        {% endif %}
+      </div>
     </div>
-    {% endfor %}
-
-    {% else %}
-    <h1 class="text-center cor-destaque">Não há nenhum produto em sua lista de desejos</h1>
-
+    {% if produto != lista_desejos|last %}
+    <div class="d-flex justify-content-center">
+      <hr width="500px" />
+    </div>
     {% endif %}
+  </div>
+  {% endfor %} 
+  
+  {% else %}
+  <h1 class="text-center cor-destaque">Não há nenhum produto em sua lista de desejos</h1>
+  {% endif %}
 </section>
 {% endblock %}

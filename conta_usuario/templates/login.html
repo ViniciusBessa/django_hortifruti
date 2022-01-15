@@ -1,22 +1,23 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'bordas.css' %}"/>
-<link rel="stylesheet" href="{% static 'botoes.css' %}"/>
-{% endblock %}
+<link rel="stylesheet" href="{% static 'bordas.css' %}" />
+<link rel="stylesheet" href="{% static 'botoes.css' %}" />
+{% endblock %} 
 
 {% block main %}
 <section class="p-5 d-flex justify-content-center">
-    <div class="p-3">
-        <h1 class="cor-destaque">Login</h1>
-        <hr class="mb-4"/>
-        <div class="d-flex justify-content-start">
-            <form action="." method="POST"> {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-outline-secondary botao-form" type="submit">Entrar</button>
-            </form>
-        </div>
+  <div class="p-3">
+    <h1 class="cor-destaque">Login</h1>
+    <hr class="mb-4" />
+    <div class="d-flex justify-content-start">
+      <form action="." method="POST">
+        {% csrf_token %} 
+        {{ form.as_p }}
+        <button class="btn btn-outline-secondary botao-form" type="submit">Entrar</button>
+      </form>
     </div>
+  </div>
 </section>
 {% endblock %}

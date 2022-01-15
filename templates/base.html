@@ -1,137 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    {% load static %}
-    <head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Hortifrúti</title>
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hortifrúti</title>
 
-        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet"/>
-        <link href="{% static 'base.css' %}" rel="stylesheet"/>
-        <link href="{% static 'botoes.css' %}" rel="stylesheet"/>
-        <link href="{% static 'container_detalhes.css' %}" rel="stylesheet"/>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'base.css' %}" rel="stylesheet" />
+    <link href="{% static 'botoes.css' %}" rel="stylesheet" />
+    <link href="{% static 'container_detalhes.css' %}" rel="stylesheet" />
 
-        {% block head %}
-        {% endblock %}
-    </head>
-    <body>
-        <header>
-            <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbar-menu">
-                        <ul class="navbar-nav">
-                            <li>
-                                <a class="nav-link" href="{% url 'home' %}" role="button">Home</a>
-                            </li>
-                            {% if request.user.is_authenticated %}
-                            <li>
-                                <div class="dropdown">
-                                    <a class="nav-link dropdown-toggle" type="button" id="dropdown-conta" data-bs-toggle="dropdown" aria-expanded="false">Minha conta</a>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-conta">
-                                        <li><a class="dropdown-item" href="{% url 'pedidos' %}">Pedidos</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'lista_desejos' %}">Lista de desejos</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar a senha</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'logout' %}" role="button">Sair</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            {% endif %}
+    {% block head %} 
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark px-3">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbar-menu"
+          aria-controls="navbar-menu"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbar-menu" class="collapse navbar-collapse">
+          <ul class="navbar-nav">
+            <li>
+              <a class="nav-link" href="{% url 'home' %}" role="button">Home</a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li>
+              <div class="dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  type="button"
+                  id="dropdown-conta"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  >Minha conta</a
+                >
+                <ul class="dropdown-menu" aria-labelledby="dropdown-conta">
+                  <li><a class="dropdown-item" href="{% url 'pedidos' %}">Pedidos</a></li>
+                  <li><a class="dropdown-item" href="{% url 'lista_desejos' %}">Lista de desejos</a></li>
+                  <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar a senha</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}" role="button">Sair</a></li>
+                </ul>
+              </div>
+            </li>
+            {% endif %}
 
-                            <li>
-                                <div class="dropdown">
-                                    <a class="nav-link dropdown-toggle" type="button" id="dropdown-categorias" data-bs-toggle="dropdown" aria-expanded="false">Categorias</a>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown-categorias">
-                                        {% for categoria in categorias %}
-                                        <li><a class="dropdown-item" href="{% url 'categorias' categoria.titulo|lower %}">{{ categoria.titulo }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </li>
+            <li>
+              <div class="dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  type="button"
+                  id="dropdown-categorias"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  >Categorias</a
+                >
+                <ul class="dropdown-menu" aria-labelledby="dropdown-categorias">
+                  {% for categoria in categorias %}
+                  <li>
+                    <a class="dropdown-item" href="{% url 'categorias' categoria.titulo|lower %}"
+                      >{{ categoria.titulo }}</a
+                    >
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </li>
 
-                            {% if request.user.is_authenticated %}
-                            <li>
-                                <a class="nav-link d-inline-block" href="{% url 'carrinho' %}">
-                                    <img src="{% static 'shopping_cart.png' %}" alt="Imagem de um carrinho de compras" width="40" height="28">
-                                    {% if numero_produtos_carrinho %}
-                                    <span class="numero-carrinho">{{ numero_produtos_carrinho }}</span>
-                                    {% endif %}
-                                </a>
-                            </li>
-                            {% endif %}
-                        </ul>
-                        <ul class="navbar-nav mx-auto">
-                            <li class="my-2">
-                                <form id="motor-busca" class="d-flex" action="{% url 'busca' ' ' %}" method="GET">
-                                    <input id="busca-usuario" class="input" type="search" placeholder="Procurar por um produto..." maxlength="20" name="busca"/>
-                                    <button id="botao-busca" class="btn botao-busca rounded-end btn-sm" type="submit">Buscar</button>
-                                </form>
-                            </li>
-                        </ul>
+            {% if request.user.is_authenticated %}
+            <li>
+              <a class="nav-link nav-carrinho d-inline-block" href="{% url 'carrinho' %}">
+                <img
+                  src="{% static 'shopping_cart.png' %}"
+                  alt="Imagem de um carrinho de compras"
+                  width="40"
+                  height="28"
+                />
+                {% if numero_produtos_carrinho %}
+                <span class="numero-carrinho">{{ numero_produtos_carrinho }}</span>
+                {% endif %}
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+          <form id="motor-busca" class="d-flex mx-auto my-2" action="{% url 'busca' ' ' %}" method="GET">
+            <input
+              id="busca-usuario"
+              class="input"
+              type="search"
+              placeholder="Procurar por um produto..."
+              maxlength="20"
+              name="busca"
+            />
+            <button id="botao-busca" class="btn botao-busca rounded-end btn-sm" type="submit">Buscar</button>
+          </form>
 
-                        {% if request.user.is_authenticated %}
-                        <div class="gambiarra"></div>
+          {% if request.user.is_authenticated %}
+          <div class="gambiarra"></div>
 
-                        {% else %}
-                        <ul class="navbar-nav">
-                            <li>
-                                <a class="nav-link" href="{% url 'registrar' %}" role="button">Registrar</a>
-                            </li>
-                            <li>
-                                <a class="nav-link" href="{% url 'login' %}" role="button">Login</a>
-                            </li>
-                        </ul>
-                        {% endif %}
-                    </div>
-                </div>
-            </nav>
-        </header>
+          {% else %}
+          <ul class="navbar-nav">
+            <li>
+              <a class="nav-link" href="{% url 'registrar' %}" role="button">Registrar</a>
+            </li>
+            <li>
+              <a class="nav-link" href="{% url 'login' %}" role="button">Login</a>
+            </li>
+          </ul>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
 
-        <main id="main" class="cor-primaria mt-5 pt-4">
-            {% for message in messages %}
-            <div class="mx-4 my-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
-                <li>{{ message|cut:'['|cut:']'|cut:"'" }} </li>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <main id="main" class="cor-primaria mt-5 pt-4">
+      {% for message in messages %}
+      <div class="mx-4 my-0 alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <li>{{ message|cut:'['|cut:']'|cut:"'" }}</li>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %} 
+
+      {% block main %} 
+      {% endblock %}
+    </main>
+
+    <footer class="cor-footer p-3">
+      <nav class="navbar navbar-expand">
+        <div class="container justify-content-start">
+          <div class="row">
+            <div class="col mx-3">
+              <p class="footer-item mb-2">Empresa</p>
+              <a class="footer-link mb-1" href="#"><small>Sobre</small></a>
+              <a class="footer-link mb-1" href="#"><small>Fornecedores</small></a>
+              <a class="footer-link mb-1" href="#"><small>Parceiros</small></a>
+              <a class="footer-link mb-1" href="#"><small>Privacidade</small></a>
+              <a class="footer-link mb-1" href="#"><small>Termos</small></a>
             </div>
-            {% endfor %}
+            <div class="col mx-3">
+              <p class="footer-item mb-2">Produtos</p>
+              {% for categoria in categorias %}
+              <a class="footer-link mb-1" href="{% url 'categorias' categoria.titulo|lower %}"
+                ><small>{{ categoria.titulo }}</small></a
+              >
+              {% endfor %}
+            </div>
+            <div class="col mx-3">
+              <p class="footer-item mb-2">Suporte</p>
+              <a class="footer-link mb-1" href="#"><small>Contato</small></a>
+              <a class="footer-link mb-1" href="#"><small>Envios</small></a>
+              <a class="footer-link mb-1" href="#"><small>Acessibilidade</small></a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <script src="{% static 'busca.js' %}"></script>
 
-            {% block main %}
-            {% endblock %}
-        </main>
-
-        <footer class="cor-footer p-3">
-            <nav class="navbar navbar-expand">
-                <div class="container justify-content-start">
-                    <div class="row">
-                        <div class="col mx-3">
-                            <p class="footer-item mb-2">Empresa</p>
-                            <a class="footer-link mb-1" href="#"><small>Sobre</small></a>
-                            <a class="footer-link mb-1" href="#"><small>Fornecedores</small></a>
-                            <a class="footer-link mb-1" href="#"><small>Parceiros</small></a>
-                            <a class="footer-link mb-1" href="#"><small>Privacidade</small></a>
-                            <a class="footer-link mb-1" href="#"><small>Termos</small></a>
-                        </div>
-                        <div class="col mx-3">
-                            <p class="footer-item mb-2">Produtos</p>
-                            {% for categoria in categorias %}
-                            <a class="footer-link mb-1" href="{% url 'categorias' categoria.titulo|lower %}"><small>{{ categoria.titulo }}</small></a>
-                            {% endfor %}
-                        </div>
-                        <div class="col mx-3">
-                            <p class="footer-item mb-2">Suporte</p>
-                            <a class="footer-link mb-1" href="#"><small>Contato</small></a>
-                            <a class="footer-link mb-1" href="#"><small>Envios</small></a>
-                            <a class="footer-link mb-1" href="#"><small>Acessibilidade</small></a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <script src="{% static 'busca.js' %}"></script>
-            {% block footer %}
-            {% endblock %}
-        </footer>
-    </body>
+      {% block footer %} 
+      {% endblock %}
+    </footer>
+  </body>
 </html>

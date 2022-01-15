@@ -1,65 +1,71 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load carrinho_filters %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% load carrinho_filters %} 
 
 {% block main %}
 <section class="p-3">
-    {% if carrinho_compra %}
-    <h1 class="text-center mb-5 cor-destaque">Carrinho de compras</h1>
+  {% if carrinho_compra %}
+  <h1 class="text-center mb-5 cor-destaque">Carrinho de compras</h1>
 
-    <div class="row">
-        <div class="col my-5">
-            <h2 class="text-center cor-destaque">Produtos</h2>
-            {% for produto in carrinho_compra %}
-            <div class="row justify-content-center py-4">
-                <div class="col-auto d-flex justify-content-center">
-                    <a href="{% url 'pagina_produto' produto.id %}"><img src="{% static produto.imagem.path %}" alt="Imagem de um(a) {{ produto.titulo|lower }}" width="250" height="200"/></a>
-                </div>
-                <div class="col-sm-3 d-flex justify-content-center">
-                    <div class="container-detalhes">
-                        <p class="mb-1">{{ produto.titulo }}</p>
-                        <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
-                        <p class="d-inline">Quantidade:</p>
-                        <select id="{{ produto.id }}">
-                            {% for numero in produto.estoque|range_estoque %}
-                            {% if numero == produto|get_quantidade:quantidades %}
-                            <option value="{{ numero }}" selected>{{ numero }}</option>
-
-                            {% else %}
-                            <option value="{{ numero }}">{{ numero }}</option>
-
-                            {% endif %}
-                            {% endfor%}
-                        </select>
-                        <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST"> {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
-                        </form> 
-                    </div>
-                </div>
-            </div>
-            {% if produto != carrinho_compra|last %}
-            <div class="d-flex justify-content-center">
-                <hr width="500px"/> 
-            </div>
-            {% endif %}
-            {% endfor %}
+  <div class="row">
+    <div class="col my-5">
+      <h2 class="text-center cor-destaque">Produtos</h2>
+      {% for produto in carrinho_compra %}
+      <div class="row justify-content-center py-4">
+        <div class="col-auto d-flex justify-content-center">
+          <a href="{% url 'pagina_produto' produto.id %}"
+            ><img
+              src="{% static produto.imagem.path %}"
+              alt="Imagem de um(a) {{ produto.titulo|lower }}"
+              width="250"
+              height="200"
+          /></a>
         </div>
-        <div class="col d-flex justify-content-center my-5">
-            <div class="text-center">
-                <h2 class="cor-destaque">Subtotal</h2>
-                <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
-                <a class="btn btn-outline-secondary my-2" href="{% url 'finalizar_pedido' %}">Finalizar o pedido</a> 
-            </div>
+        <div class="col-sm-3 d-flex justify-content-center">
+          <div class="container-detalhes">
+            <p class="mb-1">{{ produto.titulo }}</p>
+            <h5 class="cor-dinheiro">R$ {{produto.preco }}</h5>
+            <p class="d-inline">Quantidade:</p>
+            <select id="{{ produto.id }}">
+              {% for numero in produto.estoque|range_estoque %} {% if numero == produto|get_quantidade:quantidades %}
+              <option value="{{ numero }}" selected>{{ numero }}</option>
+
+              {% else %}
+              <option value="{{ numero }}">{{ numero }}</option>
+
+              {% endif %} {% endfor%}
+            </select>
+            <form class="my-3" action="{% url 'atualizar_carrinho' produto.id %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path }}" />
+              <button class="btn botao-carrinho" type="submit">Retirar do carrinho</button>
+            </form>
+          </div>
         </div>
+      </div>
+      {% if produto != carrinho_compra|last %}
+      <div class="d-flex justify-content-center">
+        <hr width="500px" />
+      </div>
+      {% endif %} 
+      
+      {% endfor %}
     </div>
+    <div class="col d-flex justify-content-center my-5">
+      <div class="text-center">
+        <h2 class="cor-destaque">Subtotal</h2>
+        <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
+        <a class="btn btn-outline-secondary my-2" href="{% url 'finalizar_pedido' %}">Finalizar o pedido</a>
+      </div>
+    </div>
+  </div>
 
-    {% else %}
-    <h1 class="text-center cor-destaque">Não há nenhum produto no carrinho</h1>
+  {% else %}
+  <h1 class="text-center cor-destaque">Não há nenhum produto no carrinho</h1>
 
-    {% endif %}
+  {% endif %}
 </section>
-{% endblock %}
+{% endblock %} 
 
 {% block footer %}
 <script src="{% static 'alterar_carrinho.js' %}"></script>
