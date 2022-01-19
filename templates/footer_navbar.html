@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand">
+  <div class="container justify-content-start">
+    <div class="row">
+      <div class="col mx-3">
+        <p class="footer-item mb-2">Empresa</p>
+        <a class="footer-link mb-1" href="#"><small>Sobre</small></a>
+        <a class="footer-link mb-1" href="#"><small>Fornecedores</small></a>
+        <a class="footer-link mb-1" href="#"><small>Parceiros</small></a>
+        <a class="footer-link mb-1" href="#"><small>Privacidade</small></a>
+        <a class="footer-link mb-1" href="#"><small>Termos</small></a>
+      </div>
+      <div class="col mx-3">
+        <p class="footer-item mb-2">Produtos</p>
+        {% for categoria in categorias %}
+        <a class="footer-link mb-1" href="{% url 'categorias' categoria.titulo|lower %}">
+          <small>{{ categoria.titulo }}</small>
+        </a>
+        {% endfor %}
+      </div>
+      <div class="col mx-3">
+        <p class="footer-item mb-2">Suporte</p>
+        <a class="footer-link mb-1" href="#"><small>Contato</small></a>
+        <a class="footer-link mb-1" href="#"><small>Envios</small></a>
+        <a class="footer-link mb-1" href="#"><small>Acessibilidade</small></a>
+      </div>
+    </div>
+  </div>
+</nav>
