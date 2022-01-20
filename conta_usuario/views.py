@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -26,7 +25,7 @@ class RegistrarView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(reverse('home'))
+            return redirect('home')
 
         form = self.form_class()
         self.context.update(dados_comuns(request.user))
@@ -35,14 +34,14 @@ class RegistrarView(View):
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect(reverse('home'))
+            return redirect('home')
 
         form = self.form_class(request.POST)
 
         if form.is_valid():
             try:
                 self.form_class.validacao(request, form)
-                return redirect(reverse('home'))
+                return redirect('home')
 
             except ValidationError as erro:
                 messages.error(request, erro)
@@ -89,7 +88,7 @@ class AlterarSenhaView(LoginRequiredMixin, RegistrarView):
         if form.is_valid():
             try:
                 self.form_class.validacao(request, form)
-                return redirect(reverse('home'))
+                return redirect('home')
 
             except ValidationError as erro:
                 messages.error(request, erro)
@@ -104,4 +103,4 @@ def logout_view(request):
     """Função para deslogar o usuário do sistema"""
 
     logout(request)
-    return redirect(reverse('home'))
+    return redirect('home')

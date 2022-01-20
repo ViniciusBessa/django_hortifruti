@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
 from django.views import View
 
 from .models import CategoriasProduto, Produto, CarrinhoCompra, ListaDesejo, dados_comuns
@@ -27,7 +26,7 @@ class PaginaProdutoView(View):
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        return redirect('home')
 
 
 class BuscaProdutoView(View):
@@ -53,7 +52,7 @@ class BuscaProdutoView(View):
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        return redirect('home')
 
 
 class PaginaCategoriasView(View):
@@ -75,7 +74,7 @@ class PaginaCategoriasView(View):
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        return redirect('home')
 
 
 class PaginaCarrinhoView(LoginRequiredMixin, View):
@@ -97,7 +96,7 @@ class PaginaCarrinhoView(LoginRequiredMixin, View):
         return render(request, self.template_name, self.context)
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        return redirect('home')
 
 
 class PaginaListaView(PaginaCarrinhoView):
@@ -128,7 +127,7 @@ class AtualizarCarrinhoView(LoginRequiredMixin, View):
     mensagem_adicionado = 'Produto adicionado ao carrinho de compras'
 
     def get(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        return redirect('home')
 
     def post(self, request, id_produto, *args, **kwargs):
         query_model = self.model_class.receber(request.user)
@@ -171,7 +170,7 @@ class AlterarCarrinhoView(LoginRequiredMixin, View):
         produto_carrinho = get_object_or_404(CarrinhoCompra, usuario=request.user, produto=id_produto)
         produto_carrinho.quantidade = quantidade
         produto_carrinho.save()
-        return redirect(reverse('carrinho'))
+        return redirect('carrinho')
 
     def post(self, request, *args, **kwargs):
-        return redirect(reverse('home'))
+        return redirect('home')
