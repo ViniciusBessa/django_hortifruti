@@ -1,6 +1,10 @@
 {% extends 'base.html' %} 
 {% load static %} 
 
+{% block head %}
+<link href="{% static 'hr.css' %}" rel="stylesheet"/>
+{% endblock %}
+
 {% block main %}
 <section class="p-3">
   {% if produtos %}
@@ -26,9 +30,7 @@
       </div>
     </div>
     {% if produto != produtos|last %}
-    <div class="d-flex justify-content-center">
-      <hr />
-    </div>
+    <hr class="produto-hr"/>
     {% endif %}
   </div>
   {% endfor %} 
