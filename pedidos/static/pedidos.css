@@ -1,0 +1,13 @@
+ul,
+li {
+  list-style: none;
+  padding: 0%;
+}
+
+.link-pedido {
+  text-decoration: none;
+}
+
+.link-pedido:hover {
+  text-decoration: underline #0d6efd 1px;
+}

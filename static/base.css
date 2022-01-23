@@ -26,6 +26,10 @@
   width: 14em;
 }
 
+.container-detalhes {
+  width: 130px;
+}
+
 .placeholder {
   width: 330px;
 }
@@ -43,6 +47,18 @@
   border-radius: 100%;
   background-color: greenyellow;
   color: gray;
+}
+
+.botao-busca {
+  border: 1px solid green;
+  border-radius: 0%;
+  background-color: none;
+  color: green;
+}
+
+.botao-busca:hover {
+  background-color: green;
+  color: white;
 }
 
 .opacidade:hover {
@@ -63,14 +79,6 @@
   display: block;
   color: gray;
   text-decoration: underline gray 1px;
-}
-
-.link-pedido {
-  text-decoration: none;
-}
-
-.link-pedido:hover {
-  text-decoration: underline #0d6efd 1px;
 }
 
 body {

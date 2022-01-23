@@ -1,6 +1,10 @@
 {% extends 'base.html' %} 
 {% load static %} 
 
+{% block head %}
+<link href="{% static 'core.css' %}" rel="stylesheet"/>
+{% endblock %}
+
 {% block main %}
 <section>
   <div class="container-fluid">

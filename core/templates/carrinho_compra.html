@@ -3,7 +3,7 @@
 {% load carrinho_filters %} 
 
 {% block head %}
-<link href="{% static 'hr.css' %}" rel="stylesheet"/>
+<link href="{% static 'core.css' %}" rel="stylesheet"/>
 {% endblock %}
 
 {% block main %}
@@ -53,7 +53,7 @@
       
       {% endfor %}
     </div>
-    <div class="col d-flex justify-content-center my-5">
+    <div style="min-width: 320px;" class="col d-flex justify-content-center my-5">
       <div class="text-center">
         <h2 class="cor-destaque">Subtotal</h2>
         <h4 class="cor-dinheiro">R$ {{ subtotal }}</h4>
